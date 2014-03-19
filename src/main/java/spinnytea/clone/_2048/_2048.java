@@ -13,18 +13,28 @@ public class _2048
 {
 	private static final Random RAND = new Random();
 	private static final int GOAL = 2048;
-	public static final int WIDTH = 4;
-	public static final int HEIGHT = 4;
+	private static final int DEFAULT_WIDTH = 4;
+	private static final int DEFAULT_HEIGHT = 4;
 
 	/** int[horizontal][vertical] */
 	@Getter(value = AccessLevel.PACKAGE)
-	private int[][] board = new int[WIDTH][HEIGHT];
+	private int[][] board;
+	private final int boardWidth;
+	private final int boardHeight;
 	private int score = 0;
 	private boolean win = false;
 	private boolean lose = false;
 
 	public _2048()
 	{
+		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+
+	public _2048(int width, int height)
+	{
+		boardWidth = width;
+		boardHeight = height;
+		board = new int[boardWidth][boardHeight];
 		generateNumber();
 		generateNumber();
 
@@ -85,29 +95,29 @@ public class _2048
 		moveLeft(true);
 	}
 
-	private void moveLeft(boolean gen)
+	void moveLeft(boolean gen)
 	{
 		if(gen && !canMoveLeft())
 			return;
 
-		for(int v = 0; v < HEIGHT; v++)
+		for(int v = 0; v < boardHeight; v++)
 		{
 			// first pass, combine adjacent numbers
 			int h1 = 0;
 			int h2 = 0;
 
-			while(h1 < WIDTH && h2 < WIDTH)
+			while(h1 < boardWidth && h2 < boardWidth)
 			{
 				// find the first non-zero
-				while(h1 < WIDTH && board[h1][v] == 0)
+				while(h1 < boardWidth && board[h1][v] == 0)
 					h1++;
 
 				// find the second non-zero
 				h2 = h1 + 1;
-				while(h2 < WIDTH && board[h2][v] == 0)
+				while(h2 < boardWidth && board[h2][v] == 0)
 					h2++;
 
-				if(h1 == WIDTH || h2 == WIDTH)
+				if(h1 == boardWidth || h2 == boardWidth)
 					break;
 				else
 				{
@@ -139,14 +149,14 @@ public class _2048
 			// second pass, shift everything to the left
 			h1 = 0;
 			h2 = 0;
-			while(h1 < WIDTH && h2 < WIDTH)
+			while(h1 < boardWidth && h2 < boardWidth)
 			{
 				// find the first zero
-				while(h1 < WIDTH && board[h1][v] != 0)
+				while(h1 < boardWidth && board[h1][v] != 0)
 					h1++;
 
 				// find subsequent non-zeros
-				for(h2 = h1 + 1; h2 < WIDTH; h2++)
+				for(h2 = h1 + 1; h2 < boardWidth; h2++)
 					if(board[h2][v] != 0)
 					{
 						// shift the number over
@@ -175,16 +185,16 @@ public class _2048
 		moveRight(true);
 	}
 
-	private void moveRight(boolean gen)
+	void moveRight(boolean gen)
 	{
 		if(gen && !canMoveRight())
 			return;
 
-		for(int v = 0; v < HEIGHT; v++)
+		for(int v = 0; v < boardHeight; v++)
 		{
 			// first pass, combine adjacent numbers
-			int h1 = WIDTH - 1;
-			int h2 = WIDTH - 1;
+			int h1 = boardWidth - 1;
+			int h2 = boardWidth - 1;
 
 			while(h1 >= 0 && h2 >= 0)
 			{
@@ -227,8 +237,8 @@ public class _2048
 			}
 
 			// second pass, shift everything to the left
-			h1 = WIDTH - 1;
-			h2 = WIDTH - 1;
+			h1 = boardWidth - 1;
+			h2 = boardWidth - 1;
 			while(h1 >= 0 && h2 >= 0)
 			{
 				// find the first zero
@@ -265,29 +275,29 @@ public class _2048
 		moveUp(true);
 	}
 
-	private void moveUp(boolean gen)
+	void moveUp(boolean gen)
 	{
 		if(gen && !canMoveUp())
 			return;
 
-		for(int h = 0; h < WIDTH; h++)
+		for(int h = 0; h < boardWidth; h++)
 		{
 			// first pass, combine adjacent numbers
 			int v1 = 0;
 			int v2 = 0;
 
-			while(v1 < HEIGHT && v2 < HEIGHT)
+			while(v1 < boardHeight && v2 < boardHeight)
 			{
 				// find the first non-zero
-				while(v1 < HEIGHT && board[h][v1] == 0)
+				while(v1 < boardHeight && board[h][v1] == 0)
 					v1++;
 
 				// find the second non-zero
 				v2 = v1 + 1;
-				while(v2 < HEIGHT && board[h][v2] == 0)
+				while(v2 < boardHeight && board[h][v2] == 0)
 					v2++;
 
-				if(v1 == HEIGHT || v2 == HEIGHT)
+				if(v1 == boardHeight || v2 == boardHeight)
 					break;
 				else
 				{
@@ -319,14 +329,14 @@ public class _2048
 			// second pass, shift everything to the left
 			v1 = 0;
 			v2 = 0;
-			while(v1 < HEIGHT && v2 < HEIGHT)
+			while(v1 < boardHeight && v2 < boardHeight)
 			{
 				// find the first zero
-				while(v1 < HEIGHT && board[h][v1] != 0)
+				while(v1 < boardHeight && board[h][v1] != 0)
 					v1++;
 
 				// find subsequent non-zeros
-				for(v2 = v1 + 1; v2 < HEIGHT; v2++)
+				for(v2 = v1 + 1; v2 < boardHeight; v2++)
 					if(board[h][v2] != 0)
 					{
 						// shift the number over
@@ -355,16 +365,16 @@ public class _2048
 		moveDown(true);
 	}
 
-	private void moveDown(boolean gen)
+	void moveDown(boolean gen)
 	{
 		if(gen && !canMoveDown())
 			return;
 
-		for(int h = 0; h < WIDTH; h++)
+		for(int h = 0; h < boardWidth; h++)
 		{
 			// first pass, combine adjacent numbers
-			int v1 = HEIGHT - 1;
-			int v2 = HEIGHT - 1;
+			int v1 = boardHeight - 1;
+			int v2 = boardHeight - 1;
 
 			while(v1 >= 0 && v2 >= 0)
 			{
@@ -407,8 +417,8 @@ public class _2048
 			}
 
 			// second pass, shift everything to the left
-			v1 = HEIGHT - 1;
-			v2 = HEIGHT - 1;
+			v1 = boardHeight - 1;
+			v2 = boardHeight - 1;
 			while(v1 >= 0 && v2 >= 0)
 			{
 				// find the first zero
@@ -510,8 +520,8 @@ public class _2048
 
 		// first count the number of empty squares
 		int empty = 0;
-		for(int h = 0; h < WIDTH; h++)
-			for(int v = 0; v < HEIGHT; v++)
+		for(int h = 0; h < boardWidth; h++)
+			for(int v = 0; v < boardHeight; v++)
 			{
 				if(board[h][v] == 0)
 					empty++;
@@ -530,8 +540,8 @@ public class _2048
 			// this is how many empty spaces we will skip
 			empty = RAND.nextInt(empty);
 			pick_spot:
-			for(int h = 0; h < WIDTH; h++)
-				for(int v = 0; v < HEIGHT; v++)
+			for(int h = 0; h < boardWidth; h++)
+				for(int v = 0; v < boardHeight; v++)
 					if(board[h][v] == 0)
 					{
 						empty--;
@@ -562,15 +572,15 @@ public class _2048
 	private int[][] copyBoard()
 	{
 		// store a copy of the board
-		int[][] ret = new int[WIDTH][];
-		for(int h = 0; h < WIDTH; h++)
-			ret[h] = Arrays.copyOf(board[h], HEIGHT);
+		int[][] ret = new int[boardWidth][];
+		for(int h = 0; h < boardWidth; h++)
+			ret[h] = Arrays.copyOf(board[h], boardHeight);
 		return ret;
 	}
 
 	private boolean equalsBoard(int[][] one, int[][] two)
 	{
-		for(int h = 0; h < WIDTH; h++)
+		for(int h = 0; h < boardWidth; h++)
 			if(!Arrays.equals(one[h], two[h]))
 				return false;
 		return true;
