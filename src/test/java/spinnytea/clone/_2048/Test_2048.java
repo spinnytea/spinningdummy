@@ -28,8 +28,10 @@ public class Test_2048
 
 		for(Row row : testCases)
 		{
-			logger.info("moveLeft: " + Arrays.toString(row.start));
+			logger.trace("moveLeft: " + Arrays.toString(row.start));
 			copyHorizontal(game.getBoard(), row.start);
+			game.testLeft();
+			equalsHorizontal(game.getBoard(), row.start);
 			game.moveLeft(false);
 			equalsHorizontal(game.getBoard(), row.result);
 		}
@@ -48,6 +50,40 @@ public class Test_2048
 
 		for(int i = 0; i < row.length; i++)
 			check[i] = board[i][0];
+
+		assertArrayEquals(row, check);
+	}
+
+	@Test
+	public void moveRight()
+	{
+		_2048 game = new _2048(4, 1);
+
+		for(Row row : testCases)
+		{
+			logger.trace("moveRight: " + Arrays.toString(row.start));
+			copyHorizontalReverse(game.getBoard(), row.start);
+			game.testRight();
+			equalsHorizontalReverse(game.getBoard(), row.start);
+			game.moveRight(false);
+			equalsHorizontalReverse(game.getBoard(), row.result);
+		}
+	}
+
+	private void copyHorizontalReverse(int[][] board, int[] row)
+	{
+		int max = row.length - 1;
+		for(int i = 0; i < row.length; i++)
+			board[max - i][0] = row[i];
+	}
+
+	private void equalsHorizontalReverse(int[][] board, int[] row)
+	{
+		int max = row.length - 1;
+		int[] check = new int[row.length];
+
+		for(int i = 0; i < row.length; i++)
+			check[i] = board[max - i][0];
 
 		assertArrayEquals(row, check);
 	}
