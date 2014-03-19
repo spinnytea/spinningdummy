@@ -35,50 +35,9 @@ public class _2048
 		boardWidth = width;
 		boardHeight = height;
 		board = new int[boardWidth][boardHeight];
+
 		generateNumber();
 		generateNumber();
-
-		// shift left test:
-		// TEST moveLeft
-		// TEST moveRight
-		// TEST moveUp
-		// TEST moveDown
-		// 0 2 0 0; 2 0 0 0
-//		board[1][0] = 2;
-		// 0 0 0 2
-//		board[3][0] = 2;
-		// 0 2 4 0
-//		board[1][0] = 2;
-//		board[2][0] = 4;
-		// 2 0 0 4
-//		board[0][0] = 2;
-//		board[3][0] = 4;
-		// 2 2 0 0
-//		board[0][0] = 2;
-//		board[1][0] = 2;
-		// 0 2 2 0
-//		board[1][0] = 2;
-//		board[2][0] = 2;
-		// 4 2 2 4; // 4 4 4 0
-//		board[0][0] = 4;
-//		board[1][0] = 2;
-//		board[2][0] = 2;
-//		board[3][0] = 4;
-		// 2 2 4 4
-//		board[0][0] = 2;
-//		board[1][0] = 2;
-//		board[2][0] = 4;
-//		board[3][0] = 4;
-		// 2 2 2 2; 4 4 0 0
-//		board[0][0] = 2;
-//		board[1][0] = 2;
-//		board[2][0] = 2;
-//		board[3][0] = 2;
-
-		// TEST canMoveLeft
-		// TEST canMoveRight
-		// TEST canMoveUp
-		// TEST canMoveDown
 	}
 
 	public boolean canMoveLeft()

@@ -9,6 +9,14 @@ import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertArrayEquals;
 
+// TEST moveRight
+// TEST moveUp
+// TEST moveDown
+
+// TEST canMoveLeft
+// TEST canMoveRight
+// TEST canMoveUp
+// TEST canMoveDown
 public class Test_2048
 {
 	public static final Logger logger = LoggerFactory.getLogger(Test_2048.class);
@@ -55,9 +63,19 @@ public class Test_2048
 		private int[] result;
 	}
 
-	// these are coded while imagining a shift left
+	// these are coded while imagining a moveLeft
 	private static final Row[] testCases = { //
 	new Row(new int[] { 2, 0, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
 	new Row(new int[] { 0, 2, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
+	new Row(new int[] { 0, 0, 0, 2 }, new int[] { 2, 0, 0, 0 }), //
+	new Row(new int[] { 0, 2, 4, 0 }, new int[] { 2, 4, 0, 0 }), //
+	new Row(new int[] { 2, 0, 0, 4 }, new int[] { 2, 4, 0, 0 }), //
+	new Row(new int[] { 2, 2, 0, 0 }, new int[] { 4, 0, 0, 0 }), //
+	new Row(new int[] { 0, 2, 2, 0 }, new int[] { 4, 0, 0, 0 }), //
+	new Row(new int[] { 4, 2, 2, 4 }, new int[] { 4, 4, 4, 0 }), //
+	new Row(new int[] { 4, 4, 4, 0 }, new int[] { 8, 4, 0, 0 }), //
+	new Row(new int[] { 2, 2, 4, 4 }, new int[] { 4, 8, 0, 0 }), //
+	new Row(new int[] { 2, 2, 2, 2 }, new int[] { 4, 4, 0, 0 }), //
+	new Row(new int[] { 4, 4, 0, 0 }, new int[] { 8, 0, 0, 0 }), //
 	};
 }
