@@ -1,16 +1,54 @@
 apply plugin: "java"
 apply plugin: "idea"
 
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
 sourceCompatibility = 1.7
 version = "0.1"
+group = "spinnytea"
 
 repositories {
     mavenCentral()
 }
 
+ext {
+    versions = [
+            slf4j: "1.7.5",
+            logback: "1.0.13",
+    ]
+}
+
+configurations {
+    all*.exclude group: "log4j"
+    all*.exclude group: "commons-logging"
+}
+
 dependencies {
-    compile "org.projectlombok:lombok:1.12.2"
-    
+    compile "org.projectlombok:lombok:1.12.4"
+    compile "ch.qos.logback:logback-classic:${project.versions.logback}"
+    compile "org.slf4j:slf4j-api:${project.versions.slf4j}"
+    compile "org.slf4j:log4j-over-slf4j:${project.versions.slf4j}"
+    compile "org.slf4j:jcl-over-slf4j:${project.versions.slf4j}"
+
     testCompile "junit:junit:4.11"
 }
 
+task docs(type: Jar, dependsOn: javadoc) {
+    classifier = "javadoc"
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options.links = [
+            "http://docs.oracle.com/javase/7/docs/api/",
+    ]
+}
+
+artifacts {
+    archives docs
+}
