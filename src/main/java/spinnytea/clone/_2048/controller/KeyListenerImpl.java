@@ -5,13 +5,14 @@ import java.awt.event.KeyEvent;
 
 import lombok.RequiredArgsConstructor;
 import spinnytea.clone._2048._2048;
+import spinnytea.clone._2048.view.Repaintable;
 
 @RequiredArgsConstructor
-public class key
+public class KeyListenerImpl
 extends KeyAdapter
 {
 	private final _2048 game;
-	private final spinnytea.clone._2048.view.view view;
+	private final Repaintable view;
 
 	@Override
 	public void keyPressed(KeyEvent evt)

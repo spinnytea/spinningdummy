@@ -9,12 +9,12 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import spinnytea.clone._2048._2048;
-import spinnytea.clone._2048.controller.key;
+import spinnytea.clone._2048.controller.KeyListenerImpl;
 
 /** draw the game with awt */
-public class awt
+public class AwtImpl
 extends JPanel
-implements view
+implements Repaintable
 {
 	private static final long serialVersionUID = -3870595594462521279L;
 	private static final Color ZERO_COLOR = Color.darkGray;
@@ -30,7 +30,7 @@ implements view
 	private final _2048 game;
 	private final BufferedImage boardBuffer;
 
-	public awt(_2048 game, boolean lookahead)
+	public AwtImpl(_2048 game, boolean lookahead)
 	{
 		this.game = game;
 		this.lookahead = lookahead;
@@ -157,8 +157,8 @@ implements view
 	public static JPanel mvc_2048()
 	{
 		_2048 model = new _2048();
-		awt view = new awt(model, false);
-		key controller = new key(model, view);
+		AwtImpl view = new AwtImpl(model, false);
+		KeyListenerImpl controller = new KeyListenerImpl(model, view);
 
 		view.addKeyListener(controller);
 

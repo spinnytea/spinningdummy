@@ -1,6 +1,6 @@
 package spinnytea.clone._2048.view;
 
-public interface view
+public interface Repaintable
 {
 	public void repaint();
 }

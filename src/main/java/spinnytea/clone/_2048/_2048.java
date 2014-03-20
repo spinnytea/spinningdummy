@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import lombok.Getter;
-import spinnytea.clone._2048.view.awt;
+import spinnytea.clone._2048.view.AwtImpl;
 
 @Getter
 public class _2048
@@ -547,7 +547,7 @@ public class _2048
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame();
-		frame.setContentPane(awt.mvc_2048());
+		frame.setContentPane(AwtImpl.mvc_2048());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
