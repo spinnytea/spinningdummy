@@ -120,6 +120,38 @@ public class Test_2048
 		assertArrayEquals(row, check);
 	}
 
+	@Test
+	public void moveDown()
+	{
+		_2048 game = new _2048(1, 4);
+
+		for(Row row : testCases)
+		{
+			logger.trace("moveDown: " + Arrays.toString(row.start));
+			copyVerticalReverse(game.getBoard(), row.start);
+			game.testDown();
+			equalsVerticalReverse(game.getBoard(), row.start);
+			game.moveDown(false);
+			equalsVerticalReverse(game.getBoard(), row.result);
+		}
+	}
+
+	private void copyVerticalReverse(int[][] board, int[] row)
+	{
+		int max = row.length - 1;
+		for(int i = 0; i < row.length; i++)
+			board[0][max - i] = row[i];
+	}
+
+	private void equalsVerticalReverse(int[][] board, int[] row)
+	{
+		int max = row.length - 1;
+		int[] check = new int[row.length];
+		for(int i = 0; i < row.length; i++)
+			check[i] = board[0][max - i];
+		assertArrayEquals(row, check);
+	}
+
 	//
 	//
 	//
