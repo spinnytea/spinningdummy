@@ -5,8 +5,8 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import lombok.AccessLevel;
 import lombok.Getter;
+import spinnytea.clone._2048.view.awt;
 
 @Getter
 public class _2048
@@ -17,7 +17,6 @@ public class _2048
 	private static final int DEFAULT_HEIGHT = 4;
 
 	/** int[horizontal][vertical] */
-	@Getter(value = AccessLevel.PACKAGE)
 	private int[][] board;
 	private final int boardWidth;
 	private final int boardHeight;
@@ -548,7 +547,7 @@ public class _2048
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame();
-		frame.setContentPane(awt_2048.mvc_2048());
+		frame.setContentPane(awt.mvc_2048());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);

@@ -1,18 +1,23 @@
-package spinnytea.clone._2048;
+package spinnytea.clone._2048.controller;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import lombok.RequiredArgsConstructor;
+import spinnytea.clone._2048._2048;
 
 @RequiredArgsConstructor
-public class key_2048 extends KeyAdapter {
+public class key
+extends KeyAdapter
+{
 	private final _2048 game;
-	private final view_2048 view;
+	private final spinnytea.clone._2048.view.view view;
 
 	@Override
-	public void keyPressed(KeyEvent evt) {
-		switch (evt.getKeyCode()) {
+	public void keyPressed(KeyEvent evt)
+	{
+		switch(evt.getKeyCode())
+		{
 		case KeyEvent.VK_LEFT:
 			game.moveLeft();
 			break;
