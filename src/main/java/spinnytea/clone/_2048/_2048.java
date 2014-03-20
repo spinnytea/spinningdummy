@@ -551,6 +551,7 @@ public class _2048
 		frame.setContentPane(awt_2048.mvc_2048());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 }
