@@ -66,6 +66,9 @@ public class Test_2048
 		for(Row row : testCases)
 		{
 			logger.trace("moveRight: " + Arrays.toString(row.start));
+			assertEquals(row.start.length, row.result.length);
+			assertEquals(game.getBoard().length, row.start.length);
+
 			copyHorizontalReverse(game.getBoard(), row.start);
 			game.testRight();
 			equalsHorizontalReverse(game.getBoard(), row.start);
@@ -98,6 +101,9 @@ public class Test_2048
 		for(Row row : testCases)
 		{
 			logger.trace("moveUp: " + Arrays.toString(row.start));
+			assertEquals(row.start.length, row.result.length);
+			assertEquals(game.getBoard()[0].length, row.start.length);
+
 			copyVertical(game.getBoard(), row.start);
 			game.testUp();
 			equalsVertical(game.getBoard(), row.start);
@@ -128,6 +134,9 @@ public class Test_2048
 		for(Row row : testCases)
 		{
 			logger.trace("moveDown: " + Arrays.toString(row.start));
+			assertEquals(row.start.length, row.result.length);
+			assertEquals(game.getBoard()[0].length, row.start.length);
+
 			copyVerticalReverse(game.getBoard(), row.start);
 			game.testDown();
 			equalsVerticalReverse(game.getBoard(), row.start);
