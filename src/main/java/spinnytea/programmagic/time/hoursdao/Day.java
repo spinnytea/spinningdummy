@@ -11,18 +11,25 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+import org.hibernate.annotations.NaturalId;
 
 @Entity
+@EqualsAndHashCode(of = { "year", "dayOfYear" })
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(of = "key")
 @Setter(value = AccessLevel.NONE)
+@ToString(exclude = "key")
 public class Day
 implements Comparable<Day>
 {
+	// the key is basically a composite of year and dayOfYear
 	@Id
 	private String key;
+	@NaturalId
 	private int year;
+	@NaturalId
 	private int dayOfYear;
 
 	public Day(Date date)
@@ -40,12 +47,6 @@ implements Comparable<Day>
 		this.year = year;
 		this.dayOfYear = dayOfYear;
 		key = year + "_" + dayOfYear;
-	}
-
-	@Override
-	public String toString()
-	{
-		return key;
 	}
 
 	@Override

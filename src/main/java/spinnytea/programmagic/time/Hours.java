@@ -3,6 +3,7 @@ package spinnytea.programmagic.time;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -44,6 +47,7 @@ extends JPanel
 
 	private static final SimpleDateFormat format_title = new SimpleDateFormat("EE MMMM dd, yyyy");
 	private static final SimpleDateFormat format_input = new SimpleDateFormat("HH:mm");
+	private static final SimpleDateFormat format_day = new SimpleDateFormat("dd EE");
 
 	// GUI handles
 	private final JFrame parent;
@@ -85,6 +89,19 @@ extends JPanel
 		datelist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		datelist.setBorder(BorderFactory.createLoweredBevelBorder());
 		datelist.setSelectedValue(currentDay, true);
+		datelist.setCellRenderer(new ListCellRenderer<Day>()
+		{
+			DefaultListCellRenderer dlcr = new DefaultListCellRenderer();
+			Calendar cal = Calendar.getInstance();
+
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Day> list, Day day, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				cal.set(Calendar.YEAR, day.getYear());
+				cal.set(Calendar.DAY_OF_YEAR, day.getDayOfYear());
+				return dlcr.getListCellRendererComponent(datelist, format_day.format(cal.getTime()), index, isSelected, cellHasFocus);
+			}
+		});
 
 		datelist.addListSelectionListener(new ListSelectionListener()
 		{
