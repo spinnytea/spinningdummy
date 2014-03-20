@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 // TEST moveRight
 // TEST moveUp
@@ -29,6 +30,9 @@ public class Test_2048
 		for(Row row : testCases)
 		{
 			logger.trace("moveLeft: " + Arrays.toString(row.start));
+			assertEquals(row.start.length, row.result.length);
+			assertEquals(game.getBoard().length, row.start.length);
+
 			copyHorizontal(game.getBoard(), row.start);
 			game.testLeft();
 			equalsHorizontal(game.getBoard(), row.start);
@@ -81,10 +85,38 @@ public class Test_2048
 	{
 		int max = row.length - 1;
 		int[] check = new int[row.length];
-
 		for(int i = 0; i < row.length; i++)
 			check[i] = board[max - i][0];
+		assertArrayEquals(row, check);
+	}
 
+	@Test
+	public void moveUp()
+	{
+		_2048 game = new _2048(1, 4);
+
+		for(Row row : testCases)
+		{
+			logger.trace("moveUp: " + Arrays.toString(row.start));
+			copyVertical(game.getBoard(), row.start);
+			game.testUp();
+			equalsVertical(game.getBoard(), row.start);
+			game.moveUp(false);
+			equalsVertical(game.getBoard(), row.result);
+		}
+	}
+
+	private void copyVertical(int[][] board, int[] row)
+	{
+		for(int i = 0; i < row.length; i++)
+			board[0][i] = row[i];
+	}
+
+	private void equalsVertical(int[][] board, int[] row)
+	{
+		int[] check = new int[row.length];
+		for(int i = 0; i < row.length; i++)
+			check[i] = board[0][i];
 		assertArrayEquals(row, check);
 	}
 
