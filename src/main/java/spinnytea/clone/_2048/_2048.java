@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import lombok.Getter;
+import spinnytea.clone._2048.controller.KeyListenerImpl;
 import spinnytea.clone._2048.view.AwtImpl;
 
 @Getter
@@ -85,7 +86,8 @@ public class _2048
 						// and they are the same!
 						board[h1][v] += board[h2][v];
 						board[h2][v] = 0;
-						score += board[h1][v];
+						if(gen)
+							score += board[h1][v];
 
 						// move h1 just past h2
 						h1 = h2 + 1;
@@ -175,7 +177,8 @@ public class _2048
 						// and they are the same!
 						board[h1][v] += board[h2][v];
 						board[h2][v] = 0;
-						score += board[h1][v];
+						if(gen)
+							score += board[h1][v];
 
 						// move h1 just past h2
 						h1 = h2 - 1;
@@ -265,7 +268,8 @@ public class _2048
 						// and they are the same!
 						board[h][v1] += board[h][v2];
 						board[h][v2] = 0;
-						score += board[h][v1];
+						if(gen)
+							score += board[h][v1];
 
 						// move v1 just past v2
 						v1 = v2 + 1;
@@ -355,7 +359,8 @@ public class _2048
 						// and they are the same!
 						board[h][v1] += board[h][v2];
 						board[h][v2] = 0;
-						score += board[h][v1];
+						if(gen)
+							score += board[h][v1];
 
 						// move v1 just past v2
 						v1 = v2 - 1;
@@ -546,11 +551,19 @@ public class _2048
 
 	public static void main(String[] args)
 	{
+		_2048 model = new _2048(4, 4);
+		AwtImpl view = new AwtImpl(model, false);
+		KeyListenerImpl controller = new KeyListenerImpl(model, view);
+//		Timer timer = new Timer(100, new RandomImpl(model, view, 20));
+
 		JFrame frame = new JFrame();
-		frame.setContentPane(AwtImpl.mvc_2048());
+		frame.setContentPane(view);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+
+		view.addKeyListener(controller);
+//		timer.start();
 	}
 }

@@ -17,6 +17,7 @@ extends KeyAdapter
 	@Override
 	public void keyPressed(KeyEvent evt)
 	{
+		// make a move
 		switch(evt.getKeyCode())
 		{
 		case KeyEvent.VK_LEFT:
@@ -32,7 +33,9 @@ extends KeyAdapter
 			game.moveDown();
 			break;
 		}
+
 		// TODO animation
+		// repaint the board
 		view.repaint();
 	}
 }

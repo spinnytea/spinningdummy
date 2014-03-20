@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import spinnytea.clone._2048._2048;
-import spinnytea.clone._2048.controller.KeyListenerImpl;
 
 /** draw the game with awt */
 public class AwtImpl
@@ -152,16 +151,5 @@ implements Repaintable
 	private float interpolate(float min, float max, float percent)
 	{
 		return ((max - min) * percent) + min;
-	}
-
-	public static JPanel mvc_2048()
-	{
-		_2048 model = new _2048();
-		AwtImpl view = new AwtImpl(model, false);
-		KeyListenerImpl controller = new KeyListenerImpl(model, view);
-
-		view.addKeyListener(controller);
-
-		return view;
 	}
 }
