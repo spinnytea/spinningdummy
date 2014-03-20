@@ -1,5 +1,9 @@
 package spinnytea.tools;
 
+import java.util.Arrays;
+
+import org.apache.log4j.Logger;
+
 /**
  * Counts through a character based generated id.<br>
  * It acts much the same way as a numbering system (say decimal or hexadecimal),
@@ -13,20 +17,39 @@ package spinnytea.tools;
  */
 public class ID
 {
-	private char[] nextID;
+	private static final Logger logger = Logger.getLogger(ID.class);
 
-	// do not include underscores (this way, they can be used for other things)
-	// cannot include characters that are disallowed by the file system
-	private static final char[] tokens = {
-	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	'a', 'b', 'c', 'd', 'e', 'f',
-	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+	/**
+	 * <p/>
+	 * does not include underscores or periods (this way, they can be used for other things such as delimiters)
+	 * <p/>
+	 * does not include characters that are disallowed by the file system (this way this can be used in a filename)
+	 * <p/>
+	 * in sorted order so we can use {@link java.util.Arrays#binarySearch(char[], char)}
+	 */
+	static final char[] tokens = {
+	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', // numbers
+//		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', // upper case letters
+	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', // lower case letters
 	};
 
-	/** Needs to have an owner so it can use "saveConfig" ~ if you don't wish to use Config, then you may pass in null */
+	/** in case you want to extend the ID */
+	public static final char getZero()
+	{
+		return tokens[0];
+	}
+
+	private StringBuffer nextID;
+
+	/**
+	 * <p/>
+	 * If owner is null, then will start from one. If owner does not yet have an ID, then will also start from one. Otherwise, it will load the value from the owner.
+	 *
+	 * @param owner used with "saveConfig" ~ if you don't wish to use Config, then may be <code>null</code>
+	 */
 	public ID()
 	{
-		nextID = new char[] { tokens[1] };
+		nextID = new StringBuffer("" + tokens[1]);
 	}
 
 	/**
@@ -35,47 +58,45 @@ public class ID
 	 * <p/>
 	 * If you need this value to be atomic, then you need to put it in a synchronized block
 	 */
-	public String nextID()
+	public synchronized String nextID()
 	{
-		String ret = new String(nextID);
+		String ret = nextID.toString();
 
-		char[] temp = increment(nextID, nextID.length - 1);
-		if(temp != null)
-			nextID = temp;
+		increment(nextID.length() - 1);
 
 		return ret;
 	}
 
-	private static char[] increment(char[] id, int pos)
+	/**
+	 * <p/>
+	 * does not have very much error checking since this is private
+	 * <p/>
+	 * recursive increment
+	 */
+	private void increment(int index)
 	{
-		if(pos == -1)
+		// if any other negative value is supplied, this will throw a StringArrayIndexOutOfBoundsException
+		if(index == -1)
 		{
-			char[] ret = new char[id.length + 1];
-			ret[0] = tokens[1];
-			for(int i = 1; i < ret.length; i++)
-				ret[i] = tokens[0];
-			return ret;
-		}
-
-		char c = id[pos];
-		int c_i = -1;
-		for(int i = 0; i < tokens.length; i++)
-			if(tokens[i] == c)
-			{
-				c_i = i + 1;
-				break;
-			}
-
-		if(c_i < tokens.length)
-		{
-			id[pos] = tokens[c_i];
+			nextID.insert(0, tokens[1]);
 		}
 		else
 		{
-			id[pos] = tokens[0];
-			return increment(id, pos - 1);
-		}
+			// get the next token index
+			int idx = Arrays.binarySearch(tokens, nextID.charAt(index)) + 1;
 
-		return null;
+			// if we can't increase this anymore, then increase the next value
+			if(idx == tokens.length)
+			{
+				// increment the value before recursion
+				// when we roll over (99 -> 100), our index will be off by one
+				nextID.setCharAt(index, tokens[0]);
+				increment(index - 1); // XXX do a loop instead of recursion
+			}
+			else
+			{
+				nextID.setCharAt(index, tokens[idx]);
+			}
+		}
 	}
 }

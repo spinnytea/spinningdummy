@@ -8,7 +8,7 @@
         </encoder>
     </appender>
 
-    <logger name="spinnytea" level="TRACE"/>
+    <logger name="spinnytea" level="DEBUG"/>
 
     <root level="WARN">
         <appender-ref ref="CONSOLE"/>
