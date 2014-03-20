@@ -14,8 +14,6 @@ import java.util.Set;
  * It creates a HashMap, and "counts" the number of times an item is added to the list.
  * <p/>
  * <b>Last Update:</b> Mar 20, 2012
- *
- * @author hendersontja
  */
 public class CountedSet<T>
 implements Set<T>
@@ -80,7 +78,7 @@ implements Set<T>
 		return true;
 	}
 
-	/** Get the current count of the object.  If the object doesn't exists, then the count is 0 */
+	/** Get the current count of the object. If the object doesn't exists, then the count is 0 */
 	public int getCountFor(T t)
 	{
 		Integer count = map.get(t);
@@ -100,7 +98,8 @@ implements Set<T>
 	}
 
 	/**
-	 * Get the total of all the objects in the list<p>
+	 * Get the total of all the objects in the list
+	 * <p>
 	 * if A was added 2 times, and B was added 3 times, then getTotal will return 5.
 	 */
 	public long getTotal()
@@ -109,13 +108,15 @@ implements Set<T>
 	}
 
 	/**
-	 * Get the maximum count in the list<p>
-	 * if A was added 2 times, and B was added 3 times, then getTotal will return 3.<p>
+	 * Get the maximum count in the list
+	 * <p>
+	 * if A was added 2 times, and B was added 3 times, then getTotal will return 3.
+	 * <p>
 	 * Note: This may need to be recalculated if the object with the highest count has been removed
 	 */
 	public long getMaxCount()
 	{
-		if(maxCount < 0)    // if it gets reset
+		if(maxCount < 0) // if it gets reset
 			for(Integer i : map.values())
 				if(i > maxCount)
 					maxCount = i;
@@ -223,8 +224,6 @@ implements Set<T>
 	/**
 	 * Specifically, this is used for sorting the data from the "toArrayList" of a counted set<br>
 	 * It is a common case to want the items sorted by count - this is a canned comparator that does that.
-	 *
-	 * @author hendersontja
 	 */
 	public class CountedComparator
 	implements Comparator<T>

@@ -31,7 +31,7 @@ extends GridLayout
 	@Override
 	public Dimension preferredLayoutSize(Container parent)
 	{
-		//System.err.println("preferredLayoutSize");
+		// System.err.println("preferredLayoutSize");
 		synchronized (parent.getTreeLock())
 		{
 			Insets insets = parent.getInsets();
@@ -73,8 +73,7 @@ extends GridLayout
 			{
 				nh += h[i];
 			}
-			return new Dimension(insets.left + insets.right + nw + (ncols - 1) * getHgap(),
-			insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
+			return new Dimension(insets.left + insets.right + nw + (ncols - 1) * getHgap(), insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
 		}
 	}
 
@@ -123,15 +122,14 @@ extends GridLayout
 			{
 				nh += h[i];
 			}
-			return new Dimension(insets.left + insets.right + nw + (ncols - 1) * getHgap(),
-			insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
+			return new Dimension(insets.left + insets.right + nw + (ncols - 1) * getHgap(), insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
 		}
 	}
 
 	@Override
 	public void layoutContainer(Container parent)
 	{
-		//System.err.println("layoutContainer");
+		// System.err.println("layoutContainer");
 		synchronized (parent.getTreeLock())
 		{
 			Insets insets = parent.getInsets();

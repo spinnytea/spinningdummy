@@ -6,14 +6,11 @@ import org.apache.log4j.Logger;
 
 /**
  * Counts through a character based generated id.<br>
- * It acts much the same way as a numbering system (say decimal or hexadecimal),
- * but, instead of just using numerals, it uses alpha characters, too.<br>
+ * It acts much the same way as a numbering system (say decimal or hexadecimal), but, instead of just using numerals, it uses alpha characters, too.<br>
  * Underscores are not used, so you can use that character for other reasons (such as, separating types with the same id)
  * <p/>
- * This classes requires a "Config" to save the "nextID" that will be generated (so it persists between runs).
- * This uses the "nextID" variable name for the given owner.
- *
- * @author chicarksey
+ * This classes requires a "Config" to save the "nextID" that will be generated (so it persists between runs). This uses the "nextID" variable name for the
+ * given owner.
  */
 public class ID
 {
@@ -43,8 +40,9 @@ public class ID
 
 	/**
 	 * <p/>
-	 * If owner is null, then will start from one. If owner does not yet have an ID, then will also start from one. Otherwise, it will load the value from the owner.
-	 *
+	 * If owner is null, then will start from one. If owner does not yet have an ID, then will also start from one. Otherwise, it will load the value from the
+	 * owner.
+	 * 
 	 * @param owner used with "saveConfig" ~ if you don't wish to use Config, then may be <code>null</code>
 	 */
 	public ID()
@@ -53,8 +51,7 @@ public class ID
 	}
 
 	/**
-	 * This is not synchronized because it is not up to this class to manage that.
-	 * Different applications require different synchronization.
+	 * This is not synchronized because it is not up to this class to manage that. Different applications require different synchronization.
 	 * <p/>
 	 * If you need this value to be atomic, then you need to put it in a synchronized block
 	 */
