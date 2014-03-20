@@ -67,17 +67,29 @@ implements Repaintable
 			int maxHeightOffset = (height * 2 + 2) * BLOCK_SIZE - height * BLOCK_SIZE / 2;
 
 			// draw what would happen if we pressed "left"
-			drawBoard(game.testLeft());
-			g.drawImage(boardBuffer, 0, midHeightOffset, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			if(game.canMoveLeft())
+			{
+				drawBoard(game.testLeft());
+				g.drawImage(boardBuffer, 0, midHeightOffset, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			}
 			// draw what would happen if we pressed "right"
-			drawBoard(game.testRight());
-			g.drawImage(boardBuffer, maxWidthOffset, midHeightOffset, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			if(game.canMoveRight())
+			{
+				drawBoard(game.testRight());
+				g.drawImage(boardBuffer, maxWidthOffset, midHeightOffset, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			}
 			// draw what would happen if we pressed "up"
-			drawBoard(game.testUp());
-			g.drawImage(boardBuffer, midWidthOffset, 0, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			if(game.canMoveUp())
+			{
+				drawBoard(game.testUp());
+				g.drawImage(boardBuffer, midWidthOffset, 0, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			}
 			// draw what would happen if we pressed "down"
-			drawBoard(game.testDown());
-			g.drawImage(boardBuffer, midWidthOffset, maxHeightOffset, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			if(game.canMoveDown())
+			{
+				drawBoard(game.testDown());
+				g.drawImage(boardBuffer, midWidthOffset, maxHeightOffset, boardBuffer.getWidth() / 2, boardBuffer.getHeight() / 2, null);
+			}
 		}
 
 		// TODO draw lose
