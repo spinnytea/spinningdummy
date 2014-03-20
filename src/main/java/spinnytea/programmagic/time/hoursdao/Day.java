@@ -18,6 +18,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "key")
 @Setter(value = AccessLevel.NONE)
 public class Day
+implements Comparable<Day>
 {
 	@Id
 	private String key;
@@ -45,5 +46,14 @@ public class Day
 	public String toString()
 	{
 		return key;
+	}
+
+	@Override
+	public int compareTo(Day day)
+	{
+		int comp = new Integer(year).compareTo(day.year);
+		if(comp != 0)
+			return year;
+		return new Integer(dayOfYear).compareTo(day.dayOfYear);
 	}
 }

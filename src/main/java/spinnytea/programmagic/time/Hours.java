@@ -79,7 +79,9 @@ extends JPanel
 		dao = new TaskDao_CSV();
 		setDate(new Day(new Date()));
 
-		final JList<Day> datelist = new JList<Day>(dao.allDays().toArray(new Day[0]));
+		ArrayList<Day> days = new ArrayList<Day>(dao.allDays());
+		Collections.sort(days, Collections.reverseOrder());
+		final JList<Day> datelist = new JList<Day>(days.toArray(new Day[0]));
 		datelist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		datelist.setBorder(BorderFactory.createLoweredBevelBorder());
 		datelist.setSelectedValue(currentDay, true);
