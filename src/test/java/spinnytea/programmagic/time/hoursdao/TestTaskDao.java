@@ -25,7 +25,20 @@ public class TestTaskDao
 	@BeforeClass
 	public static void before()
 	{
-		new File("exports/hours").mkdir();
+		File folder = new File("exports/hours");
+		if(!folder.exists())
+		{
+			logger.info("Hours folder doesn't exists. It will be deleted upon exit.");
+			folder.mkdir();
+			folder.deleteOnExit();
+		}
+
+		File db = new File("exports/hours.h2.db");
+		if(!db.exists())
+		{
+			logger.info("Hours database doesn't exists. It will be deleted upon exit.");
+			db.deleteOnExit();
+		}
 	}
 
 	@Test
