@@ -53,7 +53,8 @@ public class TestTaskDao
 			try
 			{
 				logger.info("Creating dummy test day");
-				@Cleanup PrintStream ps = new PrintStream(new File("exports/hours/2000_2"));
+				@Cleanup
+				PrintStream ps = new PrintStream(new File("exports/hours/2000_2"));
 				ps.print("Sat Jan 02 09:00:00 EST 2000\nSat Jan 02 08:00:00 EST 2000\nTEST_Stuff\n");
 			}
 			catch(Exception e)
