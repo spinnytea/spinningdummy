@@ -42,7 +42,7 @@ public class ID
 	 * <p/>
 	 * If owner is null, then will start from one. If owner does not yet have an ID, then will also start from one. Otherwise, it will load the value from the
 	 * owner.
-	 * 
+	 *
 	 * @param owner used with "saveConfig" ~ if you don't wish to use Config, then may be <code>null</code>
 	 */
 	public ID()

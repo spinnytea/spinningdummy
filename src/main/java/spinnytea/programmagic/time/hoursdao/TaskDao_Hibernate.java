@@ -1,18 +1,17 @@
 package spinnytea.programmagic.time.hoursdao;
 
+import spinnytea.tools.HibernateUtils;
+
 import java.util.List;
 
 import lombok.Cleanup;
 import lombok.NonNull;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import spinnytea.tools.HibernateUtils;
 
 public class TaskDao_Hibernate
 extends TaskDao

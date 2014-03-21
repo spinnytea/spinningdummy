@@ -139,6 +139,5 @@ public class EncryptionUtils
 
 		if(EncryptFile(file, password, "Hello World!"))
 			System.out.println("Message: " + DecryptFile(file, password));
-
 	}
 }

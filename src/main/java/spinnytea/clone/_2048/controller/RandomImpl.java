@@ -1,12 +1,13 @@
 package spinnytea.clone._2048.controller;
 
+import spinnytea.clone._2048._2048;
+import spinnytea.clone._2048.view.Repaintable;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
 import lombok.RequiredArgsConstructor;
-import spinnytea.clone._2048._2048;
-import spinnytea.clone._2048.view.Repaintable;
 
 @RequiredArgsConstructor
 public class RandomImpl

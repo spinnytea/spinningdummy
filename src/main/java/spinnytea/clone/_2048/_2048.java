@@ -1,13 +1,14 @@
 package spinnytea.clone._2048;
 
+import spinnytea.clone._2048.controller.KeyListenerImpl;
+import spinnytea.clone._2048.view.AwtImpl;
+
 import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
 import lombok.Getter;
-import spinnytea.clone._2048.controller.KeyListenerImpl;
-import spinnytea.clone._2048.view.AwtImpl;
 
 @Getter
 public class _2048
