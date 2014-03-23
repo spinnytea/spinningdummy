@@ -1,7 +1,6 @@
 package spinnytea.programmagic.maze.algorithms;
 
 import spinnytea.programmagic.maze.Cell2D;
-import spinnytea.programmagic.maze.callforhelp.Tuple3;
 
 import java.util.ArrayList;
 import java.util.Random;
