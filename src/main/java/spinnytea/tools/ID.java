@@ -2,7 +2,8 @@ package spinnytea.tools;
 
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Counts through a character based generated id.<br>
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
  */
 public class ID
 {
-	private static final Logger logger = Logger.getLogger(ID.class);
+	private static final Logger logger = LoggerFactory.getLogger(ID.class);
 
 	/**
 	 * <p/>

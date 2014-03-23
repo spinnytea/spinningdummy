@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p/>
@@ -31,7 +32,7 @@ import org.apache.log4j.Logger;
 public class DepthFirstMaze
 implements MazeAlgorithm
 {
-	private static final Logger logger = Logger.getLogger(DepthFirstMaze.class);
+	private static final Logger logger = LoggerFactory.getLogger(DepthFirstMaze.class);
 	private static final Random random = new Random();
 
 	private final int width;
