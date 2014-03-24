@@ -1,5 +1,12 @@
 package spinnytea.programmagic.time;
 
+import spinnytea.programmagic.time.Clock.ClockOptions;
+import spinnytea.programmagic.time.hoursdao.Day;
+import spinnytea.programmagic.time.hoursdao.Task;
+import spinnytea.programmagic.time.hoursdao.TaskDao;
+import spinnytea.programmagic.time.hoursdao.TaskDao_CSV;
+import spinnytea.tools.GridLayout2;
+
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
@@ -30,13 +37,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import spinnytea.programmagic.time.Clock.ClockOptions;
-import spinnytea.programmagic.time.hoursdao.Day;
-import spinnytea.programmagic.time.hoursdao.Task;
-import spinnytea.programmagic.time.hoursdao.TaskDao;
-import spinnytea.programmagic.time.hoursdao.TaskDao_CSV;
-import spinnytea.tools.GridLayout2;
 
 // XXX add preset buttons for projects
 // XXX add a comment field to explain what I did
@@ -248,6 +248,7 @@ extends JPanel
 			grid.add(new JTextField(t.getName())
 			{
 				private static final long serialVersionUID = 1L;
+
 				{
 					addActionListener(update);
 				}
@@ -255,6 +256,7 @@ extends JPanel
 			grid.add(new JTextField(format_input.format(t.getStart()))
 			{
 				private static final long serialVersionUID = 1L;
+
 				{
 					addActionListener(update);
 					setHorizontalAlignment(JTextField.RIGHT);
@@ -271,6 +273,7 @@ extends JPanel
 		grid.add(new JTextField(format_input.format(endTime))
 		{
 			private static final long serialVersionUID = 1L;
+
 			{
 				addActionListener(update);
 				setHorizontalAlignment(JTextField.RIGHT);

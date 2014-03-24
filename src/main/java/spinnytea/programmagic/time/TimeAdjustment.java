@@ -7,7 +7,8 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <dl>
@@ -21,11 +22,10 @@ import org.apache.log4j.Logger;
  */
 public class TimeAdjustment
 {
-	private static final Logger logger = Logger.getLogger(TimeAdjustment.class);
+	private static final Logger logger = LoggerFactory.getLogger(TimeAdjustment.class);
 	private static final Random rand = new Random();
 	private static final Pattern TIME_AND_FREQUENCY = Pattern.compile("(\\d+):(\\d\\d), (\\d+)");
-	private static final ArrayList<String> TIME_SAMPLE = new ArrayList<String>(Arrays.asList("0:15, 10", "0:30, 20", "0:45, 5", "1:00, 30", "1:30, 10",
-	"2:00, 30", "4:30, 10", "10:00, 1"));
+	private static final ArrayList<String> TIME_SAMPLE = new ArrayList<String>(Arrays.asList("0:15, 10", "0:30, 20", "0:45, 5", "1:00, 30", "1:30, 10", "2:00, 30", "4:30, 10", "10:00, 1"));
 
 	TA_Sample best;
 
@@ -75,10 +75,10 @@ public class TimeAdjustment
 
 	/**
 	 * @param deviationFromOriginal the new time must be approx. +/- this % of the original
-	 * @param mutationRate what is the probability of picking a new time for the given min_sec_freq_origSecs position
-	 * @param branchSize how many children do we create from each parent
-	 * @param maxChildren only keep the best children to return; this is the max count
-	 * @param parents generate new children from each of these
+	 * @param mutationRate          what is the probability of picking a new time for the given min_sec_freq_origSecs position
+	 * @param branchSize            how many children do we create from each parent
+	 * @param maxChildren           only keep the best children to return; this is the max count
+	 * @param parents               generate new children from each of these
 	 * @return a list of the best examples from this epoch
 	 */
 	private TreeSet<TA_Sample> epoch(double deviationFromOriginal, double mutationRate, int branchSize, int maxChildren, TreeSet<TA_Sample> parents)

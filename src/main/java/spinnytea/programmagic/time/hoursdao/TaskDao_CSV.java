@@ -12,12 +12,9 @@ import java.util.Scanner;
 
 import lombok.Cleanup;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RequiredArgsConstructor
 public class TaskDao_CSV
 extends TaskDao
 {
@@ -29,6 +26,12 @@ extends TaskDao
 	public TaskDao_CSV()
 	{
 		this(DEFAULT_RESOURCE_FOLDER);
+	}
+
+	public TaskDao_CSV(File resourceFolder)
+	{
+		this.resourceFolder = resourceFolder;
+		resourceFolder.mkdirs();
 	}
 
 	private File getFile(Day day)

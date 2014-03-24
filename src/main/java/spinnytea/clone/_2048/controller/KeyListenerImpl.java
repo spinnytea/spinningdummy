@@ -1,11 +1,12 @@
 package spinnytea.clone._2048.controller;
 
+import spinnytea.clone._2048._2048;
+import spinnytea.clone._2048.view.Repaintable;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import lombok.RequiredArgsConstructor;
-import spinnytea.clone._2048._2048;
-import spinnytea.clone._2048.view.Repaintable;
 
 @RequiredArgsConstructor
 public class KeyListenerImpl

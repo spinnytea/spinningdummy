@@ -61,7 +61,6 @@ implements ActionListener
 		new int[] { x1, x2, x2, -s2h, 0, s2h, x3, x3, s2h, 0, -s2h, x2, x2, x1 }, // xs
 		new int[] { y1, y1, y2, y2, s2h, y2, y2, -y2, -y2, -s2h, -y2, -y2, -y1, -y1 }, // ys
 		14);
-
 	}
 
 	public void pause(boolean pause)
@@ -175,14 +174,12 @@ implements ActionListener
 		if(options.showHand_Hour && options.colorHand_Hour != null)
 		{
 			// hour hand affected my hours and minutes
-			drawHand(g, hourHand, options.colorHand_Hour, Math.PI * 2.0 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0)
-			/ options.hoursOnFace - Math.PI / 2);
+			drawHand(g, hourHand, options.colorHand_Hour, Math.PI * 2.0 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace - Math.PI / 2);
 		}
 		if(options.showHand_MinuteAnalog && options.colorHand_MinuteAnalog != null)
 		{
 			// minute hand affected by minutes and seconds
-			drawHand(g, minuteHand, options.colorHand_MinuteAnalog, Math.PI * 2.0 * (cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND) / 60.0) / 60.0
-			- Math.PI / 2);
+			drawHand(g, minuteHand, options.colorHand_MinuteAnalog, Math.PI * 2.0 * (cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND) / 60.0) / 60.0 - Math.PI / 2);
 		}
 		if(options.showHand_MinuteDigit && options.colorHand_MinuteDigit != null)
 		{

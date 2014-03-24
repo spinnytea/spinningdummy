@@ -23,9 +23,8 @@ import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
 
 /**
- * <p>
  * This class name is unconventional. I know. It doesn't expalin what is going on. But it contains something that I feel is exceptional and unique.
- * <p>
+ * <p/>
  * But seriosuly. It's just a clock. It's a 24-hour clock with day on the top and night on the bottom. That's about it.
  */
 public class TwentyFour
@@ -233,8 +232,7 @@ implements ActionListener
 		// hour hand affected my hours and minutes
 		drawHand(g, hourHand, Math.PI * 2.0 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0) / 24 + Math.PI / 2);
 		// minute hand affected by minutes and seconds and milliseconds (although, there probably aren't enough pixels for the milliseconds to matter)
-		drawHand(g, minuteHand, Math.PI * 2.0 * (cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND) / 60.0 + cal.get(Calendar.MILLISECOND) / 60000.0) / 60.0
-		- Math.PI / 2);
+		drawHand(g, minuteHand, Math.PI * 2.0 * (cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND) / 60.0 + cal.get(Calendar.MILLISECOND) / 60000.0) / 60.0 - Math.PI / 2);
 		if(drawSeconds)
 			// second hand affected by seconds and milliseconds (although, there probably aren't enough pixels for the milliseconds to matter)
 			drawHand(g, secondHand, Math.PI * 2.0 * (cal.get(Calendar.SECOND) + cal.get(Calendar.MILLISECOND) / 1000.0) / 60.0 - Math.PI / 2);

@@ -2,6 +2,9 @@ package spinnytea.tools;
 
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Counts through a character based generated id.<br>
  * It acts much the same way as a numbering system (say decimal or hexadecimal), but, instead of just using numerals, it uses alpha characters, too.<br>
@@ -12,6 +15,8 @@ import java.util.Arrays;
  */
 public class ID
 {
+	private static final Logger logger = LoggerFactory.getLogger(ID.class);
+
 	/**
 	 * <p/>
 	 * does not include underscores or periods (this way, they can be used for other things such as delimiters)
@@ -38,7 +43,7 @@ public class ID
 	 * <p/>
 	 * If owner is null, then will start from one. If owner does not yet have an ID, then will also start from one. Otherwise, it will load the value from the
 	 * owner.
-	 * 
+	 *
 	 * @param owner used with "saveConfig" ~ if you don't wish to use Config, then may be <code>null</code>
 	 */
 	public ID()

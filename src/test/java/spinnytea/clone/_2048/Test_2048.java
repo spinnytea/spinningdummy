@@ -1,14 +1,14 @@
 package spinnytea.clone._2048;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
 import lombok.AllArgsConstructor;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 
 // TEST moveRight
 // TEST moveUp
@@ -39,7 +39,6 @@ public class Test_2048
 			game.moveLeft(false);
 			equalsHorizontal(game.getBoard(), row.result);
 		}
-
 	}
 
 	private void copyHorizontal(int[][] board, int[] row)
@@ -174,17 +173,17 @@ public class Test_2048
 
 	// these are coded while imagining a moveLeft
 	private static final Row[] testCases = { //
-	new Row(new int[] { 2, 0, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
-	new Row(new int[] { 0, 2, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
-	new Row(new int[] { 0, 0, 0, 2 }, new int[] { 2, 0, 0, 0 }), //
-	new Row(new int[] { 0, 2, 4, 0 }, new int[] { 2, 4, 0, 0 }), //
-	new Row(new int[] { 2, 0, 0, 4 }, new int[] { 2, 4, 0, 0 }), //
-	new Row(new int[] { 2, 2, 0, 0 }, new int[] { 4, 0, 0, 0 }), //
-	new Row(new int[] { 0, 2, 2, 0 }, new int[] { 4, 0, 0, 0 }), //
-	new Row(new int[] { 4, 2, 2, 4 }, new int[] { 4, 4, 4, 0 }), //
-	new Row(new int[] { 4, 4, 4, 0 }, new int[] { 8, 4, 0, 0 }), //
-	new Row(new int[] { 2, 2, 4, 4 }, new int[] { 4, 8, 0, 0 }), //
-	new Row(new int[] { 2, 2, 2, 2 }, new int[] { 4, 4, 0, 0 }), //
-	new Row(new int[] { 4, 4, 0, 0 }, new int[] { 8, 0, 0, 0 }), //
+			new Row(new int[] { 2, 0, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
+			new Row(new int[] { 0, 2, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
+			new Row(new int[] { 0, 0, 0, 2 }, new int[] { 2, 0, 0, 0 }), //
+			new Row(new int[] { 0, 2, 4, 0 }, new int[] { 2, 4, 0, 0 }), //
+			new Row(new int[] { 2, 0, 0, 4 }, new int[] { 2, 4, 0, 0 }), //
+			new Row(new int[] { 2, 2, 0, 0 }, new int[] { 4, 0, 0, 0 }), //
+			new Row(new int[] { 0, 2, 2, 0 }, new int[] { 4, 0, 0, 0 }), //
+			new Row(new int[] { 4, 2, 2, 4 }, new int[] { 4, 4, 4, 0 }), //
+			new Row(new int[] { 4, 4, 4, 0 }, new int[] { 8, 4, 0, 0 }), //
+			new Row(new int[] { 2, 2, 4, 4 }, new int[] { 4, 8, 0, 0 }), //
+			new Row(new int[] { 2, 2, 2, 2 }, new int[] { 4, 4, 0, 0 }), //
+			new Row(new int[] { 4, 4, 0, 0 }, new int[] { 8, 0, 0, 0 }), //
 	};
 }

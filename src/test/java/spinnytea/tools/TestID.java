@@ -1,12 +1,12 @@
 package spinnytea.tools;
 
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
+import java.util.Arrays;
+
+import org.junit.Test;
 
 public class TestID
 {

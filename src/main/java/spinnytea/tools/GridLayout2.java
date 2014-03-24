@@ -32,7 +32,7 @@ extends GridLayout
 	public Dimension preferredLayoutSize(Container parent)
 	{
 		// System.err.println("preferredLayoutSize");
-		synchronized (parent.getTreeLock())
+		synchronized(parent.getTreeLock())
 		{
 			Insets insets = parent.getInsets();
 			int ncomponents = parent.getComponentCount();
@@ -81,7 +81,7 @@ extends GridLayout
 	public Dimension minimumLayoutSize(Container parent)
 	{
 //		System.err.println("minimumLayoutSize");
-		synchronized (parent.getTreeLock())
+		synchronized(parent.getTreeLock())
 		{
 			Insets insets = parent.getInsets();
 			int ncomponents = parent.getComponentCount();
@@ -130,7 +130,7 @@ extends GridLayout
 	public void layoutContainer(Container parent)
 	{
 		// System.err.println("layoutContainer");
-		synchronized (parent.getTreeLock())
+		synchronized(parent.getTreeLock())
 		{
 			Insets insets = parent.getInsets();
 			int ncomponents = parent.getComponentCount();

@@ -99,7 +99,7 @@ implements Set<T>
 
 	/**
 	 * Get the total of all the objects in the list
-	 * <p>
+	 * <p/>
 	 * if A was added 2 times, and B was added 3 times, then getTotal will return 5.
 	 */
 	public long getTotal()
@@ -109,9 +109,9 @@ implements Set<T>
 
 	/**
 	 * Get the maximum count in the list
-	 * <p>
+	 * <p/>
 	 * if A was added 2 times, and B was added 3 times, then getTotal will return 3.
-	 * <p>
+	 * <p/>
 	 * Note: This may need to be recalculated if the object with the highest count has been removed
 	 */
 	public long getMaxCount()

@@ -1,5 +1,7 @@
 package spinnytea.clone._2048.view;
 
+import spinnytea.clone._2048._2048;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -7,8 +9,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
-
-import spinnytea.clone._2048._2048;
 
 /** draw the game with awt */
 public class AwtImpl
