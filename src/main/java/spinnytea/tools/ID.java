@@ -2,9 +2,6 @@ package spinnytea.tools;
 
 import java.util.Arrays;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Counts through a character based generated id.<br>
  * It acts much the same way as a numbering system (say decimal or hexadecimal), but, instead of just using numerals, it uses alpha characters, too.<br>
@@ -15,8 +12,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ID
 {
-	private static final Logger logger = LoggerFactory.getLogger(ID.class);
-
 	/**
 	 * <p/>
 	 * does not include underscores or periods (this way, they can be used for other things such as delimiters)
