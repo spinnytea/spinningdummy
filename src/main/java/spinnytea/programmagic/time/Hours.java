@@ -243,6 +243,7 @@ extends JPanel
 		};
 
 		Task prev = null;
+		Collections.sort(dates);
 		for(Task t : dates)
 		{
 			grid.add(new JTextField(t.getName())
