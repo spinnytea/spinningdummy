@@ -74,8 +74,20 @@ extends TaskDao
 	@SuppressWarnings("unchecked")
 	public List<Day> allDays()
 	{
+		logger.debug("all days");
 		@Cleanup
 		Session session = HibernateUtils.openSession();
 		return session.createCriteria(Day.class).list();
+	}
+
+	@Override
+	public boolean dayExists(Day day)
+	{
+		logger.debug("day exists: " + day);
+		@Cleanup
+		Session session = HibernateUtils.openSession();
+		return null != session.createCriteria(Day.class) //
+			.add(Restrictions.idEq(day.getKey())) //
+			.uniqueResult();
 	}
 }

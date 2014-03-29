@@ -163,8 +163,7 @@ extends JPanel
 	{
 		currentDay = day;
 
-		// FIXME dao.dayExists
-		if(!dao.loadDay(day).isEmpty())
+		if(dao.dayExists(day))
 			loadModel();
 		else
 		{

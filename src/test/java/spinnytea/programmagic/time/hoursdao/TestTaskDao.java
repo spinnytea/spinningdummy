@@ -1,6 +1,7 @@
 package spinnytea.programmagic.time.hoursdao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -70,7 +71,11 @@ public class TestTaskDao
 
 		// copy all of the data from the csv files to hibernate
 		for(Day day : csv.allDays())
+		{
 			hib.saveDay(day, csv.loadDay(day));
+			assertTrue(csv.dayExists(day));
+			assertTrue(hib.dayExists(day));
+		}
 
 		// verify that all the days from csv have been copied over
 		assertTrue(hib.allDays().containsAll(csv.allDays()));
@@ -86,12 +91,15 @@ public class TestTaskDao
 			assertEquals(csv_day, hib_day);
 		}
 
-		if(!csv.loadDay(dummyTestDay).isEmpty())
+		if(csv.dayExists(dummyTestDay))
 		{
 			logger.info("Deleting dummy test day");
 			csv.deleteDay(dummyTestDay);
 			hib.deleteDay(dummyTestDay);
 		}
+
+		assertFalse(csv.dayExists(dummyTestDay));
+		assertFalse(hib.dayExists(dummyTestDay));
 	}
 
 	@Test
@@ -119,17 +127,21 @@ public class TestTaskDao
 		// delete the records for the given day so we start with a clean slate
 		dao.deleteDay(day);
 		assertEquals(Collections.emptyList(), dao.loadDay(day));
+		assertFalse(dao.dayExists(day));
 
 		// save the elements for the day
 		dao.saveDay(day, tasks);
 		assertEquals(tasks, dao.loadDay(day));
+		assertTrue(dao.dayExists(day));
 
 		// if we do it again, we should still have the same records
 		dao.saveDay(day, tasks);
 		assertEquals(tasks, dao.loadDay(day));
+		assertTrue(dao.dayExists(day));
 
 		// clean up after the test
 		dao.deleteDay(day);
 		assertEquals(Collections.emptyList(), dao.loadDay(day));
+		assertFalse(dao.dayExists(day));
 	}
 }

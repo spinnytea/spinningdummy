@@ -21,6 +21,8 @@ public abstract class TaskDao
 
 	public abstract List<Day> allDays();
 
+	public abstract boolean dayExists(Day day);
+
 	/**
 	 * <ul>
 	 * <li>tasks must have at least two items</li>

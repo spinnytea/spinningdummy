@@ -131,6 +131,8 @@ extends TaskDao
 	@Override
 	public List<Day> allDays()
 	{
+		logger.debug("all days");
+
 		List<Day> days = new ArrayList<Day>();
 		for(File f : resourceFolder.listFiles())
 		{
@@ -146,5 +148,12 @@ extends TaskDao
 				}
 		}
 		return days;
+	}
+
+	@Override
+	public boolean dayExists(Day day)
+	{
+		logger.debug("day exists: " + day);
+		return getFile(day).exists();
 	}
 }
