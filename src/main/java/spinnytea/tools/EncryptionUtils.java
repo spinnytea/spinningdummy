@@ -23,7 +23,7 @@ public class EncryptionUtils
 	public static byte[] generateKey(String password)
 	throws Exception
 	{
-		byte[] keyStart = password.getBytes("UTF-8");
+		byte[] keyStart = password.getBytes("UTF-16");
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		sr.setSeed(keyStart);
@@ -32,7 +32,7 @@ public class EncryptionUtils
 		return skey.getEncoded();
 	}
 
-	/** when you want to encode a string, make sure you call <code>String.getBytes(Charset.forName("UTF-8"))</code> */
+	/** when you want to encode a string, make sure you call <code>String.getBytes(Charset.forName("UTF-16"))</code> */
 	public static byte[] encode(byte[] key, byte[] plaintext)
 	throws Exception
 	{
@@ -66,7 +66,7 @@ public class EncryptionUtils
 			bos = new BufferedOutputStream(new FileOutputStream(file));
 
 			byte[] yourKey = generateKey(password);
-			byte[] filesBytes = encode(yourKey, data.getBytes(Charset.forName("UTF-8")));
+			byte[] filesBytes = encode(yourKey, data.getBytes(Charset.forName("UTF-16")));
 
 			bos.write(filesBytes);
 
@@ -111,7 +111,7 @@ public class EncryptionUtils
 			byte[] yourKey = generateKey(password);
 			byte[] decodedData = decode(yourKey, data);
 
-			return new String(decodedData, Charset.forName("UTF-8"));
+			return new String(decodedData, Charset.forName("UTF-16"));
 		}
 		catch(Exception e)
 		{

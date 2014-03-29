@@ -5,8 +5,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 public class TestEncryption
@@ -32,6 +34,7 @@ public class TestEncryption
 
 	@Test
 	public void _file()
+	throws IOException
 	{
 		File file = new File("exports/test.enc");
 		try
@@ -40,7 +43,7 @@ public class TestEncryption
 			String data = "Hello World!";
 
 			EncryptionUtils.EncryptFile(file, password, data);
-			// TEST file contents
+			assertEquals("茄蒲꠩躭ꎷ羷蘓劼诺몰ᢓᄾ拁祌", FileUtils.readFileToString(file, "UTF-16"));
 			String decrypt = EncryptionUtils.DecryptFile(file, password);
 
 			assertEquals(data, decrypt);
