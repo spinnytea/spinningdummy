@@ -5,6 +5,7 @@ import static org.junit.Assert.assertArrayEquals;
 import spinnytea.programmagic.maze.algorithms.DepthFirstMaze;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -22,6 +23,15 @@ public class TestAlgorithms
 		Cell2D[][] cells = new DepthFirstMaze(2, 2).generateMaze(1L);
 		Cell2D[][] expected = createCells(2, 2);
 		setRow(expected, 0, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
+		setRow(expected, 1, Cell2D.Direction.EAST, null);
+		assertArrayEquals(cells, expected);
+
+		// this is the first seed that produces a different maze
+		// this is a super simple board, after-all
+		//noinspection MagicNumber
+		cells = new DepthFirstMaze(2, 2).generateMaze(4096L);
+		expected = createCells(2, 2);
+		setRow(expected, 0, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
 		setRow(expected, 1, Cell2D.Direction.EAST, null);
 		assertArrayEquals(cells, expected);
 	}
@@ -52,6 +62,7 @@ public class TestAlgorithms
 	}
 
 	/** for each cell, in the row, attach it to an adjacent cell */
+	@SuppressWarnings("FeatureEnvy")
 	private void setRow(Cell2D[][] cells, int h, Cell2D.Direction... row)
 	{
 		for(int w = 0; w < row.length; w++)
@@ -81,13 +92,15 @@ public class TestAlgorithms
 	{
 		JFrame frame = new JFrame("Maze2D");
 		frame.setContentPane(new Maze2D(cells));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
 		try
 		{
+			// sleep for a little while to allow us to look at the maze
+			//noinspection MagicNumber
 			Thread.sleep(10000L);
 		}
 		catch(InterruptedException e)
