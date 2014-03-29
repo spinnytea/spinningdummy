@@ -60,41 +60,41 @@ implements MazeAlgorithm
 
 		// a list of available walls to pick from
 		// Tuple<Current Room, Next Room, Direction from current to next>
-		ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>> walls = new ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>>();
+		ArrayList<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
 
 		// add the first edges to the list
 		// randomize order
 		if(startX > 0)
-			walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY][startX - 1], Cell2D.Direction.WEST));
+			walls.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY][startX - 1], Cell2D.Direction.WEST));
 		if(startX < width - 1)
-			walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY][startX + 1], Cell2D.Direction.EAST));
+			walls.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY][startX + 1], Cell2D.Direction.EAST));
 		if(startY > 0)
-			walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY - 1][startX], Cell2D.Direction.NORTH));
+			walls.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY - 1][startX], Cell2D.Direction.NORTH));
 		if(startY < height - 1)
-			walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY + 1][startX], Cell2D.Direction.SOUTH));
+			walls.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY + 1][startX], Cell2D.Direction.SOUTH));
 
 		while(!walls.isEmpty())
 		{
 			// pick a random wall
-			Tuple3<Cell2D, Cell2D, Cell2D.Direction> wall = walls.remove(random.nextInt(walls.size()));
+			MazeAlgorithmFrontier wall = walls.remove(random.nextInt(walls.size()));
 
 			// if the next wall isn't in the maze,
 			// - then add it to the maze
 			// - and add it's neighbors
-			if(!wall._2().inTheMaze())
+			if(!wall.getTo().inTheMaze())
 			{
-				Cell2D nextRoom = wall._2();
-				wall._1().setRoom(wall._3(), nextRoom);
+				Cell2D nextRoom = wall.getTo();
+				wall.getFrom().setRoom(wall.getDirection(), nextRoom);
 
 				// add the walls to the list
 				if(nextRoom.x > 0)
-					walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x - 1], Cell2D.Direction.WEST));
+					walls.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x - 1], Cell2D.Direction.WEST));
 				if(nextRoom.x < width - 1)
-					walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x + 1], Cell2D.Direction.EAST));
+					walls.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x + 1], Cell2D.Direction.EAST));
 				if(nextRoom.y > 0)
-					walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y - 1][nextRoom.x], Cell2D.Direction.NORTH));
+					walls.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y - 1][nextRoom.x], Cell2D.Direction.NORTH));
 				if(nextRoom.y < height - 1)
-					walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y + 1][nextRoom.x], Cell2D.Direction.SOUTH));
+					walls.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y + 1][nextRoom.x], Cell2D.Direction.SOUTH));
 			}
 		}
 

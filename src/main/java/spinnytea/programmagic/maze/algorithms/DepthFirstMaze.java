@@ -74,43 +74,43 @@ implements MazeAlgorithm
 
 		// a stack structure to hold which walls do add to traverse next
 		// Tuple<Current Room, Next Room, Direction from current to next>
-		LinkedList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>> walls = new LinkedList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>>();
+		LinkedList<MazeAlgorithmFrontier> walls = new LinkedList<MazeAlgorithmFrontier>();
 		// used for randomizing the order of walls
-		ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>> temp = new ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>>();
+		ArrayList<MazeAlgorithmFrontier> temp = new ArrayList<MazeAlgorithmFrontier>();
 
 		// add the first edges to the stack
 		// randomize order
 		if(startX > 0)
-			temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY][startX - 1], Cell2D.Direction.WEST));
+			temp.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY][startX - 1], Cell2D.Direction.WEST));
 		if(startX < width - 1)
-			temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY][startX + 1], Cell2D.Direction.EAST));
+			temp.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY][startX + 1], Cell2D.Direction.EAST));
 		if(startY > 0)
-			temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY - 1][startX], Cell2D.Direction.NORTH));
+			temp.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY - 1][startX], Cell2D.Direction.NORTH));
 		if(startY < height - 1)
-			temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[startY][startX], maze[startY + 1][startX], Cell2D.Direction.SOUTH));
+			temp.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY + 1][startX], Cell2D.Direction.SOUTH));
 		randomPush(walls, temp);
 
 		while(!walls.isEmpty())
 		{
-			Tuple3<Cell2D, Cell2D, Cell2D.Direction> wall = walls.pop();
+			MazeAlgorithmFrontier wall = walls.pop();
 
 			// if the next wall isn't in the maze,
 			// - then add it to the maze
 			// - and add it's neighbors
-			if(!wall._2().inTheMaze())
+			if(!wall.getTo().inTheMaze())
 			{
-				Cell2D nextRoom = wall._2();
-				wall._1().setRoom(wall._3(), nextRoom);
+				Cell2D nextRoom = wall.getTo();
+				wall.getFrom().setRoom(wall.getDirection(), nextRoom);
 
 				// randomize order
 				if(nextRoom.x > 0)
-					temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x - 1], Cell2D.Direction.WEST));
+					temp.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x - 1], Cell2D.Direction.WEST));
 				if(nextRoom.x < width - 1)
-					temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x + 1], Cell2D.Direction.EAST));
+					temp.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y][nextRoom.x + 1], Cell2D.Direction.EAST));
 				if(nextRoom.y > 0)
-					temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y - 1][nextRoom.x], Cell2D.Direction.NORTH));
+					temp.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y - 1][nextRoom.x], Cell2D.Direction.NORTH));
 				if(nextRoom.y < height - 1)
-					temp.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y + 1][nextRoom.x], Cell2D.Direction.SOUTH));
+					temp.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y + 1][nextRoom.x], Cell2D.Direction.SOUTH));
 				randomPush(walls, temp);
 			}
 		}
@@ -119,7 +119,7 @@ implements MazeAlgorithm
 		return maze;
 	}
 
-	private void randomPush(LinkedList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>> walls, ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>> temp)
+	private void randomPush(LinkedList<MazeAlgorithmFrontier> walls, ArrayList<MazeAlgorithmFrontier> temp)
 	{
 		while(!temp.isEmpty())
 			walls.push(temp.remove(random.nextInt(temp.size())));

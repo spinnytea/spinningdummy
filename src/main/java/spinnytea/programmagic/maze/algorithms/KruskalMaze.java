@@ -62,29 +62,29 @@ implements MazeAlgorithm
 		// a list of all the available walls
 		// contains the two rooms, and a direction for ease
 		// TODO is there a better structure for removing a random item? ~ is there a method, better than n^2 of putting a list of items in random order
-		ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>> walls = new ArrayList<Tuple3<Cell2D, Cell2D, Cell2D.Direction>>();
+		ArrayList<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
 		// add all the x-walls
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width - 1; x++)
-				walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[y][x], maze[y][x + 1], Cell2D.Direction.EAST));
+				walls.add(new MazeAlgorithmFrontier(maze[y][x], maze[y][x + 1], Cell2D.Direction.EAST));
 		// add all the y-walls
 		for(int y = 0; y < height - 1; y++)
 			for(int x = 0; x < width; x++)
-				walls.add(new Tuple3<Cell2D, Cell2D, Cell2D.Direction>(maze[y][x], maze[y + 1][x], Cell2D.Direction.SOUTH));
+				walls.add(new MazeAlgorithmFrontier(maze[y][x], maze[y + 1][x], Cell2D.Direction.SOUTH));
 
 		// pick random walls from the list, knock them down if they belong to two different rooms
 		while(!walls.isEmpty())
 		{
-			Tuple3<Cell2D, Cell2D, Cell2D.Direction> wall = walls.remove(random.nextInt(walls.size()));
+			MazeAlgorithmFrontier wall = walls.remove(random.nextInt(walls.size()));
 
-			int set1 = sets.find(wall._1().y * width + wall._1().x);
-			int set2 = sets.find(wall._2().y * width + wall._2().x);
+			int set1 = sets.find(wall.getFrom().y * width + wall.getFrom().x);
+			int set2 = sets.find(wall.getTo().y * width + wall.getTo().x);
 
 			// if they belong to different sets
 			// then add the wall to the maze
 			if(set1 != set2)
 			{
-				wall._1().setRoom(wall._3(), wall._2());
+				wall.getFrom().setRoom(wall.getDirection(), wall.getTo());
 				sets.union(set1, set2);
 			}
 		}
