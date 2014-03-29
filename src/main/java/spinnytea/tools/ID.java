@@ -6,9 +6,6 @@ import java.util.Arrays;
  * Counts through a character based generated id.<br>
  * It acts much the same way as a numbering system (say decimal or hexadecimal), but, instead of just using numerals, it uses alpha characters, too.<br>
  * Underscores are not used, so you can use that character for other reasons (such as, separating types with the same id)
- * <p/>
- * This classes requires a "Config" to save the "nextID" that will be generated (so it persists between runs). This uses the "nextID" variable name for the
- * given owner.
  */
 public class ID
 {
@@ -20,7 +17,7 @@ public class ID
 	 * <p/>
 	 * in sorted order so we can use {@link java.util.Arrays#binarySearch(char[], char)}
 	 */
-	static final char[] tokens = {
+	static final char[] tokens = { //
 	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', // numbers
 //		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', // upper case letters
 	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', // lower case letters
@@ -34,23 +31,12 @@ public class ID
 
 	private StringBuffer nextID;
 
-	/**
-	 * <p/>
-	 * If owner is null, then will start from one. If owner does not yet have an ID, then will also start from one. Otherwise, it will load the value from the
-	 * owner.
-	 *
-	 * @param owner used with "saveConfig" ~ if you don't wish to use Config, then may be <code>null</code>
-	 */
+	/** This will start from one (not zero). */
 	public ID()
 	{
 		nextID = new StringBuffer("" + tokens[1]);
 	}
 
-	/**
-	 * This is not synchronized because it is not up to this class to manage that. Different applications require different synchronization.
-	 * <p/>
-	 * If you need this value to be atomic, then you need to put it in a synchronized block
-	 */
 	public synchronized String nextID()
 	{
 		String ret = nextID.toString();
@@ -68,27 +54,35 @@ public class ID
 	 */
 	private void increment(int index)
 	{
-		// if any other negative value is supplied, this will throw a StringArrayIndexOutOfBoundsException
-		if(index == -1)
+		boolean keepGoing = true;
+		while(keepGoing)
 		{
-			nextID.insert(0, tokens[1]);
-		}
-		else
-		{
-			// get the next token index
-			int idx = Arrays.binarySearch(tokens, nextID.charAt(index)) + 1;
-
-			// if we can't increase this anymore, then increase the next value
-			if(idx == tokens.length)
+			// if any other negative value is supplied, this will throw a StringArrayIndexOutOfBoundsException
+			if(index == -1)
 			{
-				// increment the value before recursion
-				// when we roll over (99 -> 100), our index will be off by one
-				nextID.setCharAt(index, tokens[0]);
-				increment(index - 1); // XXX do a loop instead of recursion
+				nextID.insert(0, tokens[1]);
+				keepGoing = false;
 			}
 			else
 			{
-				nextID.setCharAt(index, tokens[idx]);
+				// get the next token index
+				int idx = Arrays.binarySearch(tokens, nextID.charAt(index)) + 1;
+
+				// if we can't increase this anymore, then increase the next value
+				if(idx == tokens.length)
+				{
+					// increment the value before recursion
+					// when we roll over (99 -> 100), our index will be off by one
+					nextID.setCharAt(index, tokens[0]);
+//					increment(index - 1); // _XXX do a loop instead of recursion
+//					 - I just wrapped the function in while(keepGoing)
+					index--;
+				}
+				else
+				{
+					nextID.setCharAt(index, tokens[idx]);
+					keepGoing = false;
+				}
 			}
 		}
 	}
