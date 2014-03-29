@@ -22,8 +22,6 @@ import org.slf4j.LoggerFactory;
  * <li>Join the sets of the formerly divided cells.</li>
  * </ol>
  * </ol> </ol>
- *
- * @author hendersontja
  */
 public class KruskalMaze
 implements MazeAlgorithm

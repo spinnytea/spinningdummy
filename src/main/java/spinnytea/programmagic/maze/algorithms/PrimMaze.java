@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
  * <p/>
  * This is very similar to a {@link DepthFirstMaze}, but instead of keeping a stack for the "depth first", just picks a random wall from the
  * list of available walls.
- *
- * @author hendersontja
  */
 public class PrimMaze
 implements MazeAlgorithm

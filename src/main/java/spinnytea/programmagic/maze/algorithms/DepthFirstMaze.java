@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
  * </ol>
  * <p/>
  * <b>TODO</b> See about generating the map from more than one point<br>
- *
- * @author hendersontja
  */
 public class DepthFirstMaze
 implements MazeAlgorithm

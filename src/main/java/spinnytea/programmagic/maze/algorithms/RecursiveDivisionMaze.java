@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
  * For example, in a rectangular maze, build at random points two walls that are perpendicular to each other. These two walls divide the large chamber into four
  * smaller chambers separated by four walls. Choose three of the four walls at random, and open a one cell-wide hole at a random point in each of the three.
  * Continue in this manner recursively, until every chamber has a width of one cell in either of the two directions.
- *
- * @author hendersontja
  */
 public class RecursiveDivisionMaze
 implements MazeAlgorithm

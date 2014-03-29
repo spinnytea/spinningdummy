@@ -7,8 +7,6 @@ package spinnytea.programmagic.maze;
  * This contains a door in all four directions in the same way a doubly-linked-list has a link in both directions.
  * <p/>
  * <b>XXX</b> This certainly isn't the best way to store all the information, but, I need to start somewhere. I'll improve after I get something working.<br>
- *
- * @author hendersontja
  */
 public class Cell2D
 {
@@ -128,5 +126,32 @@ public class Cell2D
 		default:
 			throw new UnsupportedOperationException("How did that direction get in there? (" + dir + ")");
 		}
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o)
+			return true;
+		if(o == null || getClass() != o.getClass())
+			return false;
+
+		Cell2D cell2D = (Cell2D) o;
+
+		if(x != cell2D.x)
+			return false;
+		if(y != cell2D.y)
+			return false;
+
+		if((east == null) != (cell2D.east == null))
+			return false;
+		if((north == null) != (cell2D.north == null))
+			return false;
+		if((south == null) != (cell2D.south == null))
+			return false;
+		if((west == null) != (cell2D.west == null))
+			return false;
+
+		return true;
 	}
 }
