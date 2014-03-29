@@ -8,6 +8,7 @@ import static spinnytea.programmagic.maze.Cell2D.Direction.WEST;
 
 import spinnytea.programmagic.maze.algorithms.DepthFirstMaze;
 import spinnytea.programmagic.maze.algorithms.KruskalMaze;
+import spinnytea.programmagic.maze.algorithms.PrimMaze;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -73,6 +74,8 @@ public class TestAlgorithms
 		assertArrayEquals(cells, expected);
 	}
 
+	//
+
 	@Test
 	public void kruskal_Simple()
 	{
@@ -105,6 +108,60 @@ public class TestAlgorithms
 		assertArrayEquals(expected, cells);
 	}
 
+	//
+
+	@Test
+	public void prim_Simple()
+	{
+		Cell2D[][] cells = new PrimMaze(2, 2).generateMaze(1L);
+		Cell2D[][] expected = createCells(2, 2);
+		setRow(expected, 0, SOUTH, WEST);
+		setRow(expected, 1, EAST, null);
+		assertArrayEquals(cells, expected);
+
+		cells = new PrimMaze(2, 2).generateMaze(2L);
+		expected = createCells(2, 2);
+		setRow(expected, 0, EAST, SOUTH);
+		setRow(expected, 1, NORTH, null);
+		assertArrayEquals(cells, expected);
+	}
+
+	@Test
+	public void prim_Complex()
+	{
+		Cell2D[][] cells = new PrimMaze(6, 6).generateMaze(1L);
+
+		Cell2D[][] expected = createCells(6, 6);
+		setRow(expected, 0, EAST, EAST, SOUTH, WEST, WEST, WEST);
+		setRow(expected, 1, NORTH, EAST, SOUTH, NORTH, WEST, WEST);
+		setRow(expected, 2, NORTH, WEST, SOUTH, WEST, WEST, NORTH);
+		setRow(expected, 3, NORTH, SOUTH, WEST, EAST, NORTH, WEST);
+		setRow(expected, 4, NORTH, SOUTH, WEST, SOUTH, NORTH, WEST);
+		setRow(expected, 5, EAST, EAST, EAST, EAST, EAST, null);
+
+		assertArrayEquals(expected, cells);
+	}
+
+	@Test
+	public void prim_Complex2()
+	{
+		Cell2D[][] cells = new PrimMaze(6, 6, 3, 3).generateMaze(1L);
+
+		Cell2D[][] expected = createCells(6, 6);
+		setRow(expected, 0, SOUTH, SOUTH, SOUTH, EAST, SOUTH, SOUTH);
+		setRow(expected, 1, EAST, SOUTH, EAST, NORTH, SOUTH, SOUTH);
+		setRow(expected, 2, NORTH, EAST, SOUTH, SOUTH, WEST, WEST);
+		setRow(expected, 3, EAST, EAST, EAST, null, WEST, WEST);
+		setRow(expected, 4, EAST, NORTH, NORTH, NORTH, WEST, WEST);
+		setRow(expected, 5, EAST, EAST, NORTH, NORTH, NORTH, NORTH);
+
+		assertArrayEquals(expected, cells);
+	}
+
+	//
+	// helper methods
+	//
+
 	private Cell2D[][] createCells(int width, int height)
 	{
 		Cell2D[][] ret = new Cell2D[height][width];
@@ -115,7 +172,6 @@ public class TestAlgorithms
 	}
 
 	/** for each cell, in the row, attach it to an adjacent cell */
-	@SuppressWarnings("FeatureEnvy")
 	private void setRow(Cell2D[][] cells, int h, Cell2D.Direction... row)
 	{
 		for(int w = 0; w < row.length; w++)
