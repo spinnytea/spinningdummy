@@ -1,8 +1,13 @@
 package spinnytea.programmagic.maze;
 
 import static org.junit.Assert.assertArrayEquals;
+import static spinnytea.programmagic.maze.Cell2D.Direction.EAST;
+import static spinnytea.programmagic.maze.Cell2D.Direction.NORTH;
+import static spinnytea.programmagic.maze.Cell2D.Direction.SOUTH;
+import static spinnytea.programmagic.maze.Cell2D.Direction.WEST;
 
 import spinnytea.programmagic.maze.algorithms.DepthFirstMaze;
+import spinnytea.programmagic.maze.algorithms.KruskalMaze;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -22,8 +27,8 @@ public class TestAlgorithms
 		// small board for initial test case
 		Cell2D[][] cells = new DepthFirstMaze(2, 2).generateMaze(1L);
 		Cell2D[][] expected = createCells(2, 2);
-		setRow(expected, 0, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
-		setRow(expected, 1, Cell2D.Direction.EAST, null);
+		setRow(expected, 0, EAST, SOUTH);
+		setRow(expected, 1, EAST, null);
 		assertArrayEquals(cells, expected);
 
 		// this is the first seed that produces a different maze
@@ -31,8 +36,8 @@ public class TestAlgorithms
 		//noinspection MagicNumber
 		cells = new DepthFirstMaze(2, 2).generateMaze(4096L);
 		expected = createCells(2, 2);
-		setRow(expected, 0, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
-		setRow(expected, 1, Cell2D.Direction.EAST, null);
+		setRow(expected, 0, SOUTH, SOUTH);
+		setRow(expected, 1, EAST, null);
 		assertArrayEquals(cells, expected);
 	}
 
@@ -41,15 +46,48 @@ public class TestAlgorithms
 	{
 		// small board for initial test case
 		Cell2D[][] cells = new DepthFirstMaze(6, 6).generateMaze(1L);
+
 		Cell2D[][] expected = createCells(6, 6);
-		setRow(expected, 0, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.EAST, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
-		setRow(expected, 1, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
-		setRow(expected, 2, Cell2D.Direction.SOUTH, Cell2D.Direction.WEST, Cell2D.Direction.SOUTH, Cell2D.Direction.NORTH, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
-		setRow(expected, 3, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.NORTH, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
-		setRow(expected, 4, Cell2D.Direction.NORTH, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
-		setRow(expected, 5, Cell2D.Direction.NORTH, Cell2D.Direction.WEST, Cell2D.Direction.EAST, Cell2D.Direction.NORTH, Cell2D.Direction.EAST, null);
+		setRow(expected, 0, EAST, SOUTH, EAST, EAST, EAST, SOUTH);
+		setRow(expected, 1, SOUTH, EAST, SOUTH, EAST, EAST, SOUTH);
+		setRow(expected, 2, SOUTH, WEST, SOUTH, NORTH, SOUTH, SOUTH);
+		setRow(expected, 3, EAST, SOUTH, EAST, NORTH, SOUTH, SOUTH);
+		setRow(expected, 4, NORTH, EAST, SOUTH, EAST, SOUTH, SOUTH);
+		setRow(expected, 5, NORTH, WEST, EAST, NORTH, EAST, null);
 
 		assertArrayEquals(cells, expected);
+	}
+
+	@Test
+	public void kruskal_Simple()
+	{
+		Cell2D[][] cells = new KruskalMaze(2, 2).generateMaze(1L);
+		Cell2D[][] expected = createCells(2, 2);
+		setRow(expected, 0, SOUTH, WEST);
+		setRow(expected, 1, EAST, null);
+		assertArrayEquals(cells, expected);
+
+		cells = new KruskalMaze(2, 2).generateMaze(2L);
+		expected = createCells(2, 2);
+		setRow(expected, 0, EAST, SOUTH);
+		setRow(expected, 1, NORTH, null);
+		assertArrayEquals(cells, expected);
+	}
+
+	@Test
+	public void kruskal_Complex()
+	{
+		Cell2D[][] cells = new KruskalMaze(6, 6).generateMaze(1L);
+
+		Cell2D[][] expected = createCells(6, 6);
+		setRow(expected, 0, SOUTH, WEST, WEST, SOUTH, WEST, WEST);
+		setRow(expected, 1, SOUTH, EAST, NORTH, WEST, WEST, SOUTH);
+		setRow(expected, 2, EAST, SOUTH, NORTH, SOUTH, EAST, SOUTH);
+		setRow(expected, 3, SOUTH, EAST, SOUTH, WEST, EAST, SOUTH);
+		setRow(expected, 4, SOUTH, SOUTH, WEST, WEST, WEST, WEST);
+		setRow(expected, 5, EAST, EAST, EAST, EAST, EAST, null);
+
+		assertArrayEquals(expected, cells);
 	}
 
 	private Cell2D[][] createCells(int width, int height)
@@ -71,16 +109,16 @@ public class TestAlgorithms
 				switch(row[w])
 				{
 				case EAST:
-					cells[h][w].setRoom(Cell2D.Direction.EAST, cells[h][w + 1]);
+					cells[h][w].setRoom(EAST, cells[h][w + 1]);
 					break;
 				case WEST:
-					cells[h][w].setRoom(Cell2D.Direction.WEST, cells[h][w - 1]);
+					cells[h][w].setRoom(WEST, cells[h][w - 1]);
 					break;
 				case NORTH:
-					cells[h][w].setRoom(Cell2D.Direction.NORTH, cells[h - 1][w]);
+					cells[h][w].setRoom(NORTH, cells[h - 1][w]);
 					break;
 				case SOUTH:
-					cells[h][w].setRoom(Cell2D.Direction.SOUTH, cells[h + 1][w]);
+					cells[h][w].setRoom(SOUTH, cells[h + 1][w]);
 					break;
 				}
 		}
