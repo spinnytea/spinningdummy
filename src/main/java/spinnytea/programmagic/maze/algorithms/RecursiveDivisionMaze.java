@@ -58,6 +58,7 @@ implements MazeAlgorithm
 	}
 
 	@Override
+	@SuppressWarnings("FeatureEnvy")
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
@@ -85,27 +86,27 @@ implements MazeAlgorithm
 			Chamber c = chambers.pop();
 
 			// when a room gets too small but bigger than one, use a different algorithm to fill it :)
-			if(c.maxx - c.minx < minimumRoomSize || c.maxy - c.miny < minimumRoomSize)
+			if(c.max_x - c.min_x < minimumRoomSize || c.max_y - c.min_y < minimumRoomSize)
 			{
-				if((c.maxx - c.minx > 1 || c.maxy - c.miny > 1) && smallRoomClass != null)
+				if((c.max_x - c.min_x > 1 || c.max_y - c.min_y > 1) && smallRoomClass != null)
 					try
 					{
 						// create a maze to fill the space
-						Cell2D[][] submaze = smallRoomClass.getConstructor(Integer.class, Integer.class).newInstance(c.maxx - c.minx + 1, c.maxy - c.miny + 1).generateMaze(random.nextLong());
+						Cell2D[][] submaze = smallRoomClass.getConstructor(Integer.class, Integer.class).newInstance(c.max_x - c.min_x + 1, c.max_y - c.min_y + 1).generateMaze(random.nextLong());
 
 						// copy x walls into map
 						for(int y = 0; y < submaze.length; y++)
 							for(int x = 0; x < submaze[0].length - 1; x++)
 							{
 								if(submaze[y][x].east == null)
-									maze[y + c.miny][x + c.minx].removeRoom(Cell2D.Direction.EAST);
+									maze[y + c.min_y][x + c.min_x].removeRoom(Cell2D.Direction.EAST);
 							}
 						// copy y walls into map
 						for(int y = 0; y < submaze.length - 1; y++)
 							for(int x = 0; x < submaze[0].length; x++)
 							{
 								if(submaze[y][x].south == null)
-									maze[y + c.miny][x + c.minx].removeRoom(Cell2D.Direction.SOUTH);
+									maze[y + c.min_y][x + c.min_x].removeRoom(Cell2D.Direction.SOUTH);
 							}
 					}
 					catch(Exception e)
@@ -122,12 +123,12 @@ implements MazeAlgorithm
 			if(random.nextBoolean())
 			{
 				// find the wall to split the chamber
-				int xsplit = random.nextInt(c.maxx - c.minx) + c.minx;
+				int xsplit = random.nextInt(c.max_x - c.min_x) + c.min_x;
 				// keep a door open between chambers
-				int ydoor = random.nextInt(c.maxy - c.miny + 1) + c.miny;
+				int ydoor = random.nextInt(c.max_y - c.min_y + 1) + c.min_y;
 
 				// add a wall to the map (except one door)
-				for(int y = c.miny; y <= c.maxy; y++)
+				for(int y = c.min_y; y <= c.max_y; y++)
 				{
 					if(y == ydoor)
 						continue;
@@ -135,19 +136,19 @@ implements MazeAlgorithm
 				}
 
 				// add the two new chambers to the list
-				chambers.add(new Chamber(c.minx, xsplit, c.miny, c.maxy));
-				chambers.add(new Chamber(xsplit + 1, c.maxx, c.miny, c.maxy));
+				chambers.add(new Chamber(c.min_x, xsplit, c.min_y, c.max_y));
+				chambers.add(new Chamber(xsplit + 1, c.max_x, c.min_y, c.max_y));
 			}
 			// otherwise y
 			else
 			{
 				// find the wall to split the chamber
-				int ysplit = random.nextInt(c.maxy - c.miny) + c.miny;
+				int ysplit = random.nextInt(c.max_y - c.min_y) + c.min_y;
 				// keep a door open between chambers
-				int xdoor = random.nextInt(c.maxx - c.minx + 1) + c.minx;
+				int xdoor = random.nextInt(c.max_x - c.min_x + 1) + c.min_x;
 
 				// add a wall to the map (except one door)
-				for(int x = c.minx; x <= c.maxx; x++)
+				for(int x = c.min_x; x <= c.max_x; x++)
 				{
 					if(x == xdoor)
 						continue;
@@ -155,28 +156,29 @@ implements MazeAlgorithm
 				}
 
 				// add the two new chambers to the list
-				chambers.add(new Chamber(c.minx, c.maxx, c.miny, ysplit));
-				chambers.add(new Chamber(c.minx, c.maxx, ysplit + 1, c.maxy));
+				chambers.add(new Chamber(c.min_x, c.max_x, c.min_y, ysplit));
+				chambers.add(new Chamber(c.min_x, c.max_x, ysplit + 1, c.max_y));
 			}
 		}
 
+		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + ((System.currentTimeMillis() - start) / 1000.0) + " seconds");
 		return maze;
 	}
 
 	private static final class Chamber
 	{
-		final int minx;
-		final int maxx;
-		final int miny;
-		final int maxy;
+		final int min_x;
+		final int max_x;
+		final int min_y;
+		final int max_y;
 
-		public Chamber(int minx, int maxx, int miny, int maxy)
+		public Chamber(int min_x, int max_x, int min_y, int max_y)
 		{
-			this.minx = minx;
-			this.maxx = maxx;
-			this.miny = miny;
-			this.maxy = maxy;
+			this.min_x = min_x;
+			this.max_x = max_x;
+			this.min_y = min_y;
+			this.max_y = max_y;
 		}
 	}
 

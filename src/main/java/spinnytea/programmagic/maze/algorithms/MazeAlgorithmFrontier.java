@@ -5,6 +5,7 @@ import spinnytea.programmagic.maze.Cell2D;
 import lombok.Data;
 
 @Data
+@SuppressWarnings("UnusedDeclaration")
 class MazeAlgorithmFrontier
 {
 	private final Cell2D from;

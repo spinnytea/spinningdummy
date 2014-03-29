@@ -18,7 +18,7 @@ package spinnytea.programmagic.maze.callforhelp;
 public class DisjointSets
 {
 
-	private int[] array;
+	private final int[] array;
 
 	/**
 	 * Construct a disjoint sets object.

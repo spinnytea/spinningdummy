@@ -3,6 +3,7 @@ package spinnytea.programmagic.maze.algorithms;
 import spinnytea.programmagic.maze.Cell2D;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -60,6 +61,7 @@ implements MazeAlgorithm
 	}
 
 	@Override
+	@SuppressWarnings("FeatureEnvy")
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
@@ -74,7 +76,7 @@ implements MazeAlgorithm
 
 		// a stack structure to hold which walls do add to traverse next
 		// Tuple<Current Room, Next Room, Direction from current to next>
-		LinkedList<MazeAlgorithmFrontier> walls = new LinkedList<MazeAlgorithmFrontier>();
+		Deque<MazeAlgorithmFrontier> walls = new LinkedList<MazeAlgorithmFrontier>();
 		// used for randomizing the order of walls
 		ArrayList<MazeAlgorithmFrontier> temp = new ArrayList<MazeAlgorithmFrontier>();
 
@@ -115,11 +117,12 @@ implements MazeAlgorithm
 			}
 		}
 
+		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
 	}
 
-	private void randomPush(LinkedList<MazeAlgorithmFrontier> walls, ArrayList<MazeAlgorithmFrontier> temp)
+	private void randomPush(Deque<MazeAlgorithmFrontier> walls, ArrayList<MazeAlgorithmFrontier> temp)
 	{
 		while(!temp.isEmpty())
 			walls.push(temp.remove(random.nextInt(temp.size())));

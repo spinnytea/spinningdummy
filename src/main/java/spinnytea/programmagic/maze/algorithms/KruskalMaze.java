@@ -4,6 +4,7 @@ import spinnytea.programmagic.maze.Cell2D;
 import spinnytea.programmagic.maze.callforhelp.DisjointSets;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ implements MazeAlgorithm
 	}
 
 	@Override
+	@SuppressWarnings("FeatureEnvy")
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
@@ -62,7 +64,7 @@ implements MazeAlgorithm
 		// a list of all the available walls
 		// contains the two rooms, and a direction for ease
 		// TODO is there a better structure for removing a random item? ~ is there a method, better than n^2 of putting a list of items in random order
-		ArrayList<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
+		List<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
 		// add all the x-walls
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width - 1; x++)
@@ -89,6 +91,7 @@ implements MazeAlgorithm
 			}
 		}
 
+		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
 	}

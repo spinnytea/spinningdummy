@@ -3,6 +3,7 @@ package spinnytea.programmagic.maze.algorithms;
 import spinnytea.programmagic.maze.Cell2D;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -46,6 +47,7 @@ implements MazeAlgorithm
 	}
 
 	@Override
+	@SuppressWarnings("FeatureEnvy")
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
@@ -60,7 +62,7 @@ implements MazeAlgorithm
 
 		// a list of available walls to pick from
 		// Tuple<Current Room, Next Room, Direction from current to next>
-		ArrayList<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
+		List<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
 
 		// add the first edges to the list
 		// randomize order
@@ -98,6 +100,7 @@ implements MazeAlgorithm
 			}
 		}
 
+		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
 	}

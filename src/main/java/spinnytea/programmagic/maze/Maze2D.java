@@ -10,6 +10,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class Maze2D
 extends JPanel
@@ -68,6 +69,7 @@ extends JPanel
 			}
 	}
 
+	@SuppressWarnings("MagicNumber")
 	public static void main(String[] args)
 	{
 		Maze2D maze2D = new Maze2D(new RecursiveDivisionMaze(20, 20, 5, KruskalMaze.class).generateMaze(random.nextLong()));
@@ -75,7 +77,7 @@ extends JPanel
 
 		JFrame frame = new JFrame("Maze2D");
 		frame.setContentPane(maze2D);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

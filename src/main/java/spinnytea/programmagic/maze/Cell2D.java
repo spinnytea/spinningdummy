@@ -15,7 +15,7 @@ public class Cell2D
 		NORTH,
 		SOUTH,
 		EAST,
-		WEST;
+		WEST
 	}
 
 	/** plus x - room to the east */
@@ -129,14 +129,14 @@ public class Cell2D
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(Object obj)
 	{
-		if(this == o)
+		if(this == obj)
 			return true;
-		if(o == null || getClass() != o.getClass())
+		if(obj == null || getClass() != obj.getClass())
 			return false;
 
-		Cell2D cell2D = (Cell2D) o;
+		Cell2D cell2D = (Cell2D) obj;
 
 		if(x != cell2D.x)
 			return false;
