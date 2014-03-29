@@ -3,6 +3,7 @@ package spinnytea.programmagic.time.hoursdao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 public class TestTaskDao
 {
 	private static final Logger logger = LoggerFactory.getLogger(TestTaskDao.class);
+	private static final Day dummyTestDay = new Day(2000, 2);
 
 	@BeforeClass
 	public static void before()
@@ -30,7 +32,7 @@ public class TestTaskDao
 		if(!folder.exists())
 		{
 			logger.info("Hours folder doesn't exists. It will be deleted upon exit.");
-			folder.mkdir();
+			assertTrue(folder.mkdir());
 			folder.deleteOnExit();
 		}
 
@@ -45,9 +47,6 @@ public class TestTaskDao
 	@Test
 	public void csv_to_hibernate()
 	{
-		// this matches the PrintStream below
-		Day dummyTestDay = new Day(2000, 2);
-
 		TaskDao_CSV csv = new TaskDao_CSV();
 		// ensure that we have something to test against
 		if(csv.allDays().size() == 0)
@@ -55,6 +54,7 @@ public class TestTaskDao
 			{
 				logger.info("Creating dummy test day");
 				@Cleanup
+				// FIXME generate this from dummyTestDay
 				PrintStream ps = new PrintStream(new File("exports/hours/2000_2"));
 				ps.print("Sat Jan 02 09:00:00 EST 2000\nSat Jan 02 08:00:00 EST 2000\nTEST_Stuff\n");
 			}
@@ -67,6 +67,8 @@ public class TestTaskDao
 		TaskDao_Hibernate hib = new TaskDao_Hibernate();
 
 		// verify that all of the csv days will be queried
+		assertNotNull(TaskDao_CSV.DEFAULT_RESOURCE_FOLDER.listFiles());
+		//noinspection ConstantConditions
 		assertEquals(TaskDao_CSV.DEFAULT_RESOURCE_FOLDER.listFiles().length, csv.allDays().size());
 
 		// copy all of the data from the csv files to hibernate
@@ -114,10 +116,10 @@ public class TestTaskDao
 		// setup a specific date for testing
 		Calendar start = GregorianCalendar.getInstance();
 		start.setTimeInMillis(0);
-		start.set(2000, Calendar.JANUARY, 1, 8, 0);
+		start.set(dummyTestDay.getYear(), Calendar.JANUARY, 1, 8, 0);
 		Calendar end = GregorianCalendar.getInstance();
 		end.setTimeInMillis(0);
-		end.set(2000, Calendar.JANUARY, 1, 9, 0);
+		end.set(dummyTestDay.getYear(), Calendar.JANUARY, 1, 9, 0);
 
 		Day day = new Day(start.getTime());
 
@@ -126,7 +128,7 @@ public class TestTaskDao
 
 		// delete the records for the given day so we start with a clean slate
 		dao.deleteDay(day);
-		assertEquals(Collections.emptyList(), dao.loadDay(day));
+		assertEquals(Collections.EMPTY_LIST, dao.loadDay(day));
 		assertFalse(dao.dayExists(day));
 
 		// save the elements for the day
@@ -141,7 +143,7 @@ public class TestTaskDao
 
 		// clean up after the test
 		dao.deleteDay(day);
-		assertEquals(Collections.emptyList(), dao.loadDay(day));
+		assertEquals(Collections.EMPTY_LIST, dao.loadDay(day));
 		assertFalse(dao.dayExists(day));
 	}
 }

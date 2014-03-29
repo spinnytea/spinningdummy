@@ -6,12 +6,14 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+/** @author Mark Allen Weiss */
 public class TestDisjointSets
 {
 	/** This test was included with the file. I'm not sure why this works; I'll come document it later. */
 	@Test
 	public void doIt()
 	{
+		@SuppressWarnings("MagicNumber")
 		int NumElements = 12;
 		int NumInSameSet = 4;
 

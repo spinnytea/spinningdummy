@@ -23,6 +23,7 @@ public class TestID
 		// it is perfectly acceptable to change the length
 		// this doesn't even really need to be a test
 		// but I wanted to ensure that I was using all the upper/lower/number characters
+		//noinspection MagicNumber
 		assertEquals(36, tokens.length);
 
 		for(char c = '0'; c <= '9'; c++)
@@ -63,7 +64,7 @@ public class TestID
 					for(int l = 0; l < ID.tokens.length; l++)
 						assertEquals(ID.tokens[i] + "" + ID.tokens[j] + "" + ID.tokens[k] + "" + ID.tokens[l], id.nextID());
 
-        // this test is too time intensive for normal testing
+		// this test is too time intensive for normal testing
 
 //		// set of quintuple digits
 //		for(int i = 1; i < ID.tokens.length; i++)

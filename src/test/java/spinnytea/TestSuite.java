@@ -10,6 +10,7 @@ import spinnytea.tools.TestID;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+@SuppressWarnings("EmptyClass")
 @RunWith(Suite.class)
 @Suite.SuiteClasses(value = { TestID.class, TestEncryption.class, //
 TestTaskDao.class, //

@@ -47,7 +47,7 @@ public class Test_2048
 			board[i][0] = row[i];
 	}
 
-	public void equalsHorizontal(int[][] board, int[] row)
+	private void equalsHorizontal(int[][] board, int[] row)
 	{
 		int[] check = new int[row.length];
 
@@ -111,12 +111,14 @@ public class Test_2048
 		}
 	}
 
+	@SuppressWarnings("ManualArrayCopy") // because it mimics the others
 	private void copyVertical(int[][] board, int[] row)
 	{
 		for(int i = 0; i < row.length; i++)
 			board[0][i] = row[i];
 	}
 
+	@SuppressWarnings("ManualArrayCopy") // because it mimics the others
 	private void equalsVertical(int[][] board, int[] row)
 	{
 		int[] check = new int[row.length];
@@ -167,8 +169,8 @@ public class Test_2048
 	@AllArgsConstructor
 	private static class Row
 	{
-		private int[] start;
-		private int[] result;
+		private final int[] start;
+		private final int[] result;
 	}
 
 	// these are coded while imagining a moveLeft
