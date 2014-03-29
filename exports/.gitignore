@@ -1,2 +1,5 @@
+# this folder is intended to be empty
+# it is the default output folder - anything that is in here is not required for the program to function
+
 *
 !.gitignore
