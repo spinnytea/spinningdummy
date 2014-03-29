@@ -36,7 +36,7 @@ implements Comparable<Task>
 
 	public void setStart(Date start)
 	{
-		this.start = start;
+		this.start = new Date(start.getTime());
 		day = new Day(start);
 	}
 

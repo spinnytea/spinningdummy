@@ -44,7 +44,6 @@ implements MazeAlgorithm
 	}
 
 	@Override
-	@SuppressWarnings("FeatureEnvy")
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
