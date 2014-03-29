@@ -1,10 +1,11 @@
 package spinnytea.programmagic.maze;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import spinnytea.programmagic.maze.algorithms.DepthFirstMaze;
 
 import javax.swing.JFrame;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,25 @@ public class TestAlgorithms
 		// small board for initial test case
 		Cell2D[][] cells = new DepthFirstMaze(2, 2).generateMaze(1L);
 		Cell2D[][] expected = createCells(2, 2);
-		expected[0][0].setRoom(Cell2D.Direction.EAST, expected[0][1]);
-		expected[0][1].setRoom(Cell2D.Direction.SOUTH, expected[1][1]);
-		expected[1][0].setRoom(Cell2D.Direction.EAST, expected[1][1]);
-		Assert.assertArrayEquals(cells, expected);
+		setRow(expected, 0, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
+		setRow(expected, 1, Cell2D.Direction.EAST, null);
+		assertArrayEquals(cells, expected);
+	}
+
+	@Test
+	public void depthFirst_Complex()
+	{
+		// small board for initial test case
+		Cell2D[][] cells = new DepthFirstMaze(6, 6).generateMaze(1L);
+		Cell2D[][] expected = createCells(6, 6);
+		setRow(expected, 0, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.EAST, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
+		setRow(expected, 1, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH);
+		setRow(expected, 2, Cell2D.Direction.SOUTH, Cell2D.Direction.WEST, Cell2D.Direction.SOUTH, Cell2D.Direction.NORTH, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
+		setRow(expected, 3, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.NORTH, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
+		setRow(expected, 4, Cell2D.Direction.NORTH, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.EAST, Cell2D.Direction.SOUTH, Cell2D.Direction.SOUTH);
+		setRow(expected, 5, Cell2D.Direction.NORTH, Cell2D.Direction.WEST, Cell2D.Direction.EAST, Cell2D.Direction.NORTH, Cell2D.Direction.EAST, null);
+
+		assertArrayEquals(cells, expected);
 	}
 
 	private Cell2D[][] createCells(int width, int height)
@@ -35,6 +51,32 @@ public class TestAlgorithms
 		return ret;
 	}
 
+	/** for each cell, in the row, attach it to an adjacent cell */
+	private void setRow(Cell2D[][] cells, int h, Cell2D.Direction... row)
+	{
+		for(int w = 0; w < row.length; w++)
+		{
+			if(row[w] != null)
+				switch(row[w])
+				{
+				case EAST:
+					cells[h][w].setRoom(Cell2D.Direction.EAST, cells[h][w + 1]);
+					break;
+				case WEST:
+					cells[h][w].setRoom(Cell2D.Direction.WEST, cells[h][w - 1]);
+					break;
+				case NORTH:
+					cells[h][w].setRoom(Cell2D.Direction.NORTH, cells[h - 1][w]);
+					break;
+				case SOUTH:
+					cells[h][w].setRoom(Cell2D.Direction.SOUTH, cells[h + 1][w]);
+					break;
+				}
+		}
+	}
+
+	/** this is for creating new test cases, or if you want to visualize it */
+	@SuppressWarnings("unused")
 	private void displayCells(Cell2D[][] cells)
 	{
 		JFrame frame = new JFrame("Maze2D");
