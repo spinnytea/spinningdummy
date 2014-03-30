@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.persistence.Entity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +14,8 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateUtils
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class HibernateUtils
 {
 	private static final Logger logger = LoggerFactory.getLogger(HibernateUtils.class);
 
@@ -22,16 +25,16 @@ public class HibernateUtils
 		return openSession(null);
 	}
 
-	/** @param pathtoconfig if null, it will use the <code>hibernate.cfg.xml</code> it finds non the classpath */
-	public static Session openSession(String pathtoconfig)
+	/** @param pathToConfig if null, it will use the <code>hibernate.cfg.xml</code> it finds non the classpath */
+	public static Session openSession(String pathToConfig)
 	throws HibernateException
 	{
 		AnnotationConfiguration config = new AnnotationConfiguration() //
 			.addAnnotatedClass(spinnytea.programmagic.time.hoursdao.Day.class) //
 			.addAnnotatedClass(spinnytea.programmagic.time.hoursdao.Task.class);
 
-		if(pathtoconfig != null)
-			config.configure(pathtoconfig);
+		if(pathToConfig != null)
+			config.configure(pathToConfig);
 		else
 			config.configure();
 
@@ -127,6 +130,6 @@ public class HibernateUtils
 	{
 		SAVE,
 		UPDATE,
-		DELETE;
+		DELETE
 	}
 }

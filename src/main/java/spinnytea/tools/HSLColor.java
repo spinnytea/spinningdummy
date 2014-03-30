@@ -21,11 +21,12 @@ import java.awt.Color;
  * In particular the HSL color space makes it easier change the Tone or Shade
  * of a color by adjusting the luminance value.
  */
+@SuppressWarnings({ "UnusedDeclaration", "MagicNumber" })
 public class HSLColor
 {
-	private Color rgb;
-	private float[] hsl;
-	private float alpha;
+	private final Color rgb;
+	private final float[] hsl;
+	private final float alpha;
 
 	/**
 	 * Create a HSLColor object using an RGB Color object.
@@ -259,13 +260,11 @@ public class HSLColor
 	@Override
 	public String toString()
 	{
-		String toString =
-		"HSLColor[h=" + hsl[0] +
-		",s=" + hsl[1] +
-		",l=" + hsl[2] +
-		",alpha=" + alpha + "]";
 
-		return toString;
+		return "HSLColor[h=" + hsl[0] +
+			",s=" + hsl[1] +
+			",l=" + hsl[2] +
+			",alpha=" + alpha + "]";
 	}
 
 	/**
@@ -307,7 +306,7 @@ public class HSLColor
 
 		//  Calculate the Saturation
 
-		float s = 0;
+		float s;
 
 		if(max == min)
 			s = 0;
@@ -397,7 +396,7 @@ public class HSLColor
 		s /= 100f;
 		l /= 100f;
 
-		float q = 0;
+		float q;
 
 		if(l < 0.5)
 			q = l * (1 + s);

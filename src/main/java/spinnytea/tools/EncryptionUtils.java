@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
+import java.security.Key;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -13,48 +14,48 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EncryptionUtils
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class EncryptionUtils
 {
 	private static final Logger logger = LoggerFactory.getLogger(EncryptionUtils.class);
+	private static final int SALT = 128;
 
 	public static byte[] generateKey(String password)
 	throws Exception
 	{
 		byte[] keyStart = password.getBytes("UTF-16");
-		KeyGenerator kgen = KeyGenerator.getInstance("AES");
+		KeyGenerator generator = KeyGenerator.getInstance("AES");
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		sr.setSeed(keyStart);
-		kgen.init(128, sr);
-		SecretKey skey = kgen.generateKey();
-		return skey.getEncoded();
+		generator.init(SALT, sr);
+		SecretKey secretKey = generator.generateKey();
+		return secretKey.getEncoded();
 	}
 
 	/** when you want to encode a string, make sure you call <code>String.getBytes(Charset.forName("UTF-16"))</code> */
 	public static byte[] encode(byte[] key, byte[] plaintext)
 	throws Exception
 	{
-		SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+		Key keySpec = new SecretKeySpec(key, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 
-		byte[] encrypted = cipher.doFinal(plaintext);
-
-		return encrypted;
+		return cipher.doFinal(plaintext);
 	}
 
 	public static byte[] decode(byte[] key, byte[] ciphertext)
 	throws Exception
 	{
-		SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+		Key keySpec = new SecretKeySpec(key, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		cipher.init(Cipher.DECRYPT_MODE, keySpec);
 
-		byte[] decrypted = cipher.doFinal(ciphertext);
-
-		return decrypted;
+		return cipher.doFinal(ciphertext);
 	}
 
 	/** save the data into the file */
@@ -87,7 +88,7 @@ public class EncryptionUtils
 				{
 					bos.close();
 				}
-				catch(Exception e)
+				catch(Exception ignored)
 				{
 
 				}
@@ -125,19 +126,10 @@ public class EncryptionUtils
 				{
 					raf.close();
 				}
-				catch(Exception e)
+				catch(Exception ignored)
 				{
 
 				}
 		}
-	}
-
-	public static void main(String[] args)
-	{
-		File file = new File("test.enc");
-		String password = "password";
-
-		if(EncryptFile(file, password, "Hello World!"))
-			System.out.println("Message: " + DecryptFile(file, password));
 	}
 }

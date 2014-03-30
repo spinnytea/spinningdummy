@@ -7,16 +7,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
-// Grid Layout which allows components of differrent sizes
+// Grid Layout which allows components of different sizes
 public class GridLayout2
 extends GridLayout
 {
 	private static final long serialVersionUID = -1225317095556201052L;
-
-	public GridLayout2()
-	{
-		this(1, 0, 0, 0);
-	}
 
 	public GridLayout2(int rows, int cols)
 	{
@@ -127,6 +122,7 @@ extends GridLayout
 	}
 
 	@Override
+	@SuppressWarnings({ "SpellCheckingInspection", "AssignmentToForLoopParameter" })
 	public void layoutContainer(Container parent)
 	{
 		// System.err.println("layoutContainer");

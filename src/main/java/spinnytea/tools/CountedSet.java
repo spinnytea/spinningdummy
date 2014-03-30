@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,10 +16,11 @@ import java.util.Set;
  * <p/>
  * <b>Last Update:</b> Mar 20, 2012
  */
+@SuppressWarnings("UnusedDeclaration")
 public class CountedSet<T>
 implements Set<T>
 {
-	private HashMap<T, Integer> map;
+	private final Map<T, Integer> map;
 	private long total;
 	private long maxCount;
 
@@ -88,12 +90,11 @@ implements Set<T>
 	}
 
 	/** Get the count for each of the objects, and return the total */
-	public int getCountsFor(Collection<? extends T> sublist)
+	public int getCountsFor(Iterable<? extends T> sublist)
 	{
 		int total = 0;
-		Iterator<? extends T> iter = sublist.iterator();
-		while(iter.hasNext())
-			total += getCountFor(iter.next());
+		for(T t : sublist)
+			total += getCountFor(t);
 		return total;
 	}
 
@@ -134,7 +135,10 @@ implements Set<T>
 	@Override
 	public boolean contains(Object o)
 	{
-		return map.get(o) != null;
+		// if o is the right type
+		// and if map contains o
+		//noinspection SuspiciousMethodCalls
+		return !(o == null || getClass() != o.getClass()) && map.containsKey(o);
 	}
 
 	@Override
@@ -158,6 +162,7 @@ implements Set<T>
 	@Override
 	public boolean remove(Object o)
 	{
+		//noinspection SuspiciousMethodCalls
 		Integer i = map.get(o);
 		if(i != null)
 			total -= i;
@@ -195,6 +200,8 @@ implements Set<T>
 	@Override
 	public <E> E[] toArray(E[] a)
 	{
+		// while this is suspicious, it is required as is
+		//noinspection SuspiciousToArrayCall
 		return map.keySet().toArray(a);
 	}
 
@@ -206,16 +213,17 @@ implements Set<T>
 	@Override
 	public String toString()
 	{
-		StringBuffer sb = new StringBuffer("[ ");
+		StringBuilder sb = new StringBuilder("[ ");
 
 		for(T key : map.keySet())
-			sb.append("(").append(key.toString()).append(" : ").append(getCountFor(key)).append(") ");
+			sb.append("(").append(key).append(" : ").append(getCountFor(key)).append(") ");
 
 		sb.append("]");
 		return sb.toString();
 	}
 
 	/** @param ascending if true, the first value will be low, if false, the first value will be high */
+	@SuppressWarnings("BooleanParameter") // this is a special case
 	public CountedComparator getCountedComparator(boolean ascending)
 	{
 		return new CountedComparator(ascending);
