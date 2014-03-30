@@ -15,20 +15,20 @@ import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TaskDao_CSV
+public class TaskDaoCSV
 extends TaskDao
 {
-	private static final Logger logger = LoggerFactory.getLogger(TaskDao_CSV.class);
+	private static final Logger logger = LoggerFactory.getLogger(TaskDaoCSV.class);
 	public static final File DEFAULT_RESOURCE_FOLDER = new File("exports/hours");
 
 	private final File resourceFolder;
 
-	public TaskDao_CSV()
+	public TaskDaoCSV()
 	{
 		this(DEFAULT_RESOURCE_FOLDER);
 	}
 
-	public TaskDao_CSV(File resourceFolder)
+	public TaskDaoCSV(File resourceFolder)
 	{
 		this.resourceFolder = resourceFolder;
 		resourceFolder.mkdirs();
@@ -81,10 +81,8 @@ extends TaskDao
 				dates.clear();
 			}
 		}
-		else
-		{
-			// if the file for this day doesn't exist, then there is nothing to add to the list
-		}
+
+		// if the file for this day doesn't exist, then there is nothing to add to the list
 
 		return dates;
 	}
@@ -134,19 +132,22 @@ extends TaskDao
 		logger.debug("all days");
 
 		List<Day> days = new ArrayList<Day>();
-		for(File f : resourceFolder.listFiles())
-		{
-			String[] s = f.getName().split("_");
-			if(s.length == 2)
-				try
-				{
-					days.add(new Day(Integer.parseInt(s[0]), Integer.parseInt(s[1])));
-				}
-				catch(Exception e)
-				{
-					// not a valid filename, just keep going
-				}
-		}
+
+		File[] files = resourceFolder.listFiles();
+		if(files != null)
+			for(File f : files)
+			{
+				String[] s = f.getName().split("_");
+				if(s.length == 2)
+					try
+					{
+						days.add(new Day(Integer.parseInt(s[0]), Integer.parseInt(s[1])));
+					}
+					catch(Exception e)
+					{
+						// not a valid filename, just keep going
+					}
+			}
 		return days;
 	}
 

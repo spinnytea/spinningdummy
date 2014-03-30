@@ -13,10 +13,10 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TaskDao_Hibernate
+public class TaskDaoHibernate
 extends TaskDao
 {
-	private static final Logger logger = LoggerFactory.getLogger(TaskDao_Hibernate.class);
+	private static final Logger logger = LoggerFactory.getLogger(TaskDaoHibernate.class);
 
 	@Override
 	@SuppressWarnings("unchecked")

@@ -4,7 +4,7 @@ import spinnytea.programmagic.time.Clock.ClockOptions;
 import spinnytea.programmagic.time.hoursdao.Day;
 import spinnytea.programmagic.time.hoursdao.Task;
 import spinnytea.programmagic.time.hoursdao.TaskDao;
-import spinnytea.programmagic.time.hoursdao.TaskDao_CSV;
+import spinnytea.programmagic.time.hoursdao.TaskDaoCSV;
 import spinnytea.tools.GridLayout2;
 
 import java.awt.BorderLayout;
@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
@@ -35,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -60,7 +63,7 @@ extends JPanel
 	private Day currentDay;
 	private final TaskDao dao;
 	private Date endTime;
-	private ArrayList<Task> dates = new ArrayList<Task>();
+	private final ArrayList<Task> dates = new ArrayList<Task>();
 
 	public Hours(JFrame parent)
 	{
@@ -71,7 +74,7 @@ extends JPanel
 		clockOptions.colorHand_Hour = Color.black;
 		clockOptions.fillFrom = Calendar.getInstance();
 		clockOptions.fillUntil = Calendar.getInstance();
-		clockOptions.hoursOnFace = 24.0;
+		clockOptions.hoursOnFace = ClockOptions.HoursOnFace.TwentyFour;
 
 		setLayout(new BorderLayout());
 		clock = new Clock(clockOptions);
@@ -80,16 +83,16 @@ extends JPanel
 		datePanel = new JPanel(new BorderLayout());
 		add(datePanel, BorderLayout.CENTER);
 
-		dao = new TaskDao_CSV();
+		dao = new TaskDaoCSV();
 		setDate(new Day(new Date()));
 
 		ArrayList<Day> days = new ArrayList<Day>(dao.allDays());
 		Collections.sort(days, Collections.reverseOrder());
-		final JList<Day> datelist = new JList<Day>(days.toArray(new Day[0]));
-		datelist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		datelist.setBorder(BorderFactory.createLoweredBevelBorder());
-		datelist.setSelectedValue(currentDay, true);
-		datelist.setCellRenderer(new ListCellRenderer<Day>()
+		final JList<Day> dateList = new JList<Day>(days.toArray(new Day[days.size()]));
+		dateList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		dateList.setBorder(BorderFactory.createLoweredBevelBorder());
+		dateList.setSelectedValue(currentDay, true);
+		dateList.setCellRenderer(new ListCellRenderer<Day>()
 		{
 			DefaultListCellRenderer dlcr = new DefaultListCellRenderer();
 			Calendar cal = Calendar.getInstance();
@@ -99,18 +102,18 @@ extends JPanel
 			{
 				cal.set(Calendar.YEAR, day.getYear());
 				cal.set(Calendar.DAY_OF_YEAR, day.getDayOfYear());
-				return dlcr.getListCellRendererComponent(datelist, format_day.format(cal.getTime()), index, isSelected, cellHasFocus);
+				return dlcr.getListCellRendererComponent(dateList, format_day.format(cal.getTime()), index, isSelected, cellHasFocus);
 			}
 		});
 
-		datelist.addListSelectionListener(new ListSelectionListener()
+		dateList.addListSelectionListener(new ListSelectionListener()
 		{
 			Day previousLoad = null;
 
 			@Override
 			public void valueChanged(ListSelectionEvent evt)
 			{
-				Day day = datelist.getSelectedValue();
+				Day day = dateList.getSelectedValue();
 				if(day == null)
 					return;
 
@@ -123,7 +126,7 @@ extends JPanel
 				setDate(day);
 			}
 		});
-		add(new JScrollPane(datelist), BorderLayout.WEST);
+		add(new JScrollPane(dateList), BorderLayout.WEST);
 
 		Button newRoundedTime = new Button("Add New Rounded Time");
 		newRoundedTime.addActionListener(new ActionListener()
@@ -175,10 +178,12 @@ extends JPanel
 			cal.set(Calendar.SECOND, 0);
 			cal.set(Calendar.MILLISECOND, 0);
 
+			//noinspection MagicNumber
 			cal.set(Calendar.HOUR_OF_DAY, 8);
 			dates.add(new Task(cal.getTime(), "Start"));
 			clockOptions.fillFrom.setTimeInMillis(dates.get(0).getStart().getTime());
 
+			//noinspection MagicNumber
 			cal.set(Calendar.HOUR_OF_DAY, 17);
 			endTime = cal.getTime();
 			clockOptions.fillUntil.setTimeInMillis(endTime.getTime());
@@ -227,10 +232,11 @@ extends JPanel
 		JPanel filler = new JPanel();
 		// since we collapsed the times, the frame is now too small
 		// this will help expand it; the sizes are rather arbitrary (it just worked for me)
+		//noinspection MagicNumber
 		filler.setPreferredSize(new Dimension(130, 0));
 		datePanel.add(filler, BorderLayout.CENTER);
 
-		TreeMap<String, Duration> labelDuration = new TreeMap<String, Duration>();
+		Map<String, Duration> labelDuration = new TreeMap<String, Duration>();
 
 		final ActionListener update = new ActionListener()
 		{
@@ -268,6 +274,7 @@ extends JPanel
 
 			prev = t;
 		}
+		assert prev != null;
 		labelDuration.put(prev.getName(), new Duration(prev.getStart(), endTime, labelDuration.get(prev.getName())));
 		grid.add(new JLabel("End______"));
 		grid.add(new JTextField(format_input.format(endTime))
@@ -280,9 +287,9 @@ extends JPanel
 			}
 		});
 
-		StringBuffer summaryText = new StringBuffer("<html><table border=0 cellpadding=0 width=\"100%\">");
+		StringBuilder summaryText = new StringBuilder("<html><table border=0 cellpadding=0 width=\"100%\">");
 		for(String label : labelDuration.keySet())
-			summaryText.append("<tr><td>").append(label).append("</td><td align=\"right\">").append(labelDuration.get(label).toString()).append("</td></tr>");
+			summaryText.append("<tr><td>").append(label).append("</td><td align=\"right\">").append(labelDuration.get(label)).append("</td></tr>");
 		summaryText.append("</table></html>");
 		summary.setText(summaryText.toString());
 
@@ -295,7 +302,9 @@ extends JPanel
 	/** use the GUI to update the data within the model */
 	private void updateModel()
 	{
-		ArrayList<Task> tempDates = new ArrayList<Task>();
+		// this type cannot be weakened, the order must be maintained because it will be added to dates
+		//noinspection TypeMayBeWeakened
+		List<Task> tempDates = new ArrayList<Task>();
 		// for things that belong in dates
 		for(int i = 0; i < grid.getComponentCount() - 2; i += 2)
 		{
@@ -322,13 +331,14 @@ extends JPanel
 	@SuppressWarnings("deprecation")
 	public Date roundMinutes(Date d)
 	{
+		//noinspection MagicNumber
 		d.setMinutes((int) (d.getMinutes() / 15.0 + 0.5) * 15);
 		return d;
 	}
 
 	private void saveModel()
 	{
-		ArrayList<Task> tasks = new ArrayList<Task>(dates);
+		List<Task> tasks = new ArrayList<Task>(dates);
 		tasks.add(new Task(endTime, null));
 		dao.saveDay(currentDay, tasks);
 	}
@@ -336,7 +346,7 @@ extends JPanel
 	private void loadModel()
 	{
 		// load the model from a file
-		ArrayList<Task> tasks = new ArrayList<Task>(dao.loadDay(currentDay));
+		List<Task> tasks = new ArrayList<Task>(dao.loadDay(currentDay));
 		Collections.sort(tasks);
 
 		endTime = tasks.remove(tasks.size() - 1).getStart();
@@ -347,6 +357,7 @@ extends JPanel
 		clockOptions.fillFrom.setTimeInMillis(dates.get(0).getStart().getTime());
 	}
 
+	@SuppressWarnings("MagicNumber")
 	private static final class Duration
 	{
 		private int minutes;
@@ -387,7 +398,7 @@ extends JPanel
 		JFrame frame = new JFrame();
 		final Hours hours = new Hours(frame);
 		frame.setContentPane(hours);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter()
@@ -399,13 +410,13 @@ extends JPanel
 			@Override
 			public void windowIconified(WindowEvent e)
 			{
-				hours.clock.pause(true);
+				hours.clock.pause();
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e)
 			{
-				hours.clock.pause(false);
+				hours.clock.unpause();
 			}
 		});
 	}

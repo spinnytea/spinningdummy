@@ -18,6 +18,7 @@ import java.util.TimeZone;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.WindowConstants;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
@@ -27,12 +28,14 @@ import com.luckycatlabs.sunrisesunset.dto.Location;
  * <p/>
  * But seriosuly. It's just a clock. It's a 24-hour clock with day on the top and night on the bottom. That's about it.
  */
+@SuppressWarnings("MagicNumber")
 public class TwentyFour
 extends JPanel
 implements ActionListener
 {
 	private static final long serialVersionUID = -7007713141372025267L;
-	private static final boolean drawSeconds = false;
+	@SuppressWarnings("FieldMayBeFinal") // I'm undecided which way I prefer
+	private static boolean drawSeconds = true;
 
 	// used for drawing
 	private final Timer timer;
@@ -46,7 +49,7 @@ implements ActionListener
 	private int prevDrawSecond = 0;
 
 	// used for sunrise/sunset
-	private SunriseSunsetCalculator ssc;
+	private final SunriseSunsetCalculator ssc;
 
 	// create the hands here
 	// the clock isn't redrawn often enough for this to really matter
@@ -94,12 +97,14 @@ implements ActionListener
 		repaint();
 	}
 
-	public void pause(boolean pause)
+	public void pause()
 	{
-		if(pause)
-			timer.stop();
-		else
-			timer.start();
+		timer.stop();
+	}
+
+	public void unpause()
+	{
+		timer.start();
 	}
 
 	@Override
@@ -128,9 +133,9 @@ implements ActionListener
 		g.setColor(clockFaceColor);
 
 		// draw the thick ring around the edge of the clock
-		int clockBorderWidth = size / 40;
-		g.setStroke(new BasicStroke(clockBorderWidth * 2f));
-		g.drawOval(clockBorderWidth, clockBorderWidth, size - 2 * clockBorderWidth - 1, size - 2 * clockBorderWidth - 1);
+		int clockBorderSize = size / 40;
+		g.setStroke(new BasicStroke(clockBorderSize * 2f));
+		g.drawOval(clockBorderSize, clockBorderSize, size - 2 * clockBorderSize - 1, size - 2 * clockBorderSize - 1);
 
 		g.setStroke(new BasicStroke(1f));
 		g.setFont(g.getFont().deriveFont((float) (size2 / 16.0)));
@@ -202,27 +207,25 @@ implements ActionListener
 			g.translate(-size2, -size2);
 		}
 		// fill in the sunset hours
+		int sunsetOffset = (int) ((12.0 - 6.75) / 12.0 * size2);
+		int sunsetDiameter = (int) (6.75 * 2.0 / 12.0 * size2);
+
+		if(ssc != null)
 		{
-			int top = (int) ((12.0 - 6.75) / 12.0 * size2);
-			int width = (int) (6.75 * 2.0 / 12.0 * size2);
+			Calendar sunrise = ssc.getOfficialSunriseCalendarForDate(cal);
+			Calendar sunset = ssc.getOfficialSunsetCalendarForDate(cal);
 
-			if(ssc != null)
-			{
-				Calendar sunrise = ssc.getOfficialSunriseCalendarForDate(cal);
-				Calendar sunset = ssc.getOfficialSunsetCalendarForDate(cal);
+			// trial and error adjustment
+			double sunsetAngle = 270 - 360.0 * (sunset.get(Calendar.HOUR_OF_DAY) + sunset.get(Calendar.MINUTE) / 60.0) / 24;
+			double sunriseAngle = 270 - 360.0 * (sunrise.get(Calendar.HOUR_OF_DAY) + sunrise.get(Calendar.MINUTE) / 60.0) / 24;
 
-				// trial and error adjustment
-				double sunsetAngle = 270 - 360.0 * (sunset.get(Calendar.HOUR_OF_DAY) + sunset.get(Calendar.MINUTE) / 60.0) / 24;
-				double sunriseAngle = 270 - 360.0 * (sunrise.get(Calendar.HOUR_OF_DAY) + sunrise.get(Calendar.MINUTE) / 60.0) / 24;
-
-				// trial and error adjustment
-				g.fillArc(top, top, width, width, (int) sunriseAngle, 360 + (int) (sunsetAngle - sunriseAngle));
-			}
-			else
-			{
-				// if there is no location, then fill 6am to 6pm
-				g.fillArc(top, top, width, width, 180, 180);
-			}
+			// trial and error adjustment
+			g.fillArc(sunsetOffset, sunsetOffset, sunsetDiameter, sunsetDiameter, (int) sunriseAngle, 360 + (int) (sunsetAngle - sunriseAngle));
+		}
+		else
+		{
+			// if there is no location, then fill 6am to 6pm
+			g.fillArc(sunsetOffset, sunsetOffset, sunsetDiameter, sunsetDiameter, 180, 180);
 		}
 
 		// filling in Polygons does not require a stroke
@@ -266,7 +269,7 @@ implements ActionListener
 			}
 		};
 		frame.setContentPane(tf);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 	}

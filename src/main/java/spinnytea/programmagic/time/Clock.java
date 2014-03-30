@@ -14,7 +14,11 @@ import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.WindowConstants;
 
+import lombok.RequiredArgsConstructor;
+
+@SuppressWarnings("MagicNumber")
 public class Clock
 extends JPanel
 implements ActionListener
@@ -63,12 +67,14 @@ implements ActionListener
 		14);
 	}
 
-	public void pause(boolean pause)
+	public void pause()
 	{
-		if(pause)
-			timer.stop();
-		else
-			timer.start();
+		timer.stop();
+	}
+
+	public void unpause()
+	{
+		timer.start();
 	}
 
 	@Override
@@ -102,9 +108,9 @@ implements ActionListener
 			// this fill is in degrees starting from the right, and going counter-clockwise
 
 			// times are in degrees, and in a very odd orientation
-			int from = (int) (90 - (360 * (options.fillFrom.get(Calendar.HOUR_OF_DAY) + options.fillFrom.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace));
-			int now = (int) (90 - (360 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace));
-			int until = (int) (90 - (360 * (options.fillUntil.get(Calendar.HOUR_OF_DAY) + options.fillUntil.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace));
+			int from = (int) (90 - (360 * (options.fillFrom.get(Calendar.HOUR_OF_DAY) + options.fillFrom.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace.value));
+			int now = (int) (90 - (360 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace.value));
+			int until = (int) (90 - (360 * (options.fillUntil.get(Calendar.HOUR_OF_DAY) + options.fillUntil.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace.value));
 
 			if(options.fillFrom != null && options.colorFillFrom != null)
 			{
@@ -174,7 +180,7 @@ implements ActionListener
 		if(options.showHand_Hour && options.colorHand_Hour != null)
 		{
 			// hour hand affected my hours and minutes
-			drawHand(g, hourHand, options.colorHand_Hour, Math.PI * 2.0 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace - Math.PI / 2);
+			drawHand(g, hourHand, options.colorHand_Hour, Math.PI * 2.0 * (cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0) / options.hoursOnFace.value - Math.PI / 2);
 		}
 		if(options.showHand_MinuteAnalog && options.colorHand_MinuteAnalog != null)
 		{
@@ -210,6 +216,13 @@ implements ActionListener
 	/** Configuration data for the clock */
 	public static class ClockOptions
 	{
+		@RequiredArgsConstructor
+		public static enum HoursOnFace
+		{
+			Twelve(12.0), TwentyFour(24.0);
+			private final double value;
+		}
+
 		/** color of the clock-face */
 		public Color colorClock_Face = Color.white;
 
@@ -265,7 +278,7 @@ implements ActionListener
 		public boolean showTicks_Minute = false;
 
 		/** Now, every clock-face I have ever seen has had 12 hours. But the rules of math don't require this to be so */
-		public double hoursOnFace = 12.0;
+		public HoursOnFace hoursOnFace = HoursOnFace.Twelve;
 
 		/** How big should the clock be? */
 		private final int size;
@@ -319,7 +332,7 @@ implements ActionListener
 	{
 		JFrame frame = new JFrame();
 		frame.setContentPane(new Clock(new ClockOptions(200).presetFull()));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 	}

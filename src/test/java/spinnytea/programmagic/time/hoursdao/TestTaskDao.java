@@ -47,7 +47,7 @@ public class TestTaskDao
 	@Test
 	public void csv_to_hibernate()
 	{
-		TaskDao_CSV csv = new TaskDao_CSV();
+		TaskDaoCSV csv = new TaskDaoCSV();
 		// ensure that we have something to test against
 		if(csv.allDays().size() == 0)
 			try
@@ -64,12 +64,12 @@ public class TestTaskDao
 			}
 		assertNotEquals(0, csv.allDays().size());
 
-		TaskDao_Hibernate hib = new TaskDao_Hibernate();
+		TaskDaoHibernate hib = new TaskDaoHibernate();
 
 		// verify that all of the csv days will be queried
-		assertNotNull(TaskDao_CSV.DEFAULT_RESOURCE_FOLDER.listFiles());
+		assertNotNull(TaskDaoCSV.DEFAULT_RESOURCE_FOLDER.listFiles());
 		//noinspection ConstantConditions
-		assertEquals(TaskDao_CSV.DEFAULT_RESOURCE_FOLDER.listFiles().length, csv.allDays().size());
+		assertEquals(TaskDaoCSV.DEFAULT_RESOURCE_FOLDER.listFiles().length, csv.allDays().size());
 
 		// copy all of the data from the csv files to hibernate
 		for(Day day : csv.allDays())
@@ -107,8 +107,8 @@ public class TestTaskDao
 	@Test
 	public void crud()
 	{
-		crud(new TaskDao_Hibernate());
-		crud(new TaskDao_CSV());
+		crud(new TaskDaoHibernate());
+		crud(new TaskDaoCSV());
 	}
 
 	private void crud(TaskDao dao)

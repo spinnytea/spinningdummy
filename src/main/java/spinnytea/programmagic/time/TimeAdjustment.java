@@ -2,6 +2,8 @@ package spinnytea.programmagic.time;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -25,13 +27,13 @@ public class TimeAdjustment
 	private static final Logger logger = LoggerFactory.getLogger(TimeAdjustment.class);
 	private static final Random rand = new Random();
 	private static final Pattern TIME_AND_FREQUENCY = Pattern.compile("(\\d+):(\\d\\d), (\\d+)");
-	private static final ArrayList<String> TIME_SAMPLE = new ArrayList<String>(Arrays.asList("0:15, 10", "0:30, 20", "0:45, 5", "1:00, 30", "1:30, 10", "2:00, 30", "4:30, 10", "10:00, 1"));
+	private static final List<String> TIME_SAMPLE = Arrays.asList("0:15, 10", "0:30, 20", "0:45, 5", "1:00, 30", "1:30, 10", "2:00, 30", "4:30, 10", "10:00, 1");
 
-	TA_Sample best;
+	TimeAdjustmentSample best;
 
 	public TimeAdjustment()
 	{
-		best = new TA_Sample();
+		best = new TimeAdjustmentSample();
 
 		// load the initial data
 		for(String s : TIME_SAMPLE)
@@ -45,6 +47,7 @@ public class TimeAdjustment
 					int seconds = Integer.parseInt(m.group(2));
 					if(seconds > 100)
 						throw new Exception("Minutes must be less than 100 (got: " + seconds + ")");
+					//noinspection MagicNumber
 					best.min_sec_freq_origSecs.add(new int[] { minutes, seconds, Integer.parseInt(m.group(3)), minutes * 60 + seconds });
 				}
 				else
@@ -61,7 +64,7 @@ public class TimeAdjustment
 
 	public void train(int count)
 	{
-		TreeSet<TA_Sample> population = new TreeSet<TA_Sample>();
+		TreeSet<TimeAdjustmentSample> population = new TreeSet<TimeAdjustmentSample>();
 		population.add(best);
 
 		for(int i = count; i > 0; i--)
@@ -81,17 +84,17 @@ public class TimeAdjustment
 	 * @param parents               generate new children from each of these
 	 * @return a list of the best examples from this epoch
 	 */
-	private TreeSet<TA_Sample> epoch(double deviationFromOriginal, double mutationRate, int branchSize, int maxChildren, TreeSet<TA_Sample> parents)
+	private TreeSet<TimeAdjustmentSample> epoch(double deviationFromOriginal, double mutationRate, int branchSize, int maxChildren, Collection<TimeAdjustmentSample> parents)
 	{
-		TreeSet<TA_Sample> ret = new TreeSet<TA_Sample>();
+		TreeSet<TimeAdjustmentSample> ret = new TreeSet<TimeAdjustmentSample>();
 		ret.addAll(parents); // saving parents will help us maintain our current progress
 
 		// branch 10 times off the initial
 		// save the best
-		for(TA_Sample initial : parents)
+		for(TimeAdjustmentSample initial : parents)
 			for(int i = 0; i < branchSize; i++)
 			{
-				TA_Sample next = new TA_Sample();
+				TimeAdjustmentSample next = new TimeAdjustmentSample();
 				// add the times
 				for(int[] msfo : initial.min_sec_freq_origSecs)
 				{
@@ -103,6 +106,7 @@ public class TimeAdjustment
 						int range = (int) (msfo[3] * deviationFromOriginal);
 						time = msfo[3] - range + rand.nextInt(range * 2 + 1);
 					}
+					//noinspection MagicNumber
 					next.min_sec_freq_origSecs.add(new int[] { time / 60, time % 60, msfo[2], msfo[3] });
 				}
 				// we are finished
@@ -117,8 +121,8 @@ public class TimeAdjustment
 	}
 
 	/** This is a sample point that we can branch from. Pick the */
-	private static final class TA_Sample
-	implements Comparable<TA_Sample>
+	private static final class TimeAdjustmentSample
+	implements Comparable<TimeAdjustmentSample>
 	{
 
 		/**
@@ -129,7 +133,7 @@ public class TimeAdjustment
 		 * <dd>int[3] = original absolute seconds (minutes * seconds), used to select new times</dd>
 		 * </dl>
 		 */
-		private ArrayList<int[]> min_sec_freq_origSecs = new ArrayList<int[]>();
+		private final Collection<int[]> min_sec_freq_origSecs = new ArrayList<int[]>();
 		private double variance;
 
 		public int[] countNumbers()
@@ -173,7 +177,7 @@ public class TimeAdjustment
 		}
 
 		@Override
-		public int compareTo(TA_Sample tas)
+		public int compareTo(TimeAdjustmentSample tas)
 		{
 			return new Double(variance).compareTo(tas.variance);
 		}
