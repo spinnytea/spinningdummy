@@ -107,11 +107,11 @@ public class TestTaskDao
 	@Test
 	public void crud()
 	{
-		crud(new TaskDaoHibernate());
-		crud(new TaskDaoCSV());
+		interfaceExhaustive(new TaskDaoHibernate());
+		interfaceExhaustive(new TaskDaoCSV());
 	}
 
-	private void crud(TaskDao dao)
+	private void interfaceExhaustive(TaskDao dao)
 	{
 		// setup a specific date for testing
 		Calendar start = GregorianCalendar.getInstance();
@@ -123,27 +123,35 @@ public class TestTaskDao
 
 		Day day = new Day(start.getTime());
 
+		assertFalse(dao.validateDay(day, Arrays.asList(new Task(start.getTime(), "TEST_Stuff"))));
+		assertFalse(dao.validateDay(day, Arrays.asList(new Task(end.getTime(), null))));
+
 		// create the specific task for testing
 		List<Task> tasks = Arrays.asList(new Task(start.getTime(), "TEST_Stuff"), new Task(end.getTime(), null));
+		assertTrue(dao.validateDay(day, tasks));
 
 		// delete the records for the given day so we start with a clean slate
 		dao.deleteDay(day);
 		assertEquals(Collections.EMPTY_LIST, dao.loadDay(day));
 		assertFalse(dao.dayExists(day));
+		assertFalse(dao.allDays().contains(day));
 
 		// save the elements for the day
 		dao.saveDay(day, tasks);
 		assertEquals(tasks, dao.loadDay(day));
 		assertTrue(dao.dayExists(day));
+		assertTrue(dao.allDays().contains(day));
 
 		// if we do it again, we should still have the same records
 		dao.saveDay(day, tasks);
 		assertEquals(tasks, dao.loadDay(day));
 		assertTrue(dao.dayExists(day));
+		assertTrue(dao.allDays().contains(day));
 
 		// clean up after the test
 		dao.deleteDay(day);
 		assertEquals(Collections.EMPTY_LIST, dao.loadDay(day));
 		assertFalse(dao.dayExists(day));
+		assertFalse(dao.allDays().contains(day));
 	}
 }
