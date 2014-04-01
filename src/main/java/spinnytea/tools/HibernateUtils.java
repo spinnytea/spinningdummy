@@ -10,7 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,22 +22,7 @@ public final class HibernateUtils
 	public static Session openSession()
 	throws HibernateException
 	{
-		return openSession(null);
-	}
-
-	/** @param pathToConfig if null, it will use the <code>hibernate.cfg.xml</code> it finds non the classpath */
-	public static Session openSession(String pathToConfig)
-	throws HibernateException
-	{
-		AnnotationConfiguration config = new AnnotationConfiguration() //
-			.addAnnotatedClass(spinnytea.programmagic.time.hoursdao.Day.class) //
-			.addAnnotatedClass(spinnytea.programmagic.time.hoursdao.Task.class);
-
-		if(pathToConfig != null)
-			config.configure(pathToConfig);
-		else
-			config.configure();
-
+		Configuration config = new Configuration().configure();
 		SessionFactory sessionFactory = config.buildSessionFactory();
 		return sessionFactory.openSession();
 	}

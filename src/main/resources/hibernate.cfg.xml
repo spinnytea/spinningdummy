@@ -14,5 +14,8 @@
         <property name="connection.url">jdbc:h2:exports/hours</property>
         <property name="connection.username"></property>
         <property name="connection.password"></property>
+
+        <mapping class="spinnytea.programmagic.time.hoursdao.Day"/>
+        <mapping class="spinnytea.programmagic.time.hoursdao.Task"/>
     </session-factory>
 </hibernate-configuration>
