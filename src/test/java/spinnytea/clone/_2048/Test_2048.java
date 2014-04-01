@@ -10,14 +10,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TEST moveRight
-// TEST moveUp
-// TEST moveDown
-
-// TEST canMoveLeft
-// TEST canMoveRight
-// TEST canMoveUp
-// TEST canMoveDown
 public class Test_2048
 {
 	public static final Logger logger = LoggerFactory.getLogger(Test_2048.class);
@@ -35,6 +27,8 @@ public class Test_2048
 
 			copyHorizontal(game.getBoard(), row.start);
 			game.testLeft();
+			equalsHorizontal(game.getBoard(), row.start);
+			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveLeft());
 			equalsHorizontal(game.getBoard(), row.start);
 			game.moveLeft(false);
 			equalsHorizontal(game.getBoard(), row.result);
@@ -71,6 +65,8 @@ public class Test_2048
 			copyHorizontalReverse(game.getBoard(), row.start);
 			game.testRight();
 			equalsHorizontalReverse(game.getBoard(), row.start);
+			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveRight());
+			equalsHorizontalReverse(game.getBoard(), row.start);
 			game.moveRight(false);
 			equalsHorizontalReverse(game.getBoard(), row.result);
 		}
@@ -106,6 +102,8 @@ public class Test_2048
 			copyVertical(game.getBoard(), row.start);
 			game.testUp();
 			equalsVertical(game.getBoard(), row.start);
+			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveUp());
+			equalsVertical(game.getBoard(), row.start);
 			game.moveUp(false);
 			equalsVertical(game.getBoard(), row.result);
 		}
@@ -140,6 +138,8 @@ public class Test_2048
 
 			copyVerticalReverse(game.getBoard(), row.start);
 			game.testDown();
+			equalsVerticalReverse(game.getBoard(), row.start);
+			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveDown());
 			equalsVerticalReverse(game.getBoard(), row.start);
 			game.moveDown(false);
 			equalsVerticalReverse(game.getBoard(), row.result);
