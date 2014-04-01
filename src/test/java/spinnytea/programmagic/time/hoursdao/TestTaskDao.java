@@ -54,9 +54,18 @@ public class TestTaskDao
 			{
 				logger.info("Creating dummy test day");
 				@Cleanup
-				// FIXME generate this from dummyTestDay
-				PrintStream ps = new PrintStream(new File("exports/hours/2000_2"));
-				ps.print("Sat Jan 02 09:00:00 EST 2000\nSat Jan 02 08:00:00 EST 2000\nTEST_Stuff\n");
+				PrintStream ps = new PrintStream(new File("exports/hours/" + dummyTestDay.getKey()));
+
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(0);
+				cal.set(Calendar.YEAR, dummyTestDay.getYear());
+				cal.set(Calendar.DAY_OF_YEAR, dummyTestDay.getDayOfYear());
+				cal.set(Calendar.HOUR, 9);
+
+				ps.println(cal.getTime());
+				cal.set(Calendar.HOUR, 8);
+				ps.println(cal.getTime());
+				ps.println("TEST_Stuff");
 			}
 			catch(Exception e)
 			{
