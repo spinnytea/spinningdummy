@@ -3,8 +3,8 @@ package spinnytea.programmagic.maze.algorithms;
 import spinnytea.programmagic.maze.Cell2D;
 import spinnytea.programmagic.maze.callforhelp.DisjointSets;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -62,8 +62,7 @@ implements MazeAlgorithm
 
 		// a list of all the available walls
 		// contains the two rooms, and a direction for ease
-		// TODO is there a better structure for removing a random item? ~ is there a method, better than n^2 of putting a list of items in random order
-		List<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
+		LinkedList<MazeAlgorithmFrontier> walls = new LinkedList<MazeAlgorithmFrontier>();
 		// add all the x-walls
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width - 1; x++)
@@ -73,10 +72,13 @@ implements MazeAlgorithm
 			for(int x = 0; x < width; x++)
 				walls.add(new MazeAlgorithmFrontier(maze[y][x], maze[y + 1][x], Cell2D.Direction.SOUTH));
 
+		// randomize the order of the walls
+		Collections.shuffle(walls, random);
+
 		// pick random walls from the list, knock them down if they belong to two different rooms
 		while(!walls.isEmpty())
 		{
-			MazeAlgorithmFrontier wall = walls.remove(random.nextInt(walls.size()));
+			MazeAlgorithmFrontier wall = walls.remove();
 
 			int set1 = sets.find(wall.getFrom().y * width + wall.getFrom().x);
 			int set2 = sets.find(wall.getTo().y * width + wall.getTo().x);

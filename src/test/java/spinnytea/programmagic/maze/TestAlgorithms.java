@@ -29,7 +29,7 @@ public class TestAlgorithms
 		Cell2D[][] expected = createCells(2, 2);
 		setRow(expected, 0, EAST, SOUTH);
 		setRow(expected, 1, EAST, null);
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 
 		// this is the first seed that produces a different maze
 		// this is a super simple board, after-all
@@ -38,7 +38,7 @@ public class TestAlgorithms
 		expected = createCells(2, 2);
 		setRow(expected, 0, SOUTH, SOUTH);
 		setRow(expected, 1, EAST, null);
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class TestAlgorithms
 		setRow(expected, 4, NORTH, EAST, SOUTH, EAST, SOUTH, SOUTH);
 		setRow(expected, 5, NORTH, WEST, EAST, NORTH, EAST, null);
 
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class TestAlgorithms
 		setRow(expected, 4, NORTH, SOUTH, NORTH, WEST, EAST, NORTH);
 		setRow(expected, 5, NORTH, EAST, EAST, EAST, NORTH, WEST);
 
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 	}
 
 	//
@@ -81,15 +81,18 @@ public class TestAlgorithms
 	{
 		Cell2D[][] cells = new KruskalMaze(2, 2).generateMaze(1L);
 		Cell2D[][] expected = createCells(2, 2);
+		setRow(expected, 0, EAST, SOUTH);
+		setRow(expected, 1, EAST, null);
+		assertArrayEquals(expected, cells);
+
+		// this is the first seed that produces a different maze
+		// this is a super simple board, after-all
+		//noinspection MagicNumber
+		cells = new KruskalMaze(2, 2).generateMaze(256L);
+		expected = createCells(2, 2);
 		setRow(expected, 0, SOUTH, WEST);
 		setRow(expected, 1, EAST, null);
-		assertArrayEquals(cells, expected);
-
-		cells = new KruskalMaze(2, 2).generateMaze(2L);
-		expected = createCells(2, 2);
-		setRow(expected, 0, EAST, SOUTH);
-		setRow(expected, 1, NORTH, null);
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 	}
 
 	@Test
@@ -98,12 +101,12 @@ public class TestAlgorithms
 		Cell2D[][] cells = new KruskalMaze(6, 6).generateMaze(1L);
 
 		Cell2D[][] expected = createCells(6, 6);
-		setRow(expected, 0, SOUTH, WEST, WEST, SOUTH, WEST, WEST);
-		setRow(expected, 1, SOUTH, EAST, NORTH, WEST, WEST, SOUTH);
-		setRow(expected, 2, EAST, SOUTH, NORTH, SOUTH, EAST, SOUTH);
-		setRow(expected, 3, SOUTH, EAST, SOUTH, WEST, EAST, SOUTH);
-		setRow(expected, 4, SOUTH, SOUTH, WEST, WEST, WEST, WEST);
-		setRow(expected, 5, EAST, EAST, EAST, EAST, EAST, null);
+		setRow(expected, 0, SOUTH, EAST, EAST, SOUTH, EAST, SOUTH);
+		setRow(expected, 1, EAST, NORTH, SOUTH, EAST, SOUTH, SOUTH);
+		setRow(expected, 2, EAST, EAST, EAST, NORTH, SOUTH, SOUTH);
+		setRow(expected, 3, EAST, EAST, NORTH, EAST, SOUTH, SOUTH);
+		setRow(expected, 4, NORTH, SOUTH, SOUTH, EAST, SOUTH, SOUTH);
+		setRow(expected, 5, EAST, EAST, EAST, NORTH, EAST, null);
 
 		assertArrayEquals(expected, cells);
 	}
@@ -117,13 +120,13 @@ public class TestAlgorithms
 		Cell2D[][] expected = createCells(2, 2);
 		setRow(expected, 0, SOUTH, WEST);
 		setRow(expected, 1, EAST, null);
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 
 		cells = new PrimMaze(2, 2).generateMaze(2L);
 		expected = createCells(2, 2);
 		setRow(expected, 0, EAST, SOUTH);
 		setRow(expected, 1, NORTH, null);
-		assertArrayEquals(cells, expected);
+		assertArrayEquals(expected, cells);
 	}
 
 	@Test
