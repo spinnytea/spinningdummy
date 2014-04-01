@@ -65,6 +65,7 @@ implements MazeAlgorithm
 		random.setSeed(seed);
 
 		// initialize the maze
+		// connect all the rooms
 		Cell2D[][] maze = new Cell2D[height][width];
 		for(int y = 0; y < maze.length; y++)
 			for(int x = 0; x < maze[0].length; x++)
@@ -77,6 +78,7 @@ implements MazeAlgorithm
 			}
 
 		// a list of all the available chambers to subdivide
+		// an iterative approach (rather than recursive)
 		LinkedList<Chamber> chambers = new LinkedList<Chamber>();
 		chambers.add(new Chamber(0, width - 1, 0, height - 1));
 
@@ -115,8 +117,6 @@ implements MazeAlgorithm
 
 				continue;
 			}
-
-			// TODO add a heuristic to reduce the split range when the width/height is greater than 4
 
 			// if x
 			if(random.nextBoolean())

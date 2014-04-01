@@ -5,8 +5,6 @@ package spinnytea.programmagic.maze;
  * A square "room" on a 2D plane.
  * <p/>
  * This contains a door in all four directions in the same way a doubly-linked-list has a link in both directions.
- * <p/>
- * <b>XXX</b> This certainly isn't the best way to store all the information, but, I need to start somewhere. I'll improve after I get something working.<br>
  */
 public class Cell2D
 {

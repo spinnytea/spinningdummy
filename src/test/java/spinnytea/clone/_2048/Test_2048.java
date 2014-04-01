@@ -26,12 +26,14 @@ public class Test_2048
 			assertEquals(game.getBoard().length, row.start.length);
 
 			copyHorizontal(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractHorizontal(game.getBoard()));
 			game.testLeft();
-			equalsHorizontal(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractHorizontal(game.getBoard()));
 			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveLeft());
-			equalsHorizontal(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractHorizontal(game.getBoard()));
+
 			game.moveLeft(false);
-			equalsHorizontal(game.getBoard(), row.result);
+			assertArrayEquals(row.result, extractHorizontal(game.getBoard()));
 		}
 	}
 
@@ -41,14 +43,12 @@ public class Test_2048
 			board[i][0] = row[i];
 	}
 
-	private void equalsHorizontal(int[][] board, int[] row)
+	private int[] extractHorizontal(int[][] board)
 	{
-		int[] check = new int[row.length];
-
-		for(int i = 0; i < row.length; i++)
+		int[] check = new int[board.length];
+		for(int i = 0; i < board.length; i++)
 			check[i] = board[i][0];
-
-		assertArrayEquals(row, check);
+		return check;
 	}
 
 	@Test
@@ -63,12 +63,14 @@ public class Test_2048
 			assertEquals(game.getBoard().length, row.start.length);
 
 			copyHorizontalReverse(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractHorizontalReverse(game.getBoard()));
 			game.testRight();
-			equalsHorizontalReverse(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractHorizontalReverse(game.getBoard()));
 			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveRight());
-			equalsHorizontalReverse(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractHorizontalReverse(game.getBoard()));
+
 			game.moveRight(false);
-			equalsHorizontalReverse(game.getBoard(), row.result);
+			assertArrayEquals(row.result, extractHorizontalReverse(game.getBoard()));
 		}
 	}
 
@@ -79,13 +81,13 @@ public class Test_2048
 			board[max - i][0] = row[i];
 	}
 
-	private void equalsHorizontalReverse(int[][] board, int[] row)
+	private int[] extractHorizontalReverse(int[][] board)
 	{
-		int max = row.length - 1;
-		int[] check = new int[row.length];
-		for(int i = 0; i < row.length; i++)
+		int max = board.length - 1;
+		int[] check = new int[board.length];
+		for(int i = 0; i < board.length; i++)
 			check[i] = board[max - i][0];
-		assertArrayEquals(row, check);
+		return check;
 	}
 
 	@Test
@@ -100,12 +102,14 @@ public class Test_2048
 			assertEquals(game.getBoard()[0].length, row.start.length);
 
 			copyVertical(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractVertical(game.getBoard()));
 			game.testUp();
-			equalsVertical(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractVertical(game.getBoard()));
 			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveUp());
-			equalsVertical(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractVertical(game.getBoard()));
+
 			game.moveUp(false);
-			equalsVertical(game.getBoard(), row.result);
+			assertArrayEquals(row.result, extractVertical(game.getBoard()));
 		}
 	}
 
@@ -117,12 +121,12 @@ public class Test_2048
 	}
 
 	@SuppressWarnings("ManualArrayCopy") // because it mimics the others
-	private void equalsVertical(int[][] board, int[] row)
+	private int[] extractVertical(int[][] board)
 	{
-		int[] check = new int[row.length];
-		for(int i = 0; i < row.length; i++)
+		int[] check = new int[board[0].length];
+		for(int i = 0; i < board[0].length; i++)
 			check[i] = board[0][i];
-		assertArrayEquals(row, check);
+		return check;
 	}
 
 	@Test
@@ -137,12 +141,14 @@ public class Test_2048
 			assertEquals(game.getBoard()[0].length, row.start.length);
 
 			copyVerticalReverse(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractVerticalReverse(game.getBoard()));
 			game.testDown();
-			equalsVerticalReverse(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractVerticalReverse(game.getBoard()));
 			assertEquals(!Arrays.equals(row.start, row.result), game.canMoveDown());
-			equalsVerticalReverse(game.getBoard(), row.start);
+			assertArrayEquals(row.start, extractVerticalReverse(game.getBoard()));
+
 			game.moveDown(false);
-			equalsVerticalReverse(game.getBoard(), row.result);
+			assertArrayEquals(row.result, extractVerticalReverse(game.getBoard()));
 		}
 	}
 
@@ -153,13 +159,13 @@ public class Test_2048
 			board[0][max - i] = row[i];
 	}
 
-	private void equalsVerticalReverse(int[][] board, int[] row)
+	private int[] extractVerticalReverse(int[][] board)
 	{
-		int max = row.length - 1;
-		int[] check = new int[row.length];
-		for(int i = 0; i < row.length; i++)
+		int max = board[0].length - 1;
+		int[] check = new int[board[0].length];
+		for(int i = 0; i < board[0].length; i++)
 			check[i] = board[0][max - i];
-		assertArrayEquals(row, check);
+		return check;
 	}
 
 	//
