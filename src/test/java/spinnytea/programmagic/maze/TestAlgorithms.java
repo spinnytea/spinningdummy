@@ -135,12 +135,12 @@ public class TestAlgorithms
 		Cell2D[][] cells = new PrimMaze(6, 6).generateMaze(1L);
 
 		Cell2D[][] expected = createCells(6, 6);
-		setRow(expected, 0, EAST, EAST, SOUTH, WEST, WEST, WEST);
-		setRow(expected, 1, NORTH, EAST, SOUTH, NORTH, WEST, WEST);
-		setRow(expected, 2, NORTH, WEST, SOUTH, WEST, WEST, NORTH);
-		setRow(expected, 3, NORTH, SOUTH, WEST, EAST, NORTH, WEST);
-		setRow(expected, 4, NORTH, SOUTH, WEST, SOUTH, NORTH, WEST);
-		setRow(expected, 5, EAST, EAST, EAST, EAST, EAST, null);
+		setRow(expected, 0, SOUTH, WEST, WEST, WEST, WEST, WEST);
+		setRow(expected, 1, EAST, EAST, EAST, SOUTH, WEST, WEST);
+		setRow(expected, 2, NORTH, EAST, NORTH, SOUTH, WEST, WEST);
+		setRow(expected, 3, NORTH, EAST, EAST, SOUTH, NORTH, WEST);
+		setRow(expected, 4, EAST, NORTH, WEST, EAST, SOUTH, WEST);
+		setRow(expected, 5, NORTH, NORTH, EAST, NORTH, EAST, null);
 
 		assertArrayEquals(expected, cells);
 	}
@@ -151,12 +151,12 @@ public class TestAlgorithms
 		Cell2D[][] cells = new PrimMaze(6, 6, 3, 3).generateMaze(1L);
 
 		Cell2D[][] expected = createCells(6, 6);
-		setRow(expected, 0, SOUTH, SOUTH, SOUTH, EAST, SOUTH, SOUTH);
-		setRow(expected, 1, EAST, SOUTH, EAST, NORTH, SOUTH, SOUTH);
-		setRow(expected, 2, NORTH, EAST, SOUTH, SOUTH, WEST, WEST);
-		setRow(expected, 3, EAST, EAST, EAST, null, WEST, WEST);
-		setRow(expected, 4, EAST, NORTH, NORTH, NORTH, WEST, WEST);
-		setRow(expected, 5, EAST, EAST, NORTH, NORTH, NORTH, NORTH);
+		setRow(expected, 0, SOUTH, WEST, SOUTH, SOUTH, SOUTH, SOUTH);
+		setRow(expected, 1, EAST, EAST, EAST, EAST, EAST, SOUTH);
+		setRow(expected, 2, EAST, SOUTH, WEST, SOUTH, WEST, WEST);
+		setRow(expected, 3, EAST, EAST, EAST, null, WEST, NORTH);
+		setRow(expected, 4, EAST, NORTH, NORTH, NORTH, NORTH, WEST);
+		setRow(expected, 5, EAST, NORTH, NORTH, WEST, NORTH, WEST);
 
 		assertArrayEquals(expected, cells);
 	}

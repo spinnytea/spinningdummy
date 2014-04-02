@@ -1,10 +1,9 @@
 package spinnytea.programmagic.maze.algorithms;
 
 import spinnytea.programmagic.maze.Cell2D;
+import spinnytea.tools.RandomAccessCollection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,6 @@ public class PrimMaze
 implements MazeAlgorithm
 {
 	private static final Logger logger = LoggerFactory.getLogger(DepthFirstMaze.class);
-	private static final Random random = new Random();
 
 	private final int startX;
 	private final int startY;
@@ -51,7 +49,6 @@ implements MazeAlgorithm
 	{
 		long start = System.currentTimeMillis();
 		logger.debug("Generating " + this);
-		random.setSeed(seed);
 
 		// initialize the maze
 		Cell2D[][] maze = new Cell2D[height][width];
@@ -61,7 +58,8 @@ implements MazeAlgorithm
 
 		// a list of available walls to pick from
 		// Tuple<Current Room, Next Room, Direction from current to next>
-		List<MazeAlgorithmFrontier> walls = new ArrayList<MazeAlgorithmFrontier>();
+		RandomAccessCollection<MazeAlgorithmFrontier> walls = new RandomAccessCollection<>(new HashMap<MazeAlgorithmFrontier, Integer>());
+		walls.setSeed(seed);
 
 		// add the first edges to the list
 		// randomize order
@@ -74,10 +72,10 @@ implements MazeAlgorithm
 		if(startY < height - 1)
 			walls.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY + 1][startX], Cell2D.Direction.SOUTH));
 
-		while(!walls.isEmpty())
+		while(walls.size() > 0)
 		{
 			// pick a random wall
-			MazeAlgorithmFrontier wall = walls.remove(random.nextInt(walls.size()));
+			MazeAlgorithmFrontier wall = walls.remove();
 
 			// if the next wall isn't in the maze,
 			// - then add it to the maze
