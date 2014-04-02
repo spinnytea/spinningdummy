@@ -10,7 +10,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +20,17 @@ import org.slf4j.LoggerFactory;
 public final class HibernateUtils
 {
 	private static final Logger logger = LoggerFactory.getLogger(HibernateUtils.class);
+	private static SessionFactory sessionFactory = null;
 
 	public static Session openSession()
 	throws HibernateException
 	{
-		Configuration config = new Configuration().configure();
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		if(sessionFactory == null)
+		{
+			Configuration config = new Configuration().configure();
+			ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
+			sessionFactory = config.buildSessionFactory(registry);
+		}
 		return sessionFactory.openSession();
 	}
 
