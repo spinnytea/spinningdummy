@@ -5,12 +5,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.security.Key;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -37,25 +39,26 @@ public final class EncryptionUtils
 		return secretKey.getEncoded();
 	}
 
-	/** when you want to encode a string, make sure you call <code>String.getBytes(Charset.forName("UTF-16"))</code> */
-	public static byte[] encode(byte[] key, byte[] plaintext)
+	private static Cipher initCipher(byte[] key, int opmode)
 	throws Exception
 	{
 		Key keySpec = new SecretKeySpec(key, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+		cipher.init(opmode, keySpec);
+		return cipher;
+	}
 
-		return cipher.doFinal(plaintext);
+	/** when you want to encode a string, make sure you call <code>String.getBytes(Charset.forName("UTF-16"))</code> */
+	public static byte[] encode(byte[] key, byte[] plaintext)
+	throws Exception
+	{
+		return initCipher(key, Cipher.ENCRYPT_MODE).doFinal(plaintext);
 	}
 
 	public static byte[] decode(byte[] key, byte[] ciphertext)
 	throws Exception
 	{
-		Key keySpec = new SecretKeySpec(key, "AES");
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.DECRYPT_MODE, keySpec);
-
-		return cipher.doFinal(ciphertext);
+		return initCipher(key, Cipher.DECRYPT_MODE).doFinal(ciphertext);
 	}
 
 	/** save the data into the file */
@@ -131,5 +134,17 @@ public final class EncryptionUtils
 
 				}
 		}
+	}
+
+	public static SealedObject EncryptObject(Serializable obj, String password)
+	throws Exception
+	{
+		return new SealedObject(obj, initCipher(generateKey(password), Cipher.ENCRYPT_MODE));
+	}
+
+	public static Object DecryptObject(SealedObject obj, String password)
+	throws Exception
+	{
+		return obj.getObject(initCipher(generateKey(password), Cipher.DECRYPT_MODE));
 	}
 }

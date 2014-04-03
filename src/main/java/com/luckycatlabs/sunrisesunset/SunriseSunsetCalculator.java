@@ -23,7 +23,9 @@ import com.luckycatlabs.sunrisesunset.calculator.SolarEventCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
 
 /**
- * Public interface for getting the various types of sunrise/sunset. TODO this project is located at github.com/mikereedell/sunrisesunsetlib-java
+ * Public interface for getting the various types of sunrise/sunset.
+ * TODO this project is located at github.com/mikereedell/sunrisesunsetlib-java
+ * - https://github.com/bat-cha/gradle-plugin-git-dependencies
  */
 public class SunriseSunsetCalculator
 {
