@@ -1,8 +1,10 @@
 package spinnytea.programmagic.maze.algorithms;
 
 import spinnytea.programmagic.maze.Cell2D;
+import spinnytea.programmagic.maze.callforhelp.DisjointSets;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -41,10 +43,10 @@ implements MazeAlgorithm
 			throw new IllegalArgumentException("The width of the maze must be at least 1.");
 		if(height < 1)
 			throw new IllegalArgumentException("The height of the maze must be at least 1.");
-		for(int i = 0; i < starts.length; i++)
+		for(int[] start : starts)
 		{
-			int startX = starts[i][0];
-			int startY = starts[i][1];
+			int startX = start[0];
+			int startY = start[1];
 
 			if(startX >= width || startX < 0)
 				throw new IllegalArgumentException("The starting x position must be in the maze.");
@@ -66,8 +68,12 @@ implements MazeAlgorithm
 			for(int x = 0; x < maze[0].length; x++)
 				maze[y][x] = new Cell2D(y, x);
 
+		// each cell has it's own set to begin with
+		// use y*width + x to get the sets.int (the position in sets)
+		DisjointSets sets = new DisjointSets(height * width);
+
 		// each stack is structure to hold which walls do add to traverse next
-		ArrayList<Deque<MazeAlgorithmFrontier>> wallLists = new ArrayList<Deque<MazeAlgorithmFrontier>>();
+		Collection<Deque<MazeAlgorithmFrontier>> wallLists = new ArrayList<Deque<MazeAlgorithmFrontier>>();
 		// used for randomizing the order of walls
 		ArrayList<MazeAlgorithmFrontier> temp = new ArrayList<MazeAlgorithmFrontier>();
 
@@ -100,11 +106,17 @@ implements MazeAlgorithm
 				Deque<MazeAlgorithmFrontier> walls = iter.next();
 				MazeAlgorithmFrontier wall = walls.pop();
 
-				// if the next wall isn't in the maze,
-				// - then add it to the maze
-				// - and add it's neighbors
-				if(!wall.getTo().inTheMaze())
+				// put these two rooms into the same set
+				int set1 = sets.find(wall.getFrom().y * width + wall.getFrom().x);
+				int set2 = sets.find(wall.getTo().y * width + wall.getTo().x);
+
+				// if the two cells are not part of the same maze, then combine them
+				// this works for extending a maze into new rooms,
+				// as well as combining two separate mazes into one
+				if(set1 != set2)
 				{
+					sets.union(set1, set2);
+
 					Cell2D nextRoom = wall.getTo();
 					wall.getFrom().setRoom(wall.getDirection(), nextRoom);
 
@@ -124,8 +136,6 @@ implements MazeAlgorithm
 					iter.remove();
 			}
 		}
-
-		// TODO combine paths that are not yet connected - use DisjointSets
 
 		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
