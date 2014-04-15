@@ -47,6 +47,11 @@ implements MazeAlgorithm
 	@Override
 	public Cell2D[][] generateMaze(long seed)
 	{
+		return generateMaze(seed, width * height);
+	}
+
+	public Cell2D[][] generateMaze(long seed, int maxRooms)
+	{
 		long start = System.currentTimeMillis();
 		logger.debug("Generating " + this);
 
@@ -72,7 +77,14 @@ implements MazeAlgorithm
 		if(startY < height - 1)
 			walls.add(new MazeAlgorithmFrontier(maze[startY][startX], maze[startY + 1][startX], Cell2D.Direction.SOUTH));
 
-		while(walls.size() > 0)
+		// fence post problem: if we remove one wall, there are two rooms
+		// but a maze with only one room doesn't really make sense
+		if(maxRooms < 1)
+			maxRooms = 1;
+		else
+			maxRooms--;
+
+		while(walls.size() > 0 && maxRooms > 0)
 		{
 			// pick a random wall
 			MazeAlgorithmFrontier wall = walls.remove();
@@ -94,6 +106,8 @@ implements MazeAlgorithm
 					walls.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y - 1][nextRoom.x], Cell2D.Direction.NORTH));
 				if(nextRoom.y < height - 1)
 					walls.add(new MazeAlgorithmFrontier(maze[nextRoom.y][nextRoom.x], maze[nextRoom.y + 1][nextRoom.x], Cell2D.Direction.SOUTH));
+
+				maxRooms--;
 			}
 		}
 

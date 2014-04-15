@@ -1,6 +1,7 @@
 package spinnytea.programmagic.maze;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static spinnytea.programmagic.maze.Cell2D.Direction.EAST;
 import static spinnytea.programmagic.maze.Cell2D.Direction.NORTH;
 import static spinnytea.programmagic.maze.Cell2D.Direction.SOUTH;
@@ -159,6 +160,26 @@ public class TestAlgorithms
 		setRow(expected, 5, EAST, NORTH, NORTH, WEST, NORTH, WEST);
 
 		assertArrayEquals(expected, cells);
+	}
+
+	@Test
+	public void prim_limited()
+	{
+		int count = 50;
+		Cell2D[][] cells = new PrimMaze(10, 10, 5, 5).generateMaze(1L, count);
+		for(int y = 0; y < cells.length; y++)
+			for(int x = 0; x < cells[0].length; x++)
+				if(cells[y][x].inTheMaze())
+					count--;
+		assertEquals(0, count);
+
+		count = 20;
+		cells = new PrimMaze(10, 10, 1, 1).generateMaze(1L, count);
+		for(int y = 0; y < cells.length; y++)
+			for(int x = 0; x < cells[0].length; x++)
+				if(cells[y][x].inTheMaze())
+					count--;
+		assertEquals(0, count);
 	}
 
 	//

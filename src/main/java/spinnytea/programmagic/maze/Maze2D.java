@@ -48,17 +48,18 @@ extends JPanel
 		// now fill in the space with rooms
 		for(int y = 0; y < maze.length; y++)
 			for(int x = 0; x < maze[0].length; x++)
-			{
-				// draw the cell
-				g.fillRect(x * CellSize + WallSize, y * CellSize + WallSize, CellSize - 2 * WallSize, CellSize - 2 * WallSize);
+				if(maze[y][x].inTheMaze())
+				{
+					// draw the cell
+					g.fillRect(x * CellSize + WallSize, y * CellSize + WallSize, CellSize - 2 * WallSize, CellSize - 2 * WallSize);
 
-				// draw the north passage
-				if(maze[y][x].north != null)
-					g.fillRect(x * CellSize + WallSize, y * CellSize - WallSize, CellSize - 2 * WallSize, 2 * WallSize);
-				// draw the west passage
-				if(maze[y][x].west != null)
-					g.fillRect(x * CellSize - WallSize, y * CellSize + WallSize, 2 * WallSize, CellSize - 2 * WallSize);
-			}
+					// draw the north passage
+					if(maze[y][x].north != null)
+						g.fillRect(x * CellSize + WallSize, y * CellSize - WallSize, CellSize - 2 * WallSize, 2 * WallSize);
+					// draw the west passage
+					if(maze[y][x].west != null)
+						g.fillRect(x * CellSize - WallSize, y * CellSize + WallSize, 2 * WallSize, CellSize - 2 * WallSize);
+				}
 
 		// remove the floating pillars when there is a tight box? (created by RecursiveDivisionMaze)
 		for(int y = 0; y < maze.length - 1; y++)
@@ -73,7 +74,7 @@ extends JPanel
 	public static void main(String[] args)
 	{
 		Maze2D maze2D = new Maze2D(new RecursiveDivisionMaze(20, 20, 5, KruskalMaze.class).generateMaze(random.nextLong()));
-//		Maze2D maze2D = new Maze2D(new PrimMaze(10, 10).generateMaze(random.nextLong()));
+//		Maze2D maze2D = new Maze2D(new PrimMaze(10, 10, 4, 4).generateMaze(random.nextLong(), 50));
 
 		JFrame frame = new JFrame("Maze2D");
 		frame.setContentPane(maze2D);
