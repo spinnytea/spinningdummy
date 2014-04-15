@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Random;
 
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
  * <p/>
  * <b>TODO</b> See about generating the map from more than one point ~ how do you combine the different maps?<br>
  */
+@ToString(of = { "width", "height" })
 public class DepthFirstMaze
 implements MazeAlgorithm
 {
@@ -54,9 +56,9 @@ implements MazeAlgorithm
 			throw new IllegalArgumentException("The width of the maze must be at least 1.");
 		if(height < 1)
 			throw new IllegalArgumentException("The height of the maze must be at least 1.");
-		if(startX >= width)
+		if(startX >= width || startX < 0)
 			throw new IllegalArgumentException("The starting x position must be in the maze.");
-		if(startY >= height)
+		if(startY >= height || startY < 0)
 			throw new IllegalArgumentException("The starting y position must be in the maze.");
 	}
 
@@ -124,11 +126,5 @@ implements MazeAlgorithm
 	{
 		while(!temp.isEmpty())
 			walls.push(temp.remove(random.nextInt(temp.size())));
-	}
-
-	@Override
-	public String toString()
-	{
-		return "DepthFirstMaze [width=" + width + ", height=" + height + "]";
 	}
 }

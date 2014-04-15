@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
  * </ol>
  * </ol> </ol>
  */
+@ToString(of = { "width", "height" })
 public class KruskalMaze
 implements MazeAlgorithm
 {
@@ -95,11 +97,5 @@ implements MazeAlgorithm
 		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "KruskalMaze [width=" + width + ", height=" + height + "]";
 	}
 }

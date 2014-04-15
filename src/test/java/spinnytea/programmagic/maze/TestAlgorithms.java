@@ -41,16 +41,20 @@ public class TestAlgorithms
 		setRow(expected, 0, SOUTH, SOUTH);
 		setRow(expected, 1, EAST, null);
 		assertArrayEquals(expected, cells);
+	}
 
-		try
-		{
-			new DepthFirstMaze(2, 2, 3, 3);
-			assertTrue(false);
-		}
-		catch(Exception e)
-		{
-			assertTrue(true);
-		}
+	@Test(expected = IllegalArgumentException.class)
+	public void depthFirst_StartBig()
+	{
+		new DepthFirstMaze(2, 2, 3, 3);
+		assertTrue(false);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void depthFirst_StartSmall()
+	{
+		new DepthFirstMaze(2, 2, -1, -1);
+		assertTrue(false);
 	}
 
 	@Test
@@ -139,16 +143,29 @@ public class TestAlgorithms
 		setRow(expected, 0, EAST, SOUTH);
 		setRow(expected, 1, NORTH, null);
 		assertArrayEquals(expected, cells);
-
 		try
 		{
-			new PrimMaze(2, 2, 3, 3);
+			new PrimMaze(2, 2, -1, -1);
 			assertTrue(false);
 		}
 		catch(Exception e)
 		{
 			assertTrue(true);
 		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void prim_StartLarge()
+	{
+		new PrimMaze(2, 2, 3, 3);
+		assertTrue(false);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void prim_StartSmall()
+	{
+		new PrimMaze(2, 2, -1, -1);
+		assertTrue(false);
 	}
 
 	@Test

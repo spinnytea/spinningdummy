@@ -5,6 +5,7 @@ import spinnytea.tools.RandomAccessCollection;
 
 import java.util.HashMap;
 
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * This is very similar to a {@link DepthFirstMaze}, but instead of keeping a stack for the "depth first", just picks a random wall from the
  * list of available walls.
  */
+@ToString(of = { "width", "height" })
 public class PrimMaze
 implements MazeAlgorithm
 {
@@ -38,9 +40,9 @@ implements MazeAlgorithm
 			throw new IllegalArgumentException("The width of the maze must be at least 1.");
 		if(height < 1)
 			throw new IllegalArgumentException("The height of the maze must be at least 1.");
-		if(startX >= width)
+		if(startX >= width || startX < 0)
 			throw new IllegalArgumentException("The starting x position must be in the maze.");
-		if(startY >= height)
+		if(startY >= height || startY < 0)
 			throw new IllegalArgumentException("The starting y position must be in the maze.");
 	}
 
@@ -113,11 +115,5 @@ implements MazeAlgorithm
 		//noinspection MagicNumber
 		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "PrimMaze [width=" + width + ", height=" + height + "]";
 	}
 }
