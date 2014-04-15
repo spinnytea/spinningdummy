@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
  * current cell.</li>
  * </ol>
  * </ol>
- * <p/>
- * <b>TODO</b> See about generating the map from more than one point ~ how do you combine the different maps?<br>
  */
 @ToString(of = { "width", "height" })
 public class DepthFirstMaze

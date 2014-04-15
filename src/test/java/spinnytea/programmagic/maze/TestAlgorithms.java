@@ -10,6 +10,7 @@ import static spinnytea.programmagic.maze.Cell2D.Direction.WEST;
 
 import spinnytea.programmagic.maze.algorithms.DepthFirstMaze;
 import spinnytea.programmagic.maze.algorithms.KruskalMaze;
+import spinnytea.programmagic.maze.algorithms.MultiDepthFirstMaze;
 import spinnytea.programmagic.maze.algorithms.PrimMaze;
 
 import javax.swing.JFrame;
@@ -219,6 +220,15 @@ public class TestAlgorithms
 				if(cells[y][x].inTheMaze())
 					count--;
 		assertEquals(0, count);
+	}
+
+	//
+
+	@Test
+	public void depthFirst_Compare()
+	{
+		assertArrayEquals(new DepthFirstMaze(6, 6).generateMaze(1L), new MultiDepthFirstMaze(6, 6).generateMaze(1L));
+		assertArrayEquals(new DepthFirstMaze(60, 60).generateMaze(10L), new MultiDepthFirstMaze(60, 60).generateMaze(10L));
 	}
 
 	//
