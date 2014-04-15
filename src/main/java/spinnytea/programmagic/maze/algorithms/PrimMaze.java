@@ -62,7 +62,6 @@ implements MazeAlgorithm
 				maze[y][x] = new Cell2D(y, x);
 
 		// a list of available walls to pick from
-		// Tuple<Current Room, Next Room, Direction from current to next>
 		RandomAccessCollection<MazeAlgorithmFrontier> walls = new RandomAccessCollection<>(new HashMap<MazeAlgorithmFrontier, Integer>());
 		walls.setSeed(seed);
 

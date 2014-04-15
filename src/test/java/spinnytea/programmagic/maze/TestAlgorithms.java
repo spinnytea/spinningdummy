@@ -2,6 +2,7 @@ package spinnytea.programmagic.maze;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static spinnytea.programmagic.maze.Cell2D.Direction.EAST;
 import static spinnytea.programmagic.maze.Cell2D.Direction.NORTH;
 import static spinnytea.programmagic.maze.Cell2D.Direction.SOUTH;
@@ -40,6 +41,16 @@ public class TestAlgorithms
 		setRow(expected, 0, SOUTH, SOUTH);
 		setRow(expected, 1, EAST, null);
 		assertArrayEquals(expected, cells);
+
+		try
+		{
+			new DepthFirstMaze(2, 2, 3, 3);
+			assertTrue(false);
+		}
+		catch(Exception e)
+		{
+			assertTrue(true);
+		}
 	}
 
 	@Test
@@ -128,6 +139,16 @@ public class TestAlgorithms
 		setRow(expected, 0, EAST, SOUTH);
 		setRow(expected, 1, NORTH, null);
 		assertArrayEquals(expected, cells);
+
+		try
+		{
+			new PrimMaze(2, 2, 3, 3);
+			assertTrue(false);
+		}
+		catch(Exception e)
+		{
+			assertTrue(true);
+		}
 	}
 
 	@Test
@@ -163,6 +184,7 @@ public class TestAlgorithms
 	}
 
 	@Test
+	@SuppressWarnings({ "MagicNumber", "ForLoopReplaceableByForEach" })
 	public void prim_limited()
 	{
 		int count = 50;

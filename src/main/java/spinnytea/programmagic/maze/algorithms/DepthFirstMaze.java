@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * </ol>
  * </ol>
  * <p/>
- * <b>TODO</b> See about generating the map from more than one point<br>
+ * <b>TODO</b> See about generating the map from more than one point ~ how do you combine the different maps?<br>
  */
 public class DepthFirstMaze
 implements MazeAlgorithm
@@ -74,7 +74,6 @@ implements MazeAlgorithm
 				maze[y][x] = new Cell2D(y, x);
 
 		// a stack structure to hold which walls do add to traverse next
-		// Tuple<Current Room, Next Room, Direction from current to next>
 		Deque<MazeAlgorithmFrontier> walls = new LinkedList<MazeAlgorithmFrontier>();
 		// used for randomizing the order of walls
 		ArrayList<MazeAlgorithmFrontier> temp = new ArrayList<MazeAlgorithmFrontier>();
