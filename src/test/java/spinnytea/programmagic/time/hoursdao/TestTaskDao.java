@@ -15,14 +15,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import lombok.Cleanup;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class TestTaskDao
 {
-	private static final Logger logger = LoggerFactory.getLogger(TestTaskDao.class);
 	private static final Day dummyTestDay = new Day(2000, 2);
 
 	@BeforeClass
@@ -31,7 +30,7 @@ public class TestTaskDao
 		File folder = new File("exports/hours");
 		if(!folder.exists())
 		{
-			logger.info("Hours folder doesn't exists. It will be deleted upon exit.");
+			log.info("Hours folder doesn't exists. It will be deleted upon exit.");
 			assertTrue(folder.mkdir());
 			folder.deleteOnExit();
 		}
@@ -39,7 +38,7 @@ public class TestTaskDao
 		File db = new File("exports/hours.h2.db");
 		if(!db.exists())
 		{
-			logger.info("Hours database doesn't exists. It will be deleted upon exit.");
+			log.info("Hours database doesn't exists. It will be deleted upon exit.");
 			db.deleteOnExit();
 		}
 	}
@@ -52,7 +51,7 @@ public class TestTaskDao
 		if(csv.allDays().size() == 0)
 			try
 			{
-				logger.info("Creating dummy test day");
+				log.info("Creating dummy test day");
 				@Cleanup
 				PrintStream ps = new PrintStream(new File("exports/hours/" + dummyTestDay.getKey()));
 
@@ -104,7 +103,7 @@ public class TestTaskDao
 
 		if(csv.dayExists(dummyTestDay))
 		{
-			logger.info("Deleting dummy test day");
+			log.info("Deleting dummy test day");
 			csv.deleteDay(dummyTestDay);
 			hib.deleteDay(dummyTestDay);
 		}

@@ -18,13 +18,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EncryptionUtils
 {
-	private static final Logger logger = LoggerFactory.getLogger(EncryptionUtils.class);
 	private static final int SALT = 128;
 
 	public static byte[] generateKey(String password)
@@ -80,7 +79,7 @@ public final class EncryptionUtils
 		}
 		catch(Exception e)
 		{
-			logger.error("Failed to save file.", e);
+			log.error("Failed to save file.", e);
 			file.delete();
 			return false;
 		}
@@ -119,7 +118,7 @@ public final class EncryptionUtils
 		}
 		catch(Exception e)
 		{
-			logger.error("Failed to load file.", e);
+			log.error("Failed to load file.", e);
 			return null;
 		}
 		finally

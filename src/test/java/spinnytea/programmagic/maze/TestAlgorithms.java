@@ -13,18 +13,16 @@ import spinnytea.programmagic.maze.algorithms.TestPrim;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** these test cases have been created from a stable implementation */
+@Slf4j
 @RunWith(Suite.class)
 @Suite.SuiteClasses(value = { TestDepthFirst.class, TestKruskal.class, TestMultiDepthFirst.class, TestPrim.class })
 public class TestAlgorithms
 {
-	private static final Logger logger = LoggerFactory.getLogger(TestAlgorithms.class);
-
 	//
 	// helper methods
 	//
@@ -81,7 +79,7 @@ public class TestAlgorithms
 		}
 		catch(InterruptedException e)
 		{
-			logger.error("what?", e);
+			log.error("what?", e);
 		}
 	}
 }

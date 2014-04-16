@@ -4,20 +4,18 @@ import spinnytea.programmagic.maze.Cell2D;
 import spinnytea.tools.RandomAccessCollection;
 
 import lombok.ToString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p/>
  * This is very similar to a {@link DepthFirstMaze}, but instead of keeping a stack for the "depth first", just picks a random wall from the
  * list of available walls.
  */
+@Slf4j
 @ToString(of = { "width", "height" })
 public class PrimMaze
 implements MazeAlgorithm
 {
-	private static final Logger logger = LoggerFactory.getLogger(DepthFirstMaze.class);
-
 	private final int startX;
 	private final int startY;
 	private final int width;
@@ -53,7 +51,7 @@ implements MazeAlgorithm
 	public Cell2D[][] generateMaze(long seed, int maxRooms)
 	{
 		long start = System.currentTimeMillis();
-		logger.debug("Generating " + this);
+		log.debug("Generating " + this);
 
 		// initialize the maze
 		Cell2D[][] maze = new Cell2D[height][width];
@@ -111,7 +109,7 @@ implements MazeAlgorithm
 		}
 
 		//noinspection MagicNumber
-		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
+		log.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
 	}
 }

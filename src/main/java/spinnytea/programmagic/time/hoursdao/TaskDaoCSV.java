@@ -12,13 +12,12 @@ import java.util.Scanner;
 
 import lombok.Cleanup;
 import lombok.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TaskDaoCSV
 extends TaskDao
 {
-	private static final Logger logger = LoggerFactory.getLogger(TaskDaoCSV.class);
 	public static final File DEFAULT_RESOURCE_FOLDER = new File("exports/hours");
 
 	private final File resourceFolder;
@@ -43,7 +42,7 @@ extends TaskDao
 	@SuppressWarnings("deprecation")
 	public List<Task> loadDay(@NonNull Day day)
 	{
-		logger.debug("load day: " + day);
+		log.debug("load day: " + day);
 
 		List<Task> dates = new ArrayList<Task>();
 
@@ -68,16 +67,16 @@ extends TaskDao
 			catch(NoSuchElementException e)
 			{
 				if(dates.isEmpty())
-					logger.info("day is empty");
+					log.info("day is empty");
 				else
 				{
-					logger.error("corrupt file: " + day);
+					log.error("corrupt file: " + day);
 					dates.clear();
 				}
 			}
 			catch(Throwable t)
 			{
-				logger.error("Failed to load the data: " + day, t);
+				log.error("Failed to load the data: " + day, t);
 				dates.clear();
 			}
 		}
@@ -90,10 +89,10 @@ extends TaskDao
 	@Override
 	public void saveDay(@NonNull Day day, @NonNull List<Task> tasks)
 	{
-		logger.debug("save day: " + day);
+		log.debug("save day: " + day);
 		if(!validateDay(day, tasks))
 		{
-			logger.error("tasks are invalid; they cannot be saved");
+			log.error("tasks are invalid; they cannot be saved");
 			return;
 		}
 
@@ -113,14 +112,14 @@ extends TaskDao
 		}
 		catch(Throwable t)
 		{
-			logger.error("Failed to save the data: " + day, t);
+			log.error("Failed to save the data: " + day, t);
 		}
 	}
 
 	@Override
 	void deleteDay(@NonNull Day day)
 	{
-		logger.debug("delete day: " + day);
+		log.debug("delete day: " + day);
 
 		// delete the file
 		getFile(day).delete();
@@ -129,7 +128,7 @@ extends TaskDao
 	@Override
 	public List<Day> allDays()
 	{
-		logger.debug("all days");
+		log.debug("all days");
 
 		List<Day> days = new ArrayList<Day>();
 
@@ -154,7 +153,7 @@ extends TaskDao
 	@Override
 	public boolean dayExists(Day day)
 	{
-		logger.debug("day exists: " + day);
+		log.debug("day exists: " + day);
 		return getFile(day).exists();
 	}
 }

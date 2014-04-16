@@ -5,8 +5,7 @@ import spinnytea.programmagic.maze.Cell2D;
 import java.util.LinkedList;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p/>
@@ -18,10 +17,10 @@ import org.slf4j.LoggerFactory;
  * smaller chambers separated by four walls. Choose three of the four walls at random, and open a one cell-wide hole at a random point in each of the three.
  * Continue in this manner recursively, until every chamber has a width of one cell in either of the two directions.
  */
+@Slf4j
 public class RecursiveDivisionMaze
 implements MazeAlgorithm
 {
-	private static final Logger logger = LoggerFactory.getLogger(RecursiveDivisionMaze.class);
 	private static final Random random = new Random();
 
 	private final int width;
@@ -61,7 +60,7 @@ implements MazeAlgorithm
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
-		logger.debug("Generating " + this);
+		log.debug("Generating " + this);
 		random.setSeed(seed);
 
 		// initialize the maze
@@ -161,7 +160,7 @@ implements MazeAlgorithm
 		}
 
 		//noinspection MagicNumber
-		logger.debug("Finished " + this + " in " + ((System.currentTimeMillis() - start) / 1000.0) + " seconds");
+		log.debug("Finished " + this + " in " + ((System.currentTimeMillis() - start) / 1000.0) + " seconds");
 		return maze;
 	}
 

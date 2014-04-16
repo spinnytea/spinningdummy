@@ -8,8 +8,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import lombok.ToString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p/>
@@ -25,11 +24,11 @@ import org.slf4j.LoggerFactory;
  * </ol>
  * </ol> </ol>
  */
+@Slf4j
 @ToString(of = { "width", "height" })
 public class KruskalMaze
 implements MazeAlgorithm
 {
-	private static final Logger logger = LoggerFactory.getLogger(KruskalMaze.class);
 	private static final Random random = new Random();
 
 	private final int width;
@@ -49,7 +48,7 @@ implements MazeAlgorithm
 	public Cell2D[][] generateMaze(long seed)
 	{
 		long start = System.currentTimeMillis();
-		logger.debug("Generating " + this);
+		log.debug("Generating " + this);
 		random.setSeed(seed);
 
 		// initialize the maze
@@ -95,7 +94,7 @@ implements MazeAlgorithm
 		}
 
 		//noinspection MagicNumber
-		logger.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
+		log.debug("Finished " + this + " in " + (System.currentTimeMillis() - start) / 1000.0 + " seconds");
 		return maze;
 	}
 }

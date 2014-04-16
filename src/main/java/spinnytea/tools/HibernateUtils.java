@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,13 +14,11 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HibernateUtils
 {
-	private static final Logger logger = LoggerFactory.getLogger(HibernateUtils.class);
 	private static SessionFactory sessionFactory = null;
 
 	public static Session openSession()
@@ -57,7 +56,7 @@ public final class HibernateUtils
 				session.save(t);
 				break;
 			case DELETE:
-				logger.info("Deleting obj: {}", t);
+				log.info("Deleting obj: {}", t);
 				session.delete(t);
 				break;
 			}
@@ -100,7 +99,7 @@ public final class HibernateUtils
 					session.save(t);
 				break;
 			case DELETE:
-				logger.info("Deleting {} objs", list.size());
+				log.info("Deleting {} objs", list.size());
 				for(T t : list)
 					session.delete(t);
 				break;

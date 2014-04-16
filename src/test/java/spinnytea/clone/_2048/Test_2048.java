@@ -6,14 +6,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class Test_2048
 {
-	public static final Logger logger = LoggerFactory.getLogger(Test_2048.class);
-
 	@Test
 	public void moveLeft()
 	{
@@ -21,7 +19,7 @@ public class Test_2048
 
 		for(Row row : testCases)
 		{
-			logger.trace("moveLeft: " + Arrays.toString(row.start));
+			log.trace("moveLeft: " + Arrays.toString(row.start));
 			assertEquals(row.start.length, row.result.length);
 			assertEquals(game.getBoard().length, row.start.length);
 
@@ -58,7 +56,7 @@ public class Test_2048
 
 		for(Row row : testCases)
 		{
-			logger.trace("moveRight: " + Arrays.toString(row.start));
+			log.trace("moveRight: " + Arrays.toString(row.start));
 			assertEquals(row.start.length, row.result.length);
 			assertEquals(game.getBoard().length, row.start.length);
 
@@ -97,7 +95,7 @@ public class Test_2048
 
 		for(Row row : testCases)
 		{
-			logger.trace("moveUp: " + Arrays.toString(row.start));
+			log.trace("moveUp: " + Arrays.toString(row.start));
 			assertEquals(row.start.length, row.result.length);
 			assertEquals(game.getBoard()[0].length, row.start.length);
 
@@ -136,7 +134,7 @@ public class Test_2048
 
 		for(Row row : testCases)
 		{
-			logger.trace("moveDown: " + Arrays.toString(row.start));
+			log.trace("moveDown: " + Arrays.toString(row.start));
 			assertEquals(row.start.length, row.result.length);
 			assertEquals(game.getBoard()[0].length, row.start.length);
 
@@ -181,17 +179,17 @@ public class Test_2048
 
 	// these are coded while imagining a moveLeft
 	private static final Row[] testCases = { //
-			new Row(new int[] { 2, 0, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
-			new Row(new int[] { 0, 2, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
-			new Row(new int[] { 0, 0, 0, 2 }, new int[] { 2, 0, 0, 0 }), //
-			new Row(new int[] { 0, 2, 4, 0 }, new int[] { 2, 4, 0, 0 }), //
-			new Row(new int[] { 2, 0, 0, 4 }, new int[] { 2, 4, 0, 0 }), //
-			new Row(new int[] { 2, 2, 0, 0 }, new int[] { 4, 0, 0, 0 }), //
-			new Row(new int[] { 0, 2, 2, 0 }, new int[] { 4, 0, 0, 0 }), //
-			new Row(new int[] { 4, 2, 2, 4 }, new int[] { 4, 4, 4, 0 }), //
-			new Row(new int[] { 4, 4, 4, 0 }, new int[] { 8, 4, 0, 0 }), //
-			new Row(new int[] { 2, 2, 4, 4 }, new int[] { 4, 8, 0, 0 }), //
-			new Row(new int[] { 2, 2, 2, 2 }, new int[] { 4, 4, 0, 0 }), //
-			new Row(new int[] { 4, 4, 0, 0 }, new int[] { 8, 0, 0, 0 }), //
+	new Row(new int[] { 2, 0, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
+	new Row(new int[] { 0, 2, 0, 0 }, new int[] { 2, 0, 0, 0 }), //
+	new Row(new int[] { 0, 0, 0, 2 }, new int[] { 2, 0, 0, 0 }), //
+	new Row(new int[] { 0, 2, 4, 0 }, new int[] { 2, 4, 0, 0 }), //
+	new Row(new int[] { 2, 0, 0, 4 }, new int[] { 2, 4, 0, 0 }), //
+	new Row(new int[] { 2, 2, 0, 0 }, new int[] { 4, 0, 0, 0 }), //
+	new Row(new int[] { 0, 2, 2, 0 }, new int[] { 4, 0, 0, 0 }), //
+	new Row(new int[] { 4, 2, 2, 4 }, new int[] { 4, 4, 4, 0 }), //
+	new Row(new int[] { 4, 4, 4, 0 }, new int[] { 8, 4, 0, 0 }), //
+	new Row(new int[] { 2, 2, 4, 4 }, new int[] { 4, 8, 0, 0 }), //
+	new Row(new int[] { 2, 2, 2, 2 }, new int[] { 4, 4, 0, 0 }), //
+	new Row(new int[] { 4, 4, 0, 0 }, new int[] { 8, 0, 0, 0 }), //
 	};
 }

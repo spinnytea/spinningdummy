@@ -6,40 +6,38 @@ import java.util.List;
 
 import lombok.Cleanup;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class TaskDaoHibernate
 extends TaskDao
 {
-	private static final Logger logger = LoggerFactory.getLogger(TaskDaoHibernate.class);
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Task> loadDay(@NonNull Day day)
 	{
-		logger.debug("load day: " + day);
+		log.debug("load day: " + day);
 
 		@Cleanup
 		Session session = HibernateUtils.openSession();
 		// query for the given time range
 		return session.createCriteria(Task.class) //
-			.add(Restrictions.eq(FIELD_DAY, day)) //
-			.addOrder(Order.asc(FIELD_START)) //
-			.list();
+		.add(Restrictions.eq(FIELD_DAY, day)) //
+		.addOrder(Order.asc(FIELD_START)) //
+		.list();
 	}
 
 	@Override
 	public void saveDay(@NonNull Day day, @NonNull List<Task> tasks)
 	{
-		logger.debug("save day: " + day);
+		log.debug("save day: " + day);
 		if(!validateDay(day, tasks))
 		{
-			logger.error("tasks are invalid; they cannot be saved");
+			log.error("tasks are invalid; they cannot be saved");
 			return;
 		}
 
@@ -55,14 +53,14 @@ extends TaskDao
 		}
 		catch(HibernateException e)
 		{
-			logger.error("Could not save the tasks", e);
+			log.error("Could not save the tasks", e);
 		}
 	}
 
 	@Override
 	void deleteDay(@NonNull Day day)
 	{
-		logger.debug("delete day: " + day);
+		log.debug("delete day: " + day);
 		@Cleanup
 		Session session = HibernateUtils.openSession();
 		// first, remove all the tasks for the given day
@@ -74,7 +72,7 @@ extends TaskDao
 	@SuppressWarnings("unchecked")
 	public List<Day> allDays()
 	{
-		logger.debug("all days");
+		log.debug("all days");
 		@Cleanup
 		Session session = HibernateUtils.openSession();
 		return session.createCriteria(Day.class).list();
@@ -83,11 +81,11 @@ extends TaskDao
 	@Override
 	public boolean dayExists(Day day)
 	{
-		logger.debug("day exists: " + day);
+		log.debug("day exists: " + day);
 		@Cleanup
 		Session session = HibernateUtils.openSession();
 		return null != session.createCriteria(Day.class) //
-			.add(Restrictions.idEq(day.getKey())) //
-			.uniqueResult();
+		.add(Restrictions.idEq(day.getKey())) //
+		.uniqueResult();
 	}
 }

@@ -9,8 +9,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <dl>
@@ -22,9 +21,9 @@ import org.slf4j.LoggerFactory;
  * </dl>
  * Implemented as a genetic algorithm
  */
+@Slf4j
 public class TimeAdjustment
 {
-	private static final Logger logger = LoggerFactory.getLogger(TimeAdjustment.class);
 	private static final Random rand = new Random();
 	private static final Pattern TIME_AND_FREQUENCY = Pattern.compile("(\\d+):(\\d\\d), (\\d+)");
 	private static final List<String> TIME_SAMPLE = Arrays.asList("0:15, 10", "0:30, 20", "0:45, 5", "1:00, 30", "1:30, 10", "2:00, 30", "4:30, 10", "10:00, 1");
@@ -55,7 +54,7 @@ public class TimeAdjustment
 			}
 			catch(Exception e)
 			{
-				logger.error("Did not match pattern: " + s, e);
+				log.error("Did not match pattern: " + s, e);
 			}
 		}
 
