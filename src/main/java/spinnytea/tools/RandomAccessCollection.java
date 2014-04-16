@@ -1,7 +1,7 @@
 package spinnytea.tools;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Collection;
 import java.util.Random;
 
 import lombok.RequiredArgsConstructor;
@@ -10,11 +10,10 @@ import lombok.RequiredArgsConstructor;
 public class RandomAccessCollection<T>
 {
 	private final Random random = new Random();
-	// a HashMap is O(1), but more memory
-	// a TreeMap is less memory, but O(log(n))
-	private final Map<T, Integer> map;
-	// this one needs to be random access
-	private final ArrayList<T> list = new ArrayList<>();
+
+	// list needs to be random access; linked list won't work
+	@SuppressWarnings({ "CollectionDeclaredAsConcreteClass", "TypeMayBeWeakened" })
+	private final ArrayList<T> list = new ArrayList<T>();
 
 	public void setSeed(long seed)
 	{
@@ -24,10 +23,12 @@ public class RandomAccessCollection<T>
 	/** add an element to the collection */
 	public void add(T t)
 	{
-		// add the element to the list (at the end)
-		int pos = list.size();
-		map.put(t, pos);
-		list.add(pos, t);
+		list.add(t);
+	}
+
+	public void addAll(Collection<T> ts)
+	{
+		list.addAll(ts);
 	}
 
 	/** remove a random element from the list */
@@ -37,9 +38,10 @@ public class RandomAccessCollection<T>
 			return null;
 
 		int retIdx = random.nextInt(list.size());
+		int lastIdx = list.size() - 1;
+
 		T ret = list.get(retIdx);
 
-		int lastIdx = list.size() - 1;
 		if(retIdx < lastIdx)
 		{
 			// if it isn't the last element
@@ -47,13 +49,8 @@ public class RandomAccessCollection<T>
 			// then we can simply remove the last element
 			T last = list.get(lastIdx);
 			list.set(retIdx, last);
-
-			// update this value in the map
-			map.put(last, retIdx);
 		}
 
-		// remove ret from the map
-		map.remove(ret);
 		// remove the last element from the map
 		list.remove(lastIdx);
 

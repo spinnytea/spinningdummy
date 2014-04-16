@@ -3,27 +3,14 @@ package spinnytea.tools;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.util.HashMap;
-import java.util.TreeMap;
-
 import org.junit.Test;
 
 public class TestRandomAccessCollection
 {
 	@Test
-	public void hash()
+	public void test()
 	{
-		test(new RandomAccessCollection<String>(new HashMap<String, Integer>()));
-	}
-
-	@Test
-	public void tree()
-	{
-		test(new RandomAccessCollection<String>(new TreeMap<String, Integer>()));
-	}
-
-	private void test(RandomAccessCollection<String> rac)
-	{
+		RandomAccessCollection<String> rac = new RandomAccessCollection<String>();
 		rac.setSeed(1L);
 
 		// there is nothing in the list

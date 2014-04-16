@@ -3,8 +3,6 @@ package spinnytea.programmagic.maze.algorithms;
 import spinnytea.programmagic.maze.Cell2D;
 import spinnytea.tools.RandomAccessCollection;
 
-import java.util.HashMap;
-
 import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +62,7 @@ implements MazeAlgorithm
 				maze[y][x] = new Cell2D(y, x);
 
 		// a list of available walls to pick from
-		RandomAccessCollection<MazeAlgorithmFrontier> walls = new RandomAccessCollection<>(new HashMap<MazeAlgorithmFrontier, Integer>());
+		RandomAccessCollection<MazeAlgorithmFrontier> walls = new RandomAccessCollection<MazeAlgorithmFrontier>();
 		walls.setSeed(seed);
 
 		// add the first edges to the list
