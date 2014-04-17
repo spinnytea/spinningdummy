@@ -1,4 +1,4 @@
-package spinnytea.tools.p2p;
+package spinnytea.tools.net;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
