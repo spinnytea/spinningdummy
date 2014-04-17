@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * This class is designed to send and receive java objects. Implementations are basically state machines that will handle objects as they become available. This
  * class enforces a protocol; it will send a protocol and wait to receive a protocol from the connection.
- * <p>
+ * <p/>
  * Implementations must have a NoArgsConstructor
- * <p>
+ * <p/>
  * Pro Tip: It is probably a good design to send a whole message/action as a single object.
  */
 @Slf4j
@@ -78,7 +78,7 @@ implements Runnable
 				if(myServer == null || myServer.isRunning())
 				{
 					// should this be an error?
-					log.warn("Invalid connection from (" + mySocket.getInetAddress().toString() + "); I wonder what they wanted.", e);
+					log.warn("Invalid connection from (" + mySocket.getInetAddress() + "); I wonder what they wanted.", e);
 					close();
 				}
 			}
@@ -171,7 +171,7 @@ implements Runnable
 
 	/**
 	 * This is the protocol that will be sent as soon as we start the connection.
-	 * <p>
+	 * <p/>
 	 * It is recommended that the protocol have a name and number; what is the protocol for, and what iteration is it on. (e.g. peer_v1 or server_v1)
 	 */
 	protected abstract String getProtocol();
@@ -179,7 +179,7 @@ implements Runnable
 	/**
 	 * the first thing the connection should receive is a protocol. the protocol acts as a contract between producer and consumer. It let's the consumer know
 	 * what kind of data to expect from the producer.
-	 * 
+	 *
 	 * @return true if the connection will be accepted; false if the connection should be closed
 	 */
 	protected abstract boolean acceptProtocol(String protocol);

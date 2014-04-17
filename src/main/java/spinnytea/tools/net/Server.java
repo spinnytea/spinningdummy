@@ -19,10 +19,10 @@ public class Server<T extends Connection>
 implements Runnable
 {
 	/** the class that will do the consuming */
-	private Class<T> consumerClazz;
+	private final Class<T> consumerClazz;
 
 	/** the socket to listen on */
-	private ServerSocket serverSocket;
+	private final ServerSocket serverSocket;
 
 	/** when we are supposed to stop, then this will be set to false; this will signal to the connections to disconnect */
 	@Getter
@@ -30,7 +30,7 @@ implements Runnable
 	private boolean running;
 
 	/** a list to store the current connects; this way they can be shut down */
-	private Collection<Connection> connections;
+	private final Collection<Connection> connections;
 
 	public Server(int port, Class<T> consumerClazz)
 	throws IOException
@@ -45,8 +45,8 @@ implements Runnable
 	{
 		connections.add(conn);
 		log.warn("New connection!" + //
-		"\n\tFrom: " + conn.getMySocket().getInetAddress().toString() + ":" + conn.getMySocket().getPort() + //
-		"\n\tTo:   " + conn.getMySocket().getLocalSocketAddress().toString());
+		"\n\tFrom: " + conn.getMySocket().getInetAddress() + ":" + conn.getMySocket().getPort() + //
+		"\n\tTo:   " + conn.getMySocket().getLocalSocketAddress());
 		log.debug("There are now " + connections.size() + " connections");
 	}
 
@@ -55,8 +55,8 @@ implements Runnable
 	{
 		connections.remove(conn);
 		log.info("Closing connection!" + //
-		"\n\tFrom: " + conn.getMySocket().getInetAddress().toString() + ":" + conn.getMySocket().getPort() + //
-		"\n\tTo:   " + conn.getMySocket().getLocalSocketAddress().toString());
+		"\n\tFrom: " + conn.getMySocket().getInetAddress() + ":" + conn.getMySocket().getPort() + //
+		"\n\tTo:   " + conn.getMySocket().getLocalSocketAddress());
 		log.debug("There are now " + connections.size() + " connections");
 	}
 
