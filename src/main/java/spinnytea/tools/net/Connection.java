@@ -112,7 +112,7 @@ implements Runnable
 		}
 	}
 
-	protected void sendObject(Object obj)
+	protected final void sendObject(Object obj)
 	{
 		try
 		{
@@ -131,7 +131,7 @@ implements Runnable
 	}
 
 	/** when we are finished with the connect, then close it ~ this will call cleanup */
-	protected void close()
+	protected final void close()
 	{
 		if(running)
 		{
@@ -188,5 +188,6 @@ implements Runnable
 	protected abstract void nextObject(Object obj);
 
 	/** the connection is going to close NOW, so take care of your last rights; this may be called at any time */
-	protected abstract void cleanup();
+	protected void cleanup()
+	{}
 }

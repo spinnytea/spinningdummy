@@ -41,7 +41,7 @@ implements Runnable
 	}
 
 	@Synchronized("connections")
-	public void addConnection(Connection conn)
+	public final void addConnection(Connection conn)
 	{
 		connections.add(conn);
 		log.warn("New connection!" + //
@@ -51,7 +51,7 @@ implements Runnable
 	}
 
 	@Synchronized("connections")
-	public void removeConnection(Connection conn)
+	public final void removeConnection(Connection conn)
 	{
 		connections.remove(conn);
 		log.info("Closing connection!" + //
@@ -61,7 +61,7 @@ implements Runnable
 	}
 
 	@Override
-	public void run()
+	public final void run()
 	{
 		log.info("Starting server");
 
@@ -95,6 +95,10 @@ implements Runnable
 				}
 			} // end while(running)
 		}
+		catch(Exception e)
+		{
+			log.error("Unknown exception", e);
+		}
 		finally
 		{
 			// just in case
@@ -105,7 +109,7 @@ implements Runnable
 		log.info("End of run method reached for the Server");
 	}
 
-	public void close()
+	public final void close()
 	{
 		log.info("Shutting down the server.");
 
