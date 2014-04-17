@@ -6,12 +6,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -27,7 +33,7 @@ public final class EncryptionUtils
 	private static final int SALT = 128;
 
 	public static byte[] generateKey(String password)
-	throws Exception
+	throws UnsupportedEncodingException, NoSuchAlgorithmException
 	{
 		byte[] keyStart = password.getBytes("UTF-16");
 		KeyGenerator generator = KeyGenerator.getInstance("AES");
@@ -39,7 +45,7 @@ public final class EncryptionUtils
 	}
 
 	private static Cipher initCipher(byte[] key, int opmode)
-	throws Exception
+	throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
 	{
 		Key keySpec = new SecretKeySpec(key, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
@@ -49,13 +55,13 @@ public final class EncryptionUtils
 
 	/** when you want to encode a string, make sure you call <code>String.getBytes(Charset.forName("UTF-16"))</code> */
 	public static byte[] encode(byte[] key, byte[] plaintext)
-	throws Exception
+	throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException
 	{
 		return initCipher(key, Cipher.ENCRYPT_MODE).doFinal(plaintext);
 	}
 
 	public static byte[] decode(byte[] key, byte[] ciphertext)
-	throws Exception
+	throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException
 	{
 		return initCipher(key, Cipher.DECRYPT_MODE).doFinal(ciphertext);
 	}
@@ -136,13 +142,13 @@ public final class EncryptionUtils
 	}
 
 	public static SealedObject EncryptObject(Serializable obj, String password)
-	throws Exception
+	throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException
 	{
 		return new SealedObject(obj, initCipher(generateKey(password), Cipher.ENCRYPT_MODE));
 	}
 
 	public static Object DecryptObject(SealedObject obj, String password)
-	throws Exception
+	throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, ClassNotFoundException, BadPaddingException, IllegalBlockSizeException
 	{
 		return obj.getObject(initCipher(generateKey(password), Cipher.DECRYPT_MODE));
 	}
