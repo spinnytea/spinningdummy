@@ -37,7 +37,7 @@ implements Runnable
 	/**
 	 * @param server this can be null; if it is, then it will not be managed by anything; it will be a basic client connection
 	 */
-	protected final void start(Socket socket, Server<?> server)
+	public final void start(Socket socket, Server<?> server)
 	throws IOException
 	{
 		mySocket = socket;
