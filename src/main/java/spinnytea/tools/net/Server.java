@@ -63,10 +63,14 @@ implements Runnable
 	@Override
 	public final void run()
 	{
+		if(running)
+			return;
+
 		log.info("Starting server");
 
 		try
 		{
+			running = true;
 			while(running)
 			{
 				log.debug("Waiting for a connection");
@@ -111,6 +115,9 @@ implements Runnable
 
 	public final void close()
 	{
+		if(!running)
+			return;
+
 		log.info("Shutting down the server.");
 
 		// tell everything that it's time to stop
