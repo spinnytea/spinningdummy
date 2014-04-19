@@ -7,13 +7,14 @@ import spinnytea.programmagic.time.hoursdao.TestTaskDao;
 import spinnytea.tools.TestEncryption;
 import spinnytea.tools.TestID;
 import spinnytea.tools.TestRandomAccessCollection;
+import spinnytea.tools.TestServer;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @SuppressWarnings("EmptyClass")
 @RunWith(Suite.class)
-@Suite.SuiteClasses(value = { TestID.class, TestEncryption.class, TestRandomAccessCollection.class, //
+@Suite.SuiteClasses(value = { TestID.class, TestEncryption.class, TestRandomAccessCollection.class, TestServer.class, //
 TestTaskDao.class, //
 TestAlgorithms.class, TestDisjointSets.class, //
 Test_2048.class })

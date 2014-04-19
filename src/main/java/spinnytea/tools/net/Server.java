@@ -117,7 +117,7 @@ implements Runnable
 	{
 		if(!running)
 			return;
-		
+
 		log.info("Shutting down the server.");
 
 		// tell everything that it's time to stop
