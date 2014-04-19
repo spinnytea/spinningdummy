@@ -50,6 +50,11 @@ task docs(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
 javadoc {
     options.links = [
             "http://docs.oracle.com/javase/7/docs/api/",
@@ -58,4 +63,5 @@ javadoc {
 
 artifacts {
     archives docs
+    archives sourcesJar
 }
