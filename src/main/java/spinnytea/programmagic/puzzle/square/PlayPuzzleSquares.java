@@ -58,7 +58,7 @@ public class PlayPuzzleSquares
 	private static Board mensaBoard1()
 	{
 		Piece[] pieces = mensaPieces();
-		Board b = new Board("Mensa Board 1", 10, 6, pieces[2], pieces[3], pieces[4], pieces[9], pieces[10], pieces[13], pieces[14], pieces[15], pieces[16],
+		Board b = new Board("Mensa Board 1", 10, 6, pieces[2], pieces[3], pieces[5], pieces[9], pieces[10], pieces[13], pieces[14], pieces[15], pieces[16],
 		pieces[18]);
 		b.placePiece(0, 0, 4, Transform.N_270);
 		b.getPieces()[0].setFixed(true);
