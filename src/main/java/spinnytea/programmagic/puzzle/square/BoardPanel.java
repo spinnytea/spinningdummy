@@ -119,12 +119,13 @@ extends JPanel
 				case KeyEvent.VK_ENTER:
 				case KeyEvent.VK_SPACE:
 					if(p.isPlaced())
-					{
 						board.removePiece(selectedIdx);
-					}
 					else
 						board.placePiece(selectedIdx, selectedX, selectedY, selectedT);
 					break;
+				case KeyEvent.VK_ESCAPE:
+					for(int idx = 0; idx < pieces.length; idx++)
+						board.removePiece(idx);
 				}
 
 				repaint();

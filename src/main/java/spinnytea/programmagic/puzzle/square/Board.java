@@ -113,6 +113,8 @@ public class Board
 
 		if(!p.isPlaced())
 			return;
+		if(p.isFixed())
+			return;
 
 		// this will find all places regardless of the transform
 		int max = Math.max(p.getHeight(), p.getWidth());
