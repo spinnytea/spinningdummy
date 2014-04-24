@@ -6,13 +6,20 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import lombok.NonNull;
 
@@ -66,71 +73,118 @@ extends JPanel
 		setPreferredSize(new Dimension((board.getWidth() + 6) * SQUARE_SIZE, (board.getHeight() + 2) * 3 * SQUARE_SIZE));
 	}
 
-	public KeyListener getKeyListener()
+	public static JMenuBar buildJMenuBar()
 	{
-		return new KeyAdapter()
+		JMenuBar menuBar = new JMenuBar();
+		JMenuItem keyMap = new JMenuItem("Keys");
+		keyMap.addActionListener(new ActionListener()
 		{
 			@Override
-			public void keyPressed(KeyEvent evt)
+			public void actionPerformed(ActionEvent arg0)
 			{
-				// these options are locked when the piece has been placed
-				Piece p = pieces[selectedIdx];
-				if(!p.isPlaced())
+				StringBuilder description = new StringBuilder();
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_LEFT)).append(" - move selected piece left\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_RIGHT)).append(" - move selected piece right\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_UP)).append(" - move selected piece up\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_DOWN)).append(" - move selected piece down\n");
+				description.append("\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_E)).append(" - rotate selected piece left\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_T)).append(" - rotate selected piece right\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_R)).append(" - reverse selected piece\n");
+				description.append("\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_MINUS)).append(", ").append(KeyEvent.getKeyText(KeyEvent.VK_PAGE_DOWN))
+					.append(" - select previous piece\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_PLUS)).append(", ").append(KeyEvent.getKeyText(KeyEvent.VK_PAGE_UP))
+					.append(" - select next piece\n");
+				description.append("\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_ENTER)).append(", ").append(KeyEvent.getKeyText(KeyEvent.VK_SPACE))
+					.append(" - place/remove selected piece\n");
+				description.append(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)).append(" - reset board");
+
+				JFrame frame = new JFrame("Keys");
+				frame.setContentPane(new JTextArea(description.toString()));
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.pack();
+				frame.setVisible(true);
+			}
+		});
+
+		JMenu aboutMenu = new JMenu("About");
+		aboutMenu.add(keyMap);
+		menuBar.add(aboutMenu);
+
+		return menuBar;
+	}
+
+	private KeyListener keyListener = null;
+
+	public KeyListener getKeyListener()
+	{
+		if(keyListener == null)
+			keyListener = new KeyAdapter()
+			{
+				@Override
+				public void keyPressed(KeyEvent evt)
 				{
+					// these options are locked when the piece has been placed
+					Piece p = pieces[selectedIdx];
+					if(!p.isPlaced())
+					{
+						switch(evt.getKeyCode())
+						{
+						case KeyEvent.VK_LEFT:
+							selectedX--;
+							break;
+						case KeyEvent.VK_RIGHT:
+							selectedX++;
+							break;
+						case KeyEvent.VK_UP:
+							selectedY--;
+							break;
+						case KeyEvent.VK_DOWN:
+							selectedY++;
+							break;
+
+						case KeyEvent.VK_E:
+							selectedT = selectedT.prev();
+							break;
+						case KeyEvent.VK_T:
+							selectedT = selectedT.next();
+							break;
+						case KeyEvent.VK_R:
+							selectedT = selectedT.reverse();
+							break;
+						}
+					}
+
 					switch(evt.getKeyCode())
 					{
-					case KeyEvent.VK_LEFT:
-						selectedX--;
+					case KeyEvent.VK_PAGE_DOWN:
+					case KeyEvent.VK_MINUS:
+					case KeyEvent.VK_UNDERSCORE:
+						selectPrev();
 						break;
-					case KeyEvent.VK_RIGHT:
-						selectedX++;
+					case KeyEvent.VK_PAGE_UP:
+					case KeyEvent.VK_PLUS:
+					case KeyEvent.VK_EQUALS:
+						selectNext();
 						break;
-					case KeyEvent.VK_UP:
-						selectedY--;
+					case KeyEvent.VK_ENTER:
+					case KeyEvent.VK_SPACE:
+						if(p.isPlaced())
+							board.removePiece(selectedIdx);
+						else
+							board.placePiece(selectedIdx, selectedX, selectedY, selectedT);
 						break;
-					case KeyEvent.VK_DOWN:
-						selectedY++;
-						break;
-
-					case KeyEvent.VK_E:
-						selectedT = selectedT.prev();
-						break;
-					case KeyEvent.VK_T:
-						selectedT = selectedT.next();
-						break;
-					case KeyEvent.VK_R:
-						selectedT = selectedT.reverse();
-						break;
+					case KeyEvent.VK_ESCAPE:
+						for(int idx = 0; idx < pieces.length; idx++)
+							board.removePiece(idx);
 					}
-				}
 
-				switch(evt.getKeyCode())
-				{
-				case KeyEvent.VK_PAGE_DOWN:
-				case KeyEvent.VK_MINUS:
-				case KeyEvent.VK_UNDERSCORE:
-					selectPrev();
-					break;
-				case KeyEvent.VK_PAGE_UP:
-				case KeyEvent.VK_PLUS:
-				case KeyEvent.VK_EQUALS:
-					selectNext();
-					break;
-				case KeyEvent.VK_ENTER:
-				case KeyEvent.VK_SPACE:
-					if(p.isPlaced())
-						board.removePiece(selectedIdx);
-					else
-						board.placePiece(selectedIdx, selectedX, selectedY, selectedT);
-					break;
-				case KeyEvent.VK_ESCAPE:
-					for(int idx = 0; idx < pieces.length; idx++)
-						board.removePiece(idx);
+					repaint();
 				}
-
-				repaint();
-			}
-		};
+			};
+		return keyListener;
 	}
 
 	private void selectNext()

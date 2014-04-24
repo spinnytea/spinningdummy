@@ -7,23 +7,26 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestBoard {
+public class TestBoard
+{
 	private Piece p0;
 	private Piece p1;
 	private Piece p2;
 	private Board b;
 
 	@Before
-	public void before() {
+	public void before()
+	{
 		p0 = new Piece(new boolean[][] { { true, true }, { true, false } });
 		p1 = new Piece(new boolean[][] { { true, true }, { true, false } });
 		p2 = new Piece(new boolean[][] { { true, true, true } });
 
-		b = new Board(3, 3, p0, p1, p2);
+		b = new Board("Simple unit test board", 3, 3, p0, p1, p2);
 	}
 
 	@Test
-	public void canPlacePiece() {
+	public void canPlacePiece()
+	{
 		// we should be able to place all of the pieces on the empty board
 		assertTrue(b.canPlacePiece(0, 0, 0, Transform.N_0));
 		assertTrue(b.canPlacePiece(1, 0, 0, Transform.N_0));
@@ -43,23 +46,24 @@ public class TestBoard {
 	}
 
 	@Test
-	public void removePiece() {
+	public void removePiece()
+	{
 		assertEquals("" //
-				+ "|   |\n" //
-				+ "|   |\n" //
-				+ "|   |\n", b.asciiPrint());
+		+ "|   |\n" //
+		+ "|   |\n" //
+		+ "|   |\n", b.asciiPrint());
 
 		b.placePiece(0, 0, 0, Transform.N_0);
 		b.placePiece(1, 1, 1, Transform.N_0);
 		assertEquals("" //
-				+ "|XX |\n" //
-				+ "|XXX|\n" //
-				+ "| X |\n", b.asciiPrint());
+		+ "|XX |\n" //
+		+ "|XXX|\n" //
+		+ "| X |\n", b.asciiPrint());
 
 		b.removePiece(0);
 		assertEquals("" //
-				+ "|   |\n" //
-				+ "| XX|\n" //
-				+ "| X |\n", b.asciiPrint());
+		+ "|   |\n" //
+		+ "| XX|\n" //
+		+ "| X |\n", b.asciiPrint());
 	}
 }

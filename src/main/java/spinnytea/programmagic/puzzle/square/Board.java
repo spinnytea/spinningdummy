@@ -7,6 +7,8 @@ import lombok.Getter;
 public class Board
 {
 	@Getter
+	final String name;
+	@Getter
 	private final Piece[] pieces;
 
 	/**
@@ -19,8 +21,9 @@ public class Board
 	@Getter
 	private final int[][] boardCache;
 
-	public Board(int width, int height, Piece... pieces)
+	public Board(String name, int width, int height, Piece... pieces)
 	{
+		this.name = name;
 		boardCache = new int[height][width];
 		this.pieces = pieces;
 
