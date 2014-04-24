@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 
 import lombok.NonNull;
 
-public class BoardPanel extends JPanel {
+public class BoardPanel
+extends JPanel
+{
 	private static final long serialVersionUID = 943348345958943170L;
 	private static final int SQUARE_SIZE = 24;
 
@@ -37,7 +39,8 @@ public class BoardPanel extends JPanel {
 		g.fillRect(0, 0, SQUARE_SIZE, SQUARE_SIZE);
 		g.setColor(new Color(196, 196, 196));
 		g.setStroke(new BasicStroke(2));
-		for(int i = -SQUARE_SIZE; i <= SQUARE_SIZE; i += SQUARE_SIZE / 6) {
+		for(int i = -SQUARE_SIZE; i <= SQUARE_SIZE; i += SQUARE_SIZE / 6)
+		{
 			g.drawLine(i - SQUARE_SIZE, i + SQUARE_SIZE, i + SQUARE_SIZE, i - SQUARE_SIZE);
 			g.drawLine(i - SQUARE_SIZE, i + SQUARE_SIZE, i + SQUARE_SIZE, i - SQUARE_SIZE);
 		}
@@ -53,7 +56,8 @@ public class BoardPanel extends JPanel {
 	private int selectedY = 0;
 	private Transform selectedT = Transform.N_0;
 
-	public BoardPanel(@NonNull Board board) {
+	public BoardPanel(@NonNull Board board)
+	{
 		this.board = board;
 		pieces = board.getPieces();
 
@@ -62,14 +66,19 @@ public class BoardPanel extends JPanel {
 		setPreferredSize(new Dimension((board.getWidth() + 6) * SQUARE_SIZE, (board.getHeight() + 2) * 3 * SQUARE_SIZE));
 	}
 
-	public KeyListener getKeyListener() {
-		return new KeyAdapter() {
+	public KeyListener getKeyListener()
+	{
+		return new KeyAdapter()
+		{
 			@Override
-			public void keyPressed(KeyEvent evt) {
+			public void keyPressed(KeyEvent evt)
+			{
 				// these options are locked when the piece has been placed
 				Piece p = pieces[selectedIdx];
-				if(!p.isPlaced()) {
-					switch(evt.getKeyCode()) {
+				if(!p.isPlaced())
+				{
+					switch(evt.getKeyCode())
+					{
 					case KeyEvent.VK_LEFT:
 						selectedX--;
 						break;
@@ -94,8 +103,9 @@ public class BoardPanel extends JPanel {
 						break;
 					}
 				}
-				
-				switch(evt.getKeyCode()) {
+
+				switch(evt.getKeyCode())
+				{
 				case KeyEvent.VK_PAGE_DOWN:
 				case KeyEvent.VK_MINUS:
 				case KeyEvent.VK_UNDERSCORE:
@@ -108,9 +118,11 @@ public class BoardPanel extends JPanel {
 					break;
 				case KeyEvent.VK_ENTER:
 				case KeyEvent.VK_SPACE:
-					if(p.isPlaced()) {
+					if(p.isPlaced())
+					{
 						board.removePiece(selectedIdx);
-					} else
+					}
+					else
 						board.placePiece(selectedIdx, selectedX, selectedY, selectedT);
 					break;
 				}
@@ -120,30 +132,38 @@ public class BoardPanel extends JPanel {
 		};
 	}
 
-	private void selectNext() {
+	private void selectNext()
+	{
 		int start = selectedIdx;
-		do {
+		do
+		{
 			selectedIdx++;
 			if(selectedIdx >= pieces.length)
 				selectedIdx = 0;
-		} while(pieces[selectedIdx].isFixed() && selectedIdx != start);
+		}
+		while(pieces[selectedIdx].isFixed() && selectedIdx != start);
 
-		if(pieces[selectedIdx].isPlaced()) {
+		if(pieces[selectedIdx].isPlaced())
+		{
 			selectedX = pieces[selectedIdx].getX();
 			selectedY = pieces[selectedIdx].getY();
 			// no need to deduce transform
 		}
 	}
 
-	private void selectPrev() {
+	private void selectPrev()
+	{
 		int start = selectedIdx;
-		do {
+		do
+		{
 			selectedIdx--;
 			if(selectedIdx < 0)
 				selectedIdx = pieces.length - 1;
-		} while(pieces[selectedIdx].isFixed() && selectedIdx != start);
+		}
+		while(pieces[selectedIdx].isFixed() && selectedIdx != start);
 
-		if(pieces[selectedIdx].isPlaced()) {
+		if(pieces[selectedIdx].isPlaced())
+		{
 			selectedX = pieces[selectedIdx].getX();
 			selectedY = pieces[selectedIdx].getY();
 			// no need to deduce transform
@@ -151,7 +171,8 @@ public class BoardPanel extends JPanel {
 	}
 
 	@Override
-	public void paintComponent(Graphics _g) {
+	public void paintComponent(Graphics _g)
+	{
 		super.paintComponent(_g);
 		Graphics2D g = (Graphics2D) _g;
 
@@ -163,7 +184,8 @@ public class BoardPanel extends JPanel {
 
 		// draw the piece backgrounds
 		for(int y = 0; y < board.getHeight(); y++)
-			for(int x = 0; x < board.getWidth(); x++) {
+			for(int x = 0; x < board.getWidth(); x++)
+			{
 				int idx = board.getBoardCache()[y][x];
 				if(idx == -1)
 					g.setColor(NO_PIECE_COLOR);
@@ -181,20 +203,22 @@ public class BoardPanel extends JPanel {
 		g.setColor(BORDER_COLOR);
 		g.drawRect(0, 0, board.getWidth() * SQUARE_SIZE, board.getHeight() * SQUARE_SIZE);
 		for(int y = 0; y < board.getHeight(); y++)
-			for(int x = 0; x < board.getWidth(); x++) {
+			for(int x = 0; x < board.getWidth(); x++)
+			{
 				if(x + 1 < board.getWidth())
 					if(board.getBoardCache()[y][x] != board.getBoardCache()[y][x + 1])
 						g.drawLine((x + 1) * SQUARE_SIZE, y * SQUARE_SIZE, //
-								(x + 1) * SQUARE_SIZE, (y + 1) * SQUARE_SIZE);
+						(x + 1) * SQUARE_SIZE, (y + 1) * SQUARE_SIZE);
 
 				if(y + 1 < board.getHeight())
 					if(board.getBoardCache()[y][x] != board.getBoardCache()[y + 1][x])
 						g.drawLine(x * SQUARE_SIZE, (y + 1) * SQUARE_SIZE, //
-								(x + 1) * SQUARE_SIZE, (y + 1) * SQUARE_SIZE);
+						(x + 1) * SQUARE_SIZE, (y + 1) * SQUARE_SIZE);
 			}
 		// draw the selected piece
 		Piece sel = pieces[selectedIdx];
-		if(!sel.isPlaced()) {
+		if(!sel.isPlaced())
+		{
 			if(board.canPlacePiece(selectedIdx, selectedX, selectedY, selectedT))
 				g.setColor(SELECTED_CAN_PLACE);
 			else
@@ -202,7 +226,8 @@ public class BoardPanel extends JPanel {
 
 			for(int py = 0; py < sel.getHeight(); py++)
 				for(int px = 0; px < sel.getWidth(); px++)
-					if(sel.isAt(px, py)) {
+					if(sel.isAt(px, py))
+					{
 						int bx = selectedX + selectedT.x(px, py, sel);
 						int by = selectedY + selectedT.y(px, py, sel);
 
@@ -220,11 +245,13 @@ public class BoardPanel extends JPanel {
 		int maxHeight = 0;
 		g.setColor(PIECE_OFF_BOARD);
 		for(int i = 0; i < pieces.length; i++)
-			if(!pieces[i].isPlaced() && i != selectedIdx) {
+			if(!pieces[i].isPlaced() && i != selectedIdx)
+			{
 				Piece p = pieces[i];
 
 				// if this piece goes off the edge, then wrap to the next line
-				if(x + p.getWidth() > board.getWidth() + 6) {
+				if(x + p.getWidth() > board.getWidth() + 6)
+				{
 					x = 0;
 					y += maxHeight + 1;
 					maxHeight = 0;

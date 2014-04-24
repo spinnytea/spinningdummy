@@ -1,6 +1,7 @@
 package spinnytea.programmagic.puzzle.square;
 
-public enum Transform {
+public enum Transform
+{
 	/** Normal orientation, rotated 0 degrees */
 	N_0,
 	/** Normal orientation, rotated 90 degrees */
@@ -21,8 +22,10 @@ public enum Transform {
 
 	;
 
-	public int x(int px, int py, Piece p) {
-		switch(this) {
+	public int x(int px, int py, Piece p)
+	{
+		switch(this)
+		{
 		case N_0:
 		case R_180:
 			return px;
@@ -40,8 +43,10 @@ public enum Transform {
 		}
 	}
 
-	public int y(int px, int py, Piece p) {
-		switch(this) {
+	public int y(int px, int py, Piece p)
+	{
+		switch(this)
+		{
 		case N_0:
 		case R_0:
 			return py;
@@ -59,8 +64,10 @@ public enum Transform {
 		}
 	}
 
-	public Transform reverse() {
-		switch(this) {
+	public Transform reverse()
+	{
+		switch(this)
+		{
 		case N_0:
 			return R_0;
 		case N_90:
@@ -83,8 +90,10 @@ public enum Transform {
 		return N_0;
 	}
 
-	public Transform next() {
-		switch(this) {
+	public Transform next()
+	{
+		switch(this)
+		{
 		case N_0:
 			return N_90;
 		case N_90:
@@ -107,8 +116,10 @@ public enum Transform {
 		return N_0;
 	}
 
-	public Transform prev() {
-		switch(this) {
+	public Transform prev()
+	{
+		switch(this)
+		{
 		case N_0:
 			return N_270;
 		case N_90:

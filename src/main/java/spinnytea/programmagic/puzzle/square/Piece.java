@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Piece {
+public class Piece
+{
 	/** true represents where the peice is, false represents where the piece is not */
 	@Getter(value = AccessLevel.NONE)
 	private final boolean[][] layout;
@@ -17,7 +18,8 @@ public class Piece {
 	 * @param px location relative to the piece (0 <= px < getWidth())
 	 * @param py location relative to the piece (0 <= py < getHeight())
 	 */
-	public boolean isAt(int px, int py) {
+	public boolean isAt(int px, int py)
+	{
 		// is the y in the piece space
 		if(py < 0 || py >= layout.length)
 			return false;
@@ -34,7 +36,8 @@ public class Piece {
 	/** the x position of the piece */
 	private int x = -1;
 
-	public void setX(int x) {
+	public void setX(int x)
+	{
 		if(placed)
 			return;
 		this.x = x;
@@ -43,7 +46,8 @@ public class Piece {
 	/** the y position of the piece */
 	private int y = -1;
 
-	public void setY(int y) {
+	public void setY(int y)
+	{
 		if(placed)
 			return;
 		this.y = y;
@@ -58,8 +62,10 @@ public class Piece {
 	private int size = -1;
 
 	/** lazy calculation of size */
-	public int getSize() {
-		if(size < 0) {
+	public int getSize()
+	{
+		if(size < 0)
+		{
 			size = 0;
 			for(boolean[] y : layout)
 				for(boolean x : y)
@@ -72,14 +78,16 @@ public class Piece {
 	@Setter(value = AccessLevel.NONE)
 	private int width = -1;
 
-	public int getWidth() {
+	public int getWidth()
+	{
 		if(width < 0)
 			for(boolean[] y : layout)
 				width = Math.max(width, y.length);
 		return width;
 	}
 
-	public int getHeight() {
+	public int getHeight()
+	{
 		return layout.length;
 	}
 }

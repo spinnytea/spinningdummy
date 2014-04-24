@@ -4,10 +4,11 @@ import java.util.Arrays;
 
 import lombok.Getter;
 
-public class Board {
+public class Board
+{
 	@Getter
 	private final Piece[] pieces;
-	
+
 	/**
 	 * this is how all of the pieces fit on the board; it's mainly used to check if we can add another piece
 	 * <p/>
@@ -18,7 +19,8 @@ public class Board {
 	@Getter
 	private final int[][] boardCache;
 
-	public Board(int width, int height, Piece... pieces) {
+	public Board(int width, int height, Piece... pieces)
+	{
 		boardCache = new int[height][width];
 		this.pieces = pieces;
 
@@ -27,16 +29,18 @@ public class Board {
 			totalSize += p.getSize();
 		if(totalSize < width * height)
 			throw new IllegalArgumentException("total piece area should add up to the board area");
-		
+
 		for(int[] y : boardCache)
 			Arrays.fill(y, -1);
 	}
 
-	public int getWidth() {
+	public int getWidth()
+	{
 		return boardCache[0].length;
 	}
 
-	public int getHeight() {
+	public int getHeight()
+	{
 		return boardCache.length;
 	}
 
@@ -46,18 +50,21 @@ public class Board {
 	 * @param y the top left corner
 	 * @param t the orientation
 	 */
-	public boolean canPlacePiece(int idx, int x, int y, Transform t) {
+	public boolean canPlacePiece(int idx, int x, int y, Transform t)
+	{
 		Piece p = pieces[idx];
 		if(p.isFixed())
 			return false;
 		if(p.isPlaced())
 			return false;
-		
+
 		// iterate over piece space
 		for(int py = 0; py < p.getHeight(); py++)
-			for(int px = 0; px < p.getWidth(); px++) {
+			for(int px = 0; px < p.getWidth(); px++)
+			{
 				// is part of the piece at this location?
-				if(p.isAt(px, py)) {
+				if(p.isAt(px, py))
+				{
 					// position of the piece on the board
 					int bx = x + t.x(px, py, p);
 					int by = y + t.y(px, py, p);
@@ -65,7 +72,7 @@ public class Board {
 					// if the piece is off the board, then it can't be placed
 					if(bx < 0 || bx >= getWidth() || by < 0 || by >= getHeight())
 						return false;
-					
+
 					// if this location is occupied by something else, then it can't be placed
 					if(boardCache[by][bx] != -1)
 						return false;
@@ -76,7 +83,8 @@ public class Board {
 		return true;
 	}
 
-	public void placePiece(int idx, int x, int y, Transform t) {
+	public void placePiece(int idx, int x, int y, Transform t)
+	{
 		if(!canPlacePiece(idx, x, y, t))
 			return;
 
@@ -86,7 +94,8 @@ public class Board {
 		for(int py = 0; py < p.getHeight(); py++)
 			for(int px = 0; px < p.getWidth(); px++)
 				// is part of the piece at this location?
-				if(p.isAt(px, py)) {
+				if(p.isAt(px, py))
+				{
 					int bx = x + t.x(px, py, p);
 					int by = y + t.y(px, py, p);
 
@@ -98,9 +107,10 @@ public class Board {
 		p.setPlaced(true);
 	}
 
-	public void removePiece(int idx) {
+	public void removePiece(int idx)
+	{
 		Piece p = pieces[idx];
-		
+
 		if(!p.isPlaced())
 			return;
 
@@ -108,7 +118,8 @@ public class Board {
 		int max = Math.max(p.getHeight(), p.getWidth());
 
 		for(int py = 0; py < max; py++)
-			for(int px = 0; px < max; px++) {
+			for(int px = 0; px < max; px++)
+			{
 				int bx = p.getX() + px;
 				int by = p.getY() + py;
 				if(bx >= 0 && by >= 0 && bx < getWidth() && by < getHeight())
@@ -121,9 +132,11 @@ public class Board {
 		p.setY(-1);
 	}
 
-	public String asciiPrint() {
+	public String asciiPrint()
+	{
 		StringBuilder sb = new StringBuilder();
-		for(int[] y : boardCache) {
+		for(int[] y : boardCache)
+		{
 			sb.append("|");
 			for(int x : y)
 				if(x == -1)
