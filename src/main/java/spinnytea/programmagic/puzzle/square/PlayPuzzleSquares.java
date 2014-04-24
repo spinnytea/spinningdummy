@@ -58,8 +58,8 @@ public class PlayPuzzleSquares
 	private static Board mensaBoard1()
 	{
 		Piece[] pieces = mensaPieces();
-		Board b = new Board("Mensa Board 1", 10, 6, pieces[2], pieces[3], pieces[5], pieces[9], pieces[10], pieces[13], pieces[14], pieces[15], pieces[16],
-		pieces[18]);
+		Board b = new Board("Mensa Board 1", 10, 6, pieces[2], pieces[3], pieces[5], pieces[9], //
+		pieces[10], pieces[13], pieces[14], pieces[15], pieces[16], pieces[18]);
 		b.placePiece(0, 0, 4, Transform.N_270);
 		b.getPieces()[0].setFixed(true);
 		b.placePiece(3, 0, 0, Transform.N_270);
@@ -72,8 +72,8 @@ public class PlayPuzzleSquares
 	private static Board mensaBoard2()
 	{
 		Piece[] pieces = mensaPieces();
-		Board b = new Board("Mensa Board 2", 10, 6, pieces[3], pieces[6], pieces[7], pieces[8], pieces[10], pieces[12], pieces[14], pieces[15], pieces[17],
-		pieces[19]);
+		Board b = new Board("Mensa Board 2", 10, 6, pieces[3], pieces[6], pieces[7], pieces[8], //
+		pieces[10], pieces[12], pieces[14], pieces[15], pieces[17], pieces[19]);
 		b.placePiece(8, 3, 2, Transform.N_90);
 		b.getPieces()[8].setFixed(true);
 		return b;
@@ -82,8 +82,8 @@ public class PlayPuzzleSquares
 	private static Board mensaBoard3()
 	{
 		Piece[] pieces = mensaPieces();
-		Board b = new Board("Mensa Board 3", 10, 6, pieces[1], pieces[4], pieces[7], pieces[11], pieces[13], pieces[14], pieces[15], pieces[17], pieces[19],
-		pieces[20]);
+		Board b = new Board("Mensa Board 3", 10, 6, pieces[1], pieces[4], pieces[7], //
+		pieces[11], pieces[13], pieces[14], pieces[15], pieces[17], pieces[19], pieces[20]);
 		return b;
 	}
 
@@ -103,8 +103,6 @@ public class PlayPuzzleSquares
 
 		// rebuild the display
 		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 	}
 
 	public static void main(String[] args)
@@ -115,6 +113,8 @@ public class PlayPuzzleSquares
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setFocusable(true);
 
+		// get the default menu bar
+		// add the some board selections so we don't need to recompile
 		JMenuBar menuBar = BoardPanel.buildJMenuBar();
 		JMenu games = new JMenu("Games");
 		for(final Board b : boards)
@@ -130,11 +130,14 @@ public class PlayPuzzleSquares
 						}
 					});
 				}
-
 			});
 		menuBar.add(games);
 		frame.setJMenuBar(menuBar);
 
+		// seed the game with the first board in the list
 		swapBoard(frame, boards[0]);
+
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 }
