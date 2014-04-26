@@ -51,9 +51,10 @@ allprojects {
         from javadoc.destinationDir
     }
 
-    task sourcesJar(type: Jar, dependsOn: classes) {
+    task srcs(type: Jar, dependsOn: classes) {
         classifier 'sources'
         from sourceSets.main.allSource
+        exclude '**/logback.xml'
     }
 
     javadoc {
@@ -64,12 +65,14 @@ allprojects {
 
     artifacts {
         archives docs
-        archives sourcesJar
+        archives srcs
     }
 }
 
 dependencies {
+    testCompile project(":clone:2048")
     testCompile project(":maze")
+    testCompile project(":square-puzzle")
     testCompile project(":time")
     testCompile project(":tools:hibernate")
     testCompile project(":tools:misc")

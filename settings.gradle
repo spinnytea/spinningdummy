@@ -1,4 +1,6 @@
+include ":clone:2048"
 include ":maze"
+include ":square-puzzle"
 include ":time"
 include ":tools:hibernate"
 include ":tools:misc"
