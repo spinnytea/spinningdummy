@@ -15,7 +15,7 @@
         <property name="connection.username"></property>
         <property name="connection.password"></property>
 
-        <mapping class="spinnytea.programmagic.time.hoursdao.Day"/>
-        <mapping class="spinnytea.programmagic.time.hoursdao.Task"/>
+        <mapping class="spinnytea.time.hoursdao.Day"/>
+        <mapping class="spinnytea.time.hoursdao.Task"/>
     </session-factory>
 </hibernate-configuration>

@@ -4,11 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import spinnytea.clone._2048.Test_2048;
-import spinnytea.programmagic.maze.TestAlgorithms;
-import spinnytea.programmagic.maze.callforhelp.TestDisjointSets;
-import spinnytea.programmagic.puzzle.square.TestBoard;
-import spinnytea.programmagic.puzzle.square.TestTransform;
-import spinnytea.programmagic.time.hoursdao.TestTaskDao;
+import spinnytea.maze.TestAlgorithms;
+import spinnytea.maze.callforhelp.TestDisjointSets;
+import spinnytea.puzzle.square.TestBoard;
+import spinnytea.puzzle.square.TestTransform;
+import spinnytea.time.hoursdao.TestTaskDao;
 import spinnytea.tools.TestEncryption;
 import spinnytea.tools.TestID;
 import spinnytea.tools.TestRandomAccessCollection;
