@@ -38,10 +38,6 @@ allprojects {
         compile "org.slf4j:log4j-over-slf4j:${project.versions.slf4j}"
         compile "org.slf4j:jcl-over-slf4j:${project.versions.slf4j}"
 
-        compile "org.hibernate:hibernate-core:4.3.4.Final"
-        compile "com.h2database:h2:1.3.175"
-        compile "javax.persistence:persistence-api:1.0.2"
-
         testCompile "junit:junit:4.11"
         testCompile "org.apache.commons:commons-io:1.3.2"
     }
