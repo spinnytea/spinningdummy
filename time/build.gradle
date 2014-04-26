@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":tools:misc")
+    compile project(":tools:hibernate")
+}

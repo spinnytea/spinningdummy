@@ -1,67 +1,77 @@
-apply plugin: "java"
-apply plugin: "idea"
-apply plugin: "eclipse"
-apply plugin: "maven"
+allprojects {
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "eclipse"
+    apply plugin: "maven"
 
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
+        }
+    }
+
+    targetCompatibility = sourceCompatibility = 1.7
+    version = "0.3.2-SNAPSHOT"
+    group = "spinnytea"
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        versions = [
+                slf4j: "1.7.5",
+                logback: "1.0.13",
+        ]
+    }
+
+    configurations {
+        all*.exclude group: "log4j"
+        all*.exclude group: "commons-logging"
+    }
+
+    dependencies {
+        compile "org.projectlombok:lombok:1.12.4"
+        compile "ch.qos.logback:logback-classic:${project.versions.logback}"
+        compile "org.slf4j:slf4j-api:${project.versions.slf4j}"
+        compile "org.slf4j:log4j-over-slf4j:${project.versions.slf4j}"
+        compile "org.slf4j:jcl-over-slf4j:${project.versions.slf4j}"
+
+        compile "org.hibernate:hibernate-core:4.3.4.Final"
+        compile "com.h2database:h2:1.3.175"
+        compile "javax.persistence:persistence-api:1.0.2"
+
+        testCompile "junit:junit:4.11"
+        testCompile "org.apache.commons:commons-io:1.3.2"
+    }
+
+    task docs(type: Jar, dependsOn: javadoc) {
+        classifier = "javadoc"
+        from javadoc.destinationDir
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier 'sources'
+        from sourceSets.main.allSource
+    }
+
+    javadoc {
+        options.links = [
+                "http://docs.oracle.com/javase/7/docs/api/",
+        ]
+    }
+
+    artifacts {
+        archives docs
+        archives sourcesJar
     }
 }
 
-sourceCompatibility = 1.7
-version = "0.3.2-SNAPSHOT"
-group = "spinnytea"
-
-repositories {
-    mavenCentral()
-}
-
-ext {
-    versions = [
-            slf4j: "1.7.5",
-            logback: "1.0.13",
-    ]
-}
-
-configurations {
-    all*.exclude group: "log4j"
-    all*.exclude group: "commons-logging"
-}
-
 dependencies {
-    compile "org.projectlombok:lombok:1.12.4"
-    compile "ch.qos.logback:logback-classic:${project.versions.logback}"
-    compile "org.slf4j:slf4j-api:${project.versions.slf4j}"
-    compile "org.slf4j:log4j-over-slf4j:${project.versions.slf4j}"
-    compile "org.slf4j:jcl-over-slf4j:${project.versions.slf4j}"
-
-    compile "org.hibernate:hibernate-core:4.3.4.Final"
-    compile "com.h2database:h2:1.3.175"
-    compile "javax.persistence:persistence-api:1.0.2"
-
-    testCompile "junit:junit:4.11"
-    testCompile "org.apache.commons:commons-io:1.3.2"
-}
-
-task docs(type: Jar, dependsOn: javadoc) {
-    classifier = "javadoc"
-    from javadoc.destinationDir
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier 'sources'
-    from sourceSets.main.allSource
-}
-
-javadoc {
-    options.links = [
-            "http://docs.oracle.com/javase/7/docs/api/",
-    ]
-}
-
-artifacts {
-    archives docs
-    archives sourcesJar
+    testCompile project(":maze")
+    testCompile project(":time")
+    testCompile project(":tools:hibernate")
+    testCompile project(":tools:misc")
+    testCompile project(":tools:net")
 }
